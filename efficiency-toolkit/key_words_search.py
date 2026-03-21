@@ -20,7 +20,7 @@ def ask_chatgpt(prompt):
     """
     发送请求给 OpenAI 以生成摘要
     """
-    headers = {"Authorization": f"Bearer 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"}
+    headers = {"Authorization": f"Bearer xxxx"}
     payload = {
         "model": "gpt-3.5-turbo",
         "messages": [
