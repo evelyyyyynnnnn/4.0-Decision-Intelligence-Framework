@@ -1,0 +1,47 @@
+# DPO训练配置
+model:
+  base_model: "Qwen/Qwen2.5-4B-Instruct"  # Qwen3-4B模型
+  use_peft: true
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.1
+  target_modules: ["q_proj", "v_proj", "k_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+
+training:
+  num_train_epochs: 3
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 4
+  learning_rate: 5e-5
+  warmup_steps: 100
+  logging_steps: 10
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+dpo:
+  beta: 0.1  # DPO温度参数
+  max_prompt_length: 512
+  max_length: 1024
+  max_target_length: 512
+
+data:
+  train_file: "data/dpo_dataset.json"
+  validation_file: "data/dpo_dataset.json"  # 可以分开训练和验证集
+  test_size: 0.1
+
+output:
+  output_dir: "outputs/dpo_qwen3_4b"
+  save_strategy: "steps"
+  evaluation_strategy: "steps"
+  logging_dir: "logs"
+
+hardware:
+  use_4bit: true
+  use_8bit: false
+  bf16: true
+  fp16: false
+  device_map: "auto"
