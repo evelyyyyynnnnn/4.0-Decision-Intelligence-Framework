@@ -1,0 +1,525 @@
+2025-08-14 13:25:26,066 - __main__ - INFO - 开始DPO训练...
+2025-08-14 13:25:26,067 - __main__ - INFO - 配置文件加载完成
+2025-08-14 13:25:26,067 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 13:25:26,068 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 13:25:26,081 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 13:25:26,081 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-4B-Instruct
+2025-08-14 13:25:26,544 - __main__ - ERROR - 训练过程中出现错误: Qwen/Qwen2.5-4B-Instruct is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `hf auth login` or by passing `token=<your_token>`
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/utils/_http.py", line 409, in hf_raise_for_status
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/requests/models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://huggingface.co/Qwen/Qwen2.5-4B-Instruct/resolve/main/tokenizer_config.json
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/utils/hub.py", line 479, in cached_files
+    hf_hub_download(
+    ~~~~~~~~~~~~~~~^
+        path_or_repo_id,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        local_files_only=local_files_only,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1010, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+        # Destination
+    ...<14 lines>...
+        force_download=force_download,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1117, in _hf_hub_download_to_cache_dir
+    _raise_on_head_call_error(head_call_error, force_download, local_files_only)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1658, in _raise_on_head_call_error
+    raise head_call_error
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1546, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+        url=url, proxies=proxies, timeout=etag_timeout, headers=headers, token=token, endpoint=endpoint
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1463, in get_hf_file_metadata
+    r = _request_wrapper(
+        method="HEAD",
+    ...<5 lines>...
+        timeout=timeout,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 286, in _request_wrapper
+    response = _request_wrapper(
+        method=method,
+    ...<2 lines>...
+        **params,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 310, in _request_wrapper
+    hf_raise_for_status(response)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/huggingface_hub/utils/_http.py", line 459, in hf_raise_for_status
+    raise _format(RepositoryNotFoundError, message, response) from e
+huggingface_hub.errors.RepositoryNotFoundError: 401 Client Error. (Request ID: Root=1-689e1c06-10675ea85b09036c30d666b0;c14d0913-b990-4be2-a6a3-17b02f106628)
+
+Repository Not Found for url: https://huggingface.co/Qwen/Qwen2.5-4B-Instruct/resolve/main/tokenizer_config.json.
+Please make sure you specified the correct `repo_id` and `repo_type`.
+If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication
+Invalid username or password.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 208, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 154, in main
+    model, tokenizer = load_model_and_tokenizer(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~^
+        model_name=model_config['base_model'],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        device_map=hardware_config['device_map']
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/model_utils.py", line 48, in load_model_and_tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_name,
+        trust_remote_code=True,
+        padding_side="left"
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/models/auto/tokenization_auto.py", line 1049, in from_pretrained
+    tokenizer_config = get_tokenizer_config(pretrained_model_name_or_path, **kwargs)
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/models/auto/tokenization_auto.py", line 881, in get_tokenizer_config
+    resolved_config_file = cached_file(
+        pretrained_model_name_or_path,
+    ...<12 lines>...
+        _commit_hash=commit_hash,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/utils/hub.py", line 321, in cached_file
+    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/utils/hub.py", line 511, in cached_files
+    raise OSError(
+    ...<4 lines>...
+    ) from e
+OSError: Qwen/Qwen2.5-4B-Instruct is not a local folder and is not a valid model identifier listed on 'https://huggingface.co/models'
+If this is a private repository, make sure to pass a token having permission to this repo either by logging in with `hf auth login` or by passing `token=<your_token>`
+2025-08-14 13:26:03,365 - __main__ - INFO - 开始DPO训练...
+2025-08-14 13:26:03,367 - __main__ - INFO - 配置文件加载完成
+2025-08-14 13:26:03,367 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 13:26:03,367 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 13:26:03,387 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 13:26:03,387 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 13:26:04,282 - __main__ - ERROR - 训练过程中出现错误: The installed version of bitsandbytes (<0.43.1) requires CUDA, but CUDA is not available. You may need to install PyTorch with CUDA support or upgrade bitsandbytes to >=0.43.1.
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 208, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 154, in main
+    model, tokenizer = load_model_and_tokenizer(
+                       ~~~~~~~~~~~~~~~~~~~~~~~~^
+        model_name=model_config['base_model'],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        device_map=hardware_config['device_map']
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/model_utils.py", line 59, in load_model_and_tokenizer
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+    ...<4 lines>...
+        attn_implementation="flash_attention_2" if torch.cuda.is_available() else "eager"
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        pretrained_model_name_or_path, *model_args, config=config, **hub_kwargs, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/modeling_utils.py", line 317, in _wrapper
+    return func(*args, **kwargs)
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/modeling_utils.py", line 4887, in from_pretrained
+    hf_quantizer.validate_environment(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        torch_dtype=torch_dtype,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        weights_only=weights_only,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 88, in validate_environment
+    raise ImportError(
+    ...<2 lines>...
+    )
+ImportError: The installed version of bitsandbytes (<0.43.1) requires CUDA, but CUDA is not available. You may need to install PyTorch with CUDA support or upgrade bitsandbytes to >=0.43.1.
+2025-08-14 13:26:25,995 - __main__ - INFO - 开始DPO训练...
+2025-08-14 13:26:25,999 - __main__ - INFO - 配置文件加载完成
+2025-08-14 13:26:25,999 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 13:26:26,001 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 13:26:26,041 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 13:26:26,042 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 21:52:53,947 - __main__ - INFO - 开始DPO训练...
+2025-08-14 21:52:53,950 - __main__ - INFO - 配置文件加载完成
+2025-08-14 21:52:53,950 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 21:52:53,950 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 21:52:53,962 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 21:52:53,962 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 21:52:57,323 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 21:52:57,323 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 21:52:57,323 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 21:52:57,718 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 21:52:57,718 - __main__ - ERROR - 训练过程中出现错误: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 208, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 173, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 88, in create_dpo_trainer
+    training_args = create_training_arguments(
+        output_dir=output_config['output_dir'],
+    ...<13 lines>...
+        logging_dir=output_config['logging_dir']
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/model_utils.py", line 171, in create_training_arguments
+    training_args = TrainingArguments(
+        output_dir=output_dir,
+    ...<24 lines>...
+        ddp_find_unused_parameters=False,
+    )
+TypeError: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'
+2025-08-14 21:55:06,763 - __main__ - INFO - 开始DPO训练...
+2025-08-14 21:55:06,766 - __main__ - INFO - 配置文件加载完成
+2025-08-14 21:55:06,766 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 21:55:06,766 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 21:55:06,771 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 21:55:06,771 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 21:55:09,339 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 21:55:09,339 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 21:55:09,339 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 21:55:10,095 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 21:55:10,096 - model_utils - INFO - 训练参数创建完成
+2025-08-14 21:55:10,096 - __main__ - ERROR - 训练过程中出现错误: DPOTrainer.__init__() got an unexpected keyword argument 'beta'
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 208, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 173, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 108, in create_dpo_trainer
+    dpo_trainer = DPOTrainer(
+        model=model,
+    ...<16 lines>...
+        data_collator_kwargs={},
+    )
+TypeError: DPOTrainer.__init__() got an unexpected keyword argument 'beta'
+2025-08-14 22:09:14,373 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:09:14,376 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:09:14,376 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:09:14,376 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:09:14,461 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:09:14,461 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:09:18,012 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:09:18,013 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:09:18,013 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:09:18,523 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:09:18,523 - __main__ - ERROR - 训练过程中出现错误: cannot access local variable 'dpo_config' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 207, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 172, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 104, in create_dpo_trainer
+    beta=dpo_config['beta'],
+         ^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'dpo_config' where it is not associated with a value
+2025-08-14 22:12:55,447 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:12:55,449 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:12:55,449 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:12:55,450 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:12:55,467 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:12:55,467 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:12:58,008 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:12:58,008 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:12:58,008 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:12:58,420 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:12:58,421 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:12:58,421 - __main__ - ERROR - 训练过程中出现错误: DPOTrainer.__init__() got an unexpected keyword argument 'tokenizer'
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 208, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 173, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 112, in create_dpo_trainer
+    dpo_trainer = DPOTrainer(
+        model=model,
+    ...<12 lines>...
+        data_collator_kwargs={},
+    )
+TypeError: DPOTrainer.__init__() got an unexpected keyword argument 'tokenizer'
+2025-08-14 22:13:50,779 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:13:50,782 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:13:50,782 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:13:50,782 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:13:50,786 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:13:50,786 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:13:52,908 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:13:52,909 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:13:52,909 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:13:53,375 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:13:53,376 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:13:53,967 - __main__ - ERROR - 训练过程中出现错误: 'TrainingArguments' object has no attribute 'padding_value'
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 199, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 164, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 112, in create_dpo_trainer
+    dpo_trainer = DPOTrainer(
+        model=model,
+    ...<3 lines>...
+        peft_config=None,  # 已经在模型上应用了PEFT
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/trl/trainer/dpo_trainer.py", line 278, in __init__
+    if args.padding_value is not None:
+       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'TrainingArguments' object has no attribute 'padding_value'
+2025-08-14 22:14:25,153 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:14:25,154 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:14:25,154 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:14:25,155 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:14:25,158 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:14:25,158 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:14:27,629 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:14:27,629 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:14:27,629 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:14:28,115 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:14:28,116 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:14:28,116 - __main__ - ERROR - 训练过程中出现错误: DPOConfig.__init__() got an unexpected keyword argument 'max_target_length'. Did you mean 'max_prompt_length'?
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 217, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 182, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 115, in create_dpo_trainer
+    dpo_training_args = DPOConfig(
+        **training_args.to_dict(),
+    ...<10 lines>...
+        generate_during_eval=False,
+    )
+TypeError: DPOConfig.__init__() got an unexpected keyword argument 'max_target_length'. Did you mean 'max_prompt_length'?
+2025-08-14 22:15:13,861 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:15:13,863 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:15:13,864 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:15:13,864 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:15:13,868 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:15:13,868 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:15:16,417 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:15:16,418 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:15:16,419 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:15:16,935 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:15:16,936 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:15:16,937 - __main__ - ERROR - 训练过程中出现错误: DPOConfig.__init__() got an unexpected keyword argument 'ref_model'
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 216, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 181, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 115, in create_dpo_trainer
+    dpo_training_args = DPOConfig(
+        **training_args.to_dict(),
+    ...<9 lines>...
+        generate_during_eval=False,
+    )
+TypeError: DPOConfig.__init__() got an unexpected keyword argument 'ref_model'
+2025-08-14 22:15:43,905 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:15:43,907 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:15:43,907 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:15:43,907 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:15:43,910 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:15:43,910 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:15:46,003 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:15:46,005 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:15:46,005 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:15:46,425 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:15:46,425 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:15:47,000 - __main__ - INFO - DPO训练器创建完成
+2025-08-14 22:15:47,000 - __main__ - INFO - 开始训练...
+2025-08-14 22:15:47,109 - __main__ - ERROR - 训练过程中出现错误: Can only automatically infer lengths for datasets whose items are dictionaries with an 'input_ids' key.
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 211, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 182, in main
+    train_result = dpo_trainer.train()
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 2238, in train
+    return inner_training_loop(
+        args=args,
+    ...<2 lines>...
+        ignore_keys_for_eval=ignore_keys_for_eval,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 2288, in _inner_training_loop
+    train_dataloader = self.get_train_dataloader()
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/trl/trainer/dpo_trainer.py", line 836, in get_train_dataloader
+    return super().get_train_dataloader()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 1060, in get_train_dataloader
+    return self._get_dataloader(
+           ~~~~~~~~~~~~~~~~~~~~^
+        dataset=self.train_dataset,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        is_training=True,
+        ^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 1029, in _get_dataloader
+    dataloader_params["sampler"] = sampler_fn(dataset)
+                                   ~~~~~~~~~~^^^^^^^^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 992, in _get_train_sampler
+    return LengthGroupedSampler(
+        self.args.train_batch_size * self.args.gradient_accumulation_steps,
+    ...<2 lines>...
+        model_input_name=model_input_name,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer_pt_utils.py", line 641, in __init__
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Can only automatically infer lengths for datasets whose items are dictionaries with an 'input_ids' key.
+2025-08-14 22:17:33,008 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:17:33,010 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:17:33,010 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:17:33,010 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:17:33,025 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:17:33,025 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:17:35,332 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:17:35,333 - __main__ - INFO - 格式化数据集...
+2025-08-14 22:17:35,485 - __main__ - INFO - 数据集格式化完成
+2025-08-14 22:17:35,485 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:17:35,485 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:17:35,985 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:17:35,986 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:17:36,351 - __main__ - ERROR - 训练过程中出现错误: Column to remove ['rejected', 'chosen'] not in the dataset. Current columns in the dataset: ['input_ids', 'attention_mask', 'chosen_input_ids', 'chosen_attention_mask', 'rejected_input_ids', 'rejected_attention_mask']
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 217, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 182, in main
+    dpo_trainer = create_dpo_trainer(
+        model, tokenizer, train_dataset, eval_dataset, config
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 124, in create_dpo_trainer
+    dpo_trainer = DPOTrainer(
+        model=model,
+    ...<3 lines>...
+        peft_config=None,  # 已经在模型上应用了PEFT
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/trl/trainer/dpo_trainer.py", line 443, in __init__
+    train_dataset = self._prepare_dataset(train_dataset, processing_class, args, "train")
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/trl/trainer/dpo_trainer.py", line 644, in _prepare_dataset
+    dataset = dataset.map(
+        self.tokenize_row if not self.is_vision_model else self.process_row,
+    ...<8 lines>...
+        **map_kwargs,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+                                           ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/datasets/arrow_dataset.py", line 3086, in map
+    raise ValueError(
+        f"Column to remove {list(missing_columns)} not in the dataset. Current columns in the dataset: {self._data.column_names}"
+    )
+ValueError: Column to remove ['rejected', 'chosen'] not in the dataset. Current columns in the dataset: ['input_ids', 'attention_mask', 'chosen_input_ids', 'chosen_attention_mask', 'rejected_input_ids', 'rejected_attention_mask']
+2025-08-14 22:18:26,761 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:18:26,764 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:18:26,764 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:18:26,764 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:18:26,776 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:18:26,776 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:18:28,887 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:18:28,887 - __main__ - INFO - 格式化数据集...
+2025-08-14 22:18:29,072 - __main__ - INFO - 数据集格式化完成
+2025-08-14 22:18:29,072 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:18:29,072 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:18:29,479 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:18:29,480 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:18:30,071 - __main__ - INFO - DPO训练器创建完成
+2025-08-14 22:18:30,071 - __main__ - INFO - 开始训练...
+2025-08-14 22:18:30,219 - __main__ - ERROR - 训练过程中出现错误: '<=' not supported between instances of 'float' and 'str'
+Traceback (most recent call last):
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 217, in <module>
+    main()
+    ~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/dpo_train.py", line 188, in main
+    train_result = dpo_trainer.train()
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 2238, in train
+    return inner_training_loop(
+        args=args,
+    ...<2 lines>...
+        ignore_keys_for_eval=ignore_keys_for_eval,
+    )
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 2345, in _inner_training_loop
+    self.create_optimizer_and_scheduler(num_training_steps=max_steps)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 1178, in create_optimizer_and_scheduler
+    self.create_optimizer()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/transformers/trainer.py", line 1244, in create_optimizer
+    self.optimizer = optimizer_cls(optimizer_grouped_parameters, **optimizer_kwargs)
+                     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/torch/optim/adamw.py", line 37, in __init__
+    super().__init__(
+    ~~~~~~~~~~~~~~~~^
+        params,
+        ^^^^^^^
+    ...<10 lines>...
+        decoupled_weight_decay=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/evelyndu/Desktop/To-do/RA/Wangwenwen-LLM Tuning/venv/lib/python3.13/site-packages/torch/optim/adam.py", line 58, in __init__
+    if not 0.0 <= lr:
+           ^^^^^^^^^
+TypeError: '<=' not supported between instances of 'float' and 'str'
+2025-08-14 22:21:53,173 - __main__ - INFO - 开始DPO训练...
+2025-08-14 22:21:53,176 - __main__ - INFO - 配置文件加载完成
+2025-08-14 22:21:53,176 - __main__ - WARNING - CUDA不可用，将使用CPU训练（速度会很慢）
+2025-08-14 22:21:53,177 - data_utils - INFO - 成功加载 5 条DPO数据
+2025-08-14 22:21:53,190 - __main__ - INFO - 数据集分割完成: 训练集 4 条, 验证集 1 条
+2025-08-14 22:21:53,191 - model_utils - INFO - 正在加载模型: Qwen/Qwen2.5-0.5B-Instruct
+2025-08-14 22:21:55,202 - model_utils - INFO - 模型和分词器加载完成
+2025-08-14 22:21:55,202 - __main__ - INFO - 格式化数据集...
+2025-08-14 22:21:55,353 - __main__ - INFO - 数据集格式化完成
+2025-08-14 22:21:55,353 - model_utils - INFO - PEFT配置创建完成: r=16, alpha=32, dropout=0.1
+2025-08-14 22:21:55,353 - model_utils - INFO - 正在应用PEFT配置到模型...
+2025-08-14 22:21:55,688 - model_utils - INFO - PEFT配置应用完成
+2025-08-14 22:21:55,689 - model_utils - INFO - 训练参数创建完成
+2025-08-14 22:21:56,191 - __main__ - INFO - DPO训练器创建完成
+2025-08-14 22:21:56,191 - __main__ - INFO - 开始训练...
