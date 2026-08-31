@@ -1,0 +1,202 @@
+{
+  "generated_at": "2026-08-31T19:00:04+00:00",
+  "is_synthetic": true,
+  "data_source": "synthetic credit applications (src/demo.py)",
+  "ledger": {
+    "n_decisions": 120,
+    "chain_intact": true,
+    "first_broken_index": -1,
+    "policies": [
+      "credit-approval@1.0"
+    ],
+    "action_counts": {
+      "decline": 47,
+      "approve": 73
+    }
+  },
+  "replay": {
+    "n": 120,
+    "reproduced": 120,
+    "failures": []
+  },
+  "tamper": {
+    "intact_before": true,
+    "detected": true,
+    "detected_at": 3,
+    "intact_after_restore": true
+  },
+  "versioning": {
+    "n_cases": 40,
+    "n_flipped": 6,
+    "examples": [
+      {
+        "case": "APP-0001",
+        "v1": "approve",
+        "v2": "decline",
+        "delinquencies": 1.0,
+        "v1_score": 0.6142,
+        "v2_score": -0.1358
+      },
+      {
+        "case": "APP-0003",
+        "v1": "approve",
+        "v2": "decline",
+        "delinquencies": 1.0,
+        "v1_score": 0.4724,
+        "v2_score": -0.2776
+      },
+      {
+        "case": "APP-0009",
+        "v1": "approve",
+        "v2": "decline",
+        "delinquencies": 1.0,
+        "v1_score": 0.0774,
+        "v2_score": -0.6726
+      },
+      {
+        "case": "APP-0019",
+        "v1": "approve",
+        "v2": "decline",
+        "delinquencies": 1.0,
+        "v1_score": 0.3237,
+        "v2_score": -0.4263
+      },
+      {
+        "case": "APP-0020",
+        "v1": "approve",
+        "v2": "decline",
+        "delinquencies": 1.0,
+        "v1_score": 0.0082,
+        "v2_score": -0.7418
+      }
+    ],
+    "replay": {
+      "n": 80,
+      "reproduced": 80,
+      "failures": []
+    }
+  },
+  "case": {
+    "case_id": "APP-0023",
+    "seq": 23,
+    "action": "decline",
+    "score": -3.19173,
+    "inputs": {
+      "dti": 0.5884,
+      "utilisation": 0.8503,
+      "delinquencies": 3.0,
+      "tenure_years": 5.5412,
+      "income_k": 81.5168
+    }
+  },
+  "occlusion": {
+    "dti": -1.289167,
+    "utilisation": -1.348128,
+    "delinquencies": -1.65,
+    "tenure_years": 0.03247,
+    "income_k": 0.126684
+  },
+  "shapley": {
+    "values": {
+      "dti": -1.130461,
+      "utilisation": -1.189423,
+      "delinquencies": -1.65,
+      "tenure_years": 0.03247,
+      "income_k": 0.126684
+    },
+    "mode": "exact",
+    "n_orderings": 120
+  },
+  "attribution_disagreement": {
+    "dti": -0.158706,
+    "utilisation": -0.158705,
+    "delinquencies": 0.0,
+    "tenure_years": 0.0,
+    "income_k": 0.0
+  },
+  "max_disagreement": 0.158706,
+  "efficiency": {
+    "sum_of_values": -3.81073,
+    "score_difference": -3.810729,
+    "residual": -9.52e-07,
+    "efficient": true
+  },
+  "counterfactuals": [
+    {
+      "feature": "dti",
+      "to": 0.2,
+      "seq": 23,
+      "available": true,
+      "overrides": {
+        "dti": 0.2
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -3.191729,
+      "counterfactual_score": -1.455486,
+      "changed": false,
+      "score_delta": 1.736243
+    },
+    {
+      "feature": "utilisation",
+      "to": 0.15,
+      "seq": 23,
+      "available": true,
+      "overrides": {
+        "utilisation": 0.15
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -3.191729,
+      "counterfactual_score": -1.304725,
+      "changed": false,
+      "score_delta": 1.887005
+    },
+    {
+      "feature": "delinquencies",
+      "to": 0.0,
+      "seq": 23,
+      "available": true,
+      "overrides": {
+        "delinquencies": 0.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -3.191729,
+      "counterfactual_score": -1.541729,
+      "changed": false,
+      "score_delta": 1.65
+    },
+    {
+      "feature": "income_k",
+      "to": 150.0,
+      "seq": 23,
+      "available": true,
+      "overrides": {
+        "income_k": 150.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -3.191729,
+      "counterfactual_score": -2.438413,
+      "changed": false,
+      "score_delta": 0.753316
+    },
+    {
+      "feature": "tenure_years",
+      "to": 20.0,
+      "seq": 23,
+      "available": true,
+      "overrides": {
+        "tenure_years": 20.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -3.191729,
+      "counterfactual_score": -2.3242,
+      "changed": false,
+      "score_delta": 0.86753
+    }
+  ],
+  "n_flipping_features": 0
+}
