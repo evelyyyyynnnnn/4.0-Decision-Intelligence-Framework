@@ -67,6 +67,20 @@ def run() -> dict:
         y, p, baseline, source = _scores_synthetic()
         linked = False
 
+    results = _frontier_results(y, p, baseline, source)
+    results["linked_to_repo_2"] = linked
+    (ROOT / "results").mkdir(exist_ok=True)
+    (ROOT / "results" / "latest.json").write_text(
+        json.dumps(results, indent=2) + "\n", encoding="utf8")
+    return results
+
+
+def _frontier_results(y, p, baseline, source: str) -> dict:
+    """Everything the frontier study computes, for whichever scores it is given.
+
+    Shared by the simulated and the real run, so the two cannot quietly differ
+    in method -- the only difference between them is the data.
+    """
     pts = operating_points(y, p)
     front = pareto_front(pts)
     base_pts = operating_points(y, baseline)
@@ -122,11 +136,10 @@ def run() -> dict:
     }
     triage = {k: evaluate_policy(v, y, benefit) for k, v in policies.items()}
 
-    results = {
+    return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "is_synthetic": True,
         "data_source": source,
-        "linked_to_repo_2": linked,
         "n_observations": int(len(y)),
         "event_rate": round(float(y.mean()), 4),
         "n_operating_points": len(pts),
@@ -140,15 +153,89 @@ def run() -> dict:
         "governance": governance,
         "triage": {"capacity": capacity, "policies": triage},
     }
+
+
+def _scores_from_real_icu():
+    """Risk scores from a model trained on real MIMIC-IV stays.
+
+    The frontier this project draws is a frontier over a MODEL's operating
+    points, so it is only as meaningful as the scores feeding it. On the
+    simulated cohort the model is good because the generator made the signal
+    learnable. Here it is whatever the real records support, on roughly 100
+    stays -- which is why the real run reports the cohort size next to every
+    frontier statistic it prints.
+    """
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT))
+    from data.load import load_patients
+
+    m = _load_icu()
+    patients, prov = load_patients(m["cohort"], root=ROOT / "data")
+    X, y, groups, _ = m["dataset"].build(patients, event="hypotension",
+                                         horizon_h=4.0)
+    tr, te = m["dataset"].split_by_patient(groups, test_frac=0.3, seed=3)
+    if y[tr].sum() < 5 or y[te].sum() < 5:
+        from data.datakit import FetchError
+        raise FetchError(
+            f"only {int(y[tr].sum())} training and {int(y[te].sum())} test "
+            f"events in this cohort. A Pareto frontier over operating points "
+            f"needs enough positives that sensitivity is not moving in steps "
+            f"of 20%; the demo cohort is too small for this event.")
+
+    mdl = m["models"].boosted().fit(X[tr], y[tr])
+    p = mdl.predict_proba(X[te])[:, 1]
+    key = m["dataset"].FEATURE_NAMES.index("map_mmhg")
+    baseline = -X[te][:, key]
+    prov.update({"n_train_rows": int(len(tr)), "n_test_rows": int(len(te)),
+                 "n_test_events": int(y[te].sum()),
+                 "test_event_rate": round(float(y[te].mean()), 5)})
+    return y[te], p, baseline, "ICU early-warning model trained on MIMIC-IV demo", prov
+
+
+def run_real() -> dict:
+    y, p, baseline, source, prov = _scores_from_real_icu()
+    r = _frontier_results(y, p, baseline, source)
+    r.update({
+        "is_synthetic": False,
+        "data_source": "PhysioNet MIMIC-IV clinical database demo (open access); "
+                       "see data/MANIFEST.json for file hashes and retrieval times",
+        "cohort_is_a_demonstration_not_a_study": True,
+        "sample_size_caveat":
+            "the frontier is drawn over operating points of a model trained on "
+            "about 100 ICU stays. Its shape demonstrates the method; its "
+            "position is not an estimate of achievable performance.",
+        "provenance": prov,
+    })
     (ROOT / "results").mkdir(exist_ok=True)
-    (ROOT / "results" / "latest.json").write_text(
-        json.dumps(results, indent=2) + "\n", encoding="utf8")
-    return results
+    (ROOT / "results" / "latest-real.json").write_text(
+        json.dumps(r, indent=2) + "\n", encoding="utf8")
+    return r
 
 
-def main() -> int:
-    r = run()
-    print(f"source: {r['data_source']} (linked to repo 2.0: {r['linked_to_repo_2']})")
+def main_real() -> int:
+    from data.datakit import FetchError
+    try:
+        r = run_real()
+    except FetchError as exc:
+        print(f"cannot run on real data: {exc}", file=sys.stderr)
+        return 2
+    pv = r["provenance"]
+    print(f"source: {r['data_source']}")
+    print(f"{pv['n_patients_built'] if 'n_patients_built' in pv else pv['n_stays_built']} "
+          f"stays -> {pv['n_train_rows']:,} training rows, "
+          f"{pv['n_test_rows']:,} test rows, {pv['n_test_events']} events "
+          f"({pv['test_event_rate']:.2%})")
+    for k, v in pv["event_definitions"].items():
+        print(f"  {k}: {v}")
+    _print_frontier(r)
+    print("\n" + r["sample_size_caveat"])
+    print("wrote results/latest-real.json")
+    return 0
+
+
+def _print_frontier(r: dict) -> None:
+    """Print the frontier study. Shared by both runs, for the same reason the
+    computation is."""
     print(f"{r['n_observations']:,} observations, event rate {r['event_rate']:.2%}")
     print(f"\n{r['n_operating_points']} thresholds swept -> "
           f"{len(r['frontier'])} on the Pareto front, "
@@ -181,6 +268,14 @@ def main() -> int:
     for name, v in t["policies"].items():
         print(f"  {name:<28}{v['reviewed']:>9}{v['caught']:>8}"
               f"{v['review_yield']:>8.3f}{v['benefit_capture']:>17.3f}")
+
+
+def main() -> int:
+    if "--real" in sys.argv[1:]:
+        return main_real()
+    r = run()
+    print(f"source: {r['data_source']} (linked to repo 2.0: {r['linked_to_repo_2']})")
+    _print_frontier(r)
     try:
         from .site import build_site
         build_site(r); print("\nwebsite/ rebuilt from this run")
