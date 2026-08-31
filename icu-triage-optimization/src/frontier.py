@@ -121,7 +121,10 @@ def knee_point(front: list) -> Operating | None:
     a, b = Q[0], Q[-1]
     ab = b - a
     denom = np.linalg.norm(ab) or 1.0
-    d = np.abs(np.cross(np.broadcast_to(ab, Q.shape), Q - a)) / denom
+    # The 2-D cross product written out. np.cross on 2-vectors is deprecated in
+    # NumPy 2.0 and will be removed; this is the same quantity, |ab x aq|.
+    aq = Q - a
+    d = np.abs(ab[0] * aq[:, 1] - ab[1] * aq[:, 0]) / denom
     return front[int(np.argmax(d))]
 
 
