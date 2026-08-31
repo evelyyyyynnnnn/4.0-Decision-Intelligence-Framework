@@ -63,15 +63,23 @@ def make_cases(n: int = 120, seed: int = 4) -> list:
 
 
 def tamper_demo(led: DecisionLedger) -> dict:
-    """Editing a recorded input must break the chain at that record."""
+    """Editing a recorded input must break the chain at that record.
+
+    The edited field is whichever input the record happens to carry, rather
+    than a hard-coded name: this same check runs over the synthetic policy and
+    over the real one, and those policies do not share a feature set.
+    """
     ok_before, _ = led.verify()
-    original = led.records[3].inputs["dti"]
-    led.records[3].inputs["dti"] = 0.01          # make a decline look approvable
+    rec = led.records[3]
+    field = next(iter(rec.inputs))
+    original = rec.inputs[field]
+    rec.inputs[field] = original + 1.0 if original == original else 0.01
     ok_after, idx = led.verify()
-    led.records[3].inputs["dti"] = original
+    rec.inputs[field] = original
     ok_restored, _ = led.verify()
     return {"intact_before": ok_before, "detected": not ok_after,
-            "detected_at": idx, "intact_after_restore": ok_restored}
+            "detected_at": idx, "field_edited": field,
+            "intact_after_restore": ok_restored}
 
 
 def version_demo(cases) -> dict:
@@ -152,7 +160,206 @@ def run() -> dict:
     return results
 
 
+# --- the real-data policy --------------------------------------------------
+#
+# A separate policy, not the synthetic one with different numbers. The German
+# Credit dataset records no income, so `dti` and `income_k` have no counterpart
+# and the policy is written over the features that do exist. Coefficients are
+# authored -- this is a policy, not a fitted model -- and the interaction term
+# is kept because it is what makes occlusion and Shapley disagree.
+
+REAL_BASELINE = {"installment_rate": 2.0, "delinquencies": 0.0,
+                 "employment_years": 5.5, "credit_amount_k": 2.0, "age": 40.0}
+REAL_INTERACTION = -0.22
+
+
+def _real_terms(x: dict) -> float:
+    return (-0.42 * x["installment_rate"]
+            - 0.30 * x["credit_amount_k"]
+            + 0.06 * x["employment_years"]
+            + 0.012 * x["age"]
+            + REAL_INTERACTION * x["installment_rate"] * x["credit_amount_k"]
+            + 1.55)
+
+
+def _real_v1(x: dict) -> float:
+    return _real_terms(x) - 0.45 * x["delinquencies"]
+
+
+def _real_v2(x: dict) -> float:
+    """v2 weights past delinquency harder. A real policy change, versioned."""
+    return _real_terms(x) - 1.20 * x["delinquencies"]
+
+
+REAL_POLICY_V1 = Policy("credit-approval-de", "1.0", _decide(_real_v1))
+REAL_POLICY_V2 = Policy("credit-approval-de", "2.0", _decide(_real_v2))
+
+
+def run_real() -> dict:
+    """Audit decisions made on real credit applications, with real outcomes.
+
+    The outcome column is what this run adds. Everything the framework does --
+    hash-chained ledger, exact replay, versioned counterfactuals, Shapley
+    attribution -- can be demonstrated on invented applicants. What cannot is
+    the question a reader will actually ask: do the declines correspond to
+    applicants who turned out to be bad credit risks? With 1,000 labelled
+    applications, that can be answered.
+
+    It is answered about the POLICY, which is authored, not fitted. A policy
+    written by hand that separates good from bad risks at all is doing
+    something; one that does not is worth knowing about too, and is reported
+    either way.
+    """
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT))
+    from data.load import FEATURES, load_cases
+
+    cases, outcomes, prov = load_cases(root=ROOT / "data")
+
+    led = DecisionLedger()
+    for cid, x in cases:
+        led.decide(cid, x, REAL_POLICY_V1, context={"channel": "branch"})
+
+    # Does the policy's decision correspond to the recorded outcome?
+    tp = fp = tn = fn = 0
+    for r in led.records:
+        bad = outcomes[r.case_id] == "bad"
+        if r.action == "decline":
+            tp, fp = tp + int(bad), fp + int(not bad)
+        else:
+            fn, tn = fn + int(bad), tn + int(not bad)
+    declined = tp + fp
+    approved = tn + fn
+    outcome_check = {
+        "declined": declined, "approved": approved,
+        "bad_rate_overall": prov["bad_rate"],
+        "bad_rate_among_declined": round(tp / declined, 4) if declined else None,
+        "bad_rate_among_approved": round(fn / approved, 4) if approved else None,
+        "lift": round((tp / declined) / prov["bad_rate"], 3)
+                if declined and prov["bad_rate"] else None,
+        "note": "the policy is authored, not fitted to this data, so a lift "
+                "near 1.0 would mean it separates nothing -- which is a "
+                "finding about the policy, not a failure of the audit trail",
+    }
+
+    declined_records = [r for r in led.records if r.action == "decline"]
+    if not declined_records:
+        raise RuntimeError("the policy declined nobody; nothing to attribute")
+    case = max(declined_records,
+               key=lambda r: abs(r.inputs["installment_rate"]
+                                 - REAL_BASELINE["installment_rate"])
+               * abs(r.inputs["credit_amount_k"]
+                     - REAL_BASELINE["credit_amount_k"]))
+
+    occ = occlusion(REAL_POLICY_V1, case.inputs, REAL_BASELINE)
+    sh = shapley(REAL_POLICY_V1, case.inputs, REAL_BASELINE)
+    disagreement = {k: round(occ[k] - sh["values"][k], 6) for k in sh["values"]}
+    eff = check_efficiency(REAL_POLICY_V1, case.inputs, REAL_BASELINE, sh["values"])
+
+    cfs = []
+    for k, v in [("installment_rate", 1.0), ("delinquencies", 0.0),
+                 ("credit_amount_k", 1.0), ("employment_years", 10.0),
+                 ("age", 55.0)]:
+        cfs.append({"feature": k, "to": v,
+                    **led.counterfactual(case.seq, {k: v})})
+
+    # The same versioning comparison, on real applications.
+    led2 = DecisionLedger()
+    for cid, x in cases:
+        led2.decide(cid, x, REAL_POLICY_V2, context={"channel": "branch"})
+    changed = sum(1 for a, b in zip(led.records, led2.records)
+                  if a.action != b.action)
+
+    results = {
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "is_synthetic": False,
+        "data_source": "Statlog German Credit Data (UCI); see data/MANIFEST.json "
+                       "for the URL, hash and retrieval time",
+        "policy_is_authored_not_fitted": True,
+        "features_used": list(FEATURES),
+        "features_dropped": prov["features_dropped"],
+        "dropped_because": prov["dropped_because"],
+        "provenance": prov,
+        "ledger": led.stats(),
+        "replay": led.replay_all(),
+        "tamper": tamper_demo(led),
+        "versioning": {"policy": "credit-approval-de", "from": "1.0", "to": "2.0",
+                       "decisions_changed": changed,
+                       "share_changed": round(changed / len(cases), 4)},
+        "outcome_check": outcome_check,
+        "case": {"case_id": case.case_id, "seq": case.seq,
+                 "action": case.action, "score": round(case.score, 5),
+                 "inputs": {k: round(v, 4) for k, v in case.inputs.items()}},
+        "occlusion": occ,
+        "shapley": sh,
+        "attribution_disagreement": disagreement,
+        "max_disagreement": round(max(abs(v) for v in disagreement.values()), 6),
+        "efficiency": eff,
+        "counterfactuals": cfs,
+        "n_flipping_features": sum(1 for c in cfs if c["changed"]),
+    }
+    (ROOT / "results").mkdir(exist_ok=True)
+    (ROOT / "results" / "latest-real.json").write_text(
+        json.dumps(results, indent=2) + "\n", encoding="utf8")
+    return results
+
+
+def main_real() -> int:
+    from data.datakit import FetchError
+    try:
+        r = run_real()
+    except FetchError as exc:
+        print(f"cannot run on real data: {exc}", file=sys.stderr)
+        return 2
+    pv, oc = r["provenance"], r["outcome_check"]
+    print(f"source: {r['data_source']}")
+    print(f"{pv['n_cases']} applications, {pv['n_bad_risk']} bad risks "
+          f"({pv['bad_rate']:.1%})  [{pv['sha256']}]")
+    print(f"features used: {', '.join(r['features_used'])}")
+    print(f"features dropped: {', '.join(r['features_dropped'])} -- "
+          f"{r['dropped_because'][:90]}...")
+
+    led = r["ledger"]
+    rp = r["replay"]
+    exact = rp["reproduced"] == rp["n"]
+    print(f"\nledger: {led['n_decisions']} decisions, "
+          f"{rp['reproduced']}/{rp['n']} replayed exactly"
+          f"{'' if exact else ' -- MISMATCH'}")
+    print(f"tamper detected: {r['tamper']['detected']}")
+    v = r["versioning"]
+    print(f"policy {v['from']} -> {v['to']}: {v['decisions_changed']} of "
+          f"{led['n_decisions']} decisions change ({v['share_changed']:.1%})")
+
+    print(f"\ndeclined {oc['declined']}, approved {oc['approved']}")
+    if oc["bad_rate_among_declined"] is not None:
+        print(f"  bad-risk rate among declined: {oc['bad_rate_among_declined']:.1%}")
+        print(f"  bad-risk rate among approved: {oc['bad_rate_among_approved']:.1%}")
+        print(f"  lift over the base rate:       {oc['lift']}x")
+    print(f"  {oc['note']}")
+
+    c = r["case"]
+    print(f"\nattribution on declined case {c['case_id']} (score {c['score']:+.4f}):")
+    for k in sorted(r["shapley"]["values"]):
+        print(f"  {k:<20} occlusion {r['occlusion'][k]:+.4f}   "
+              f"shapley {r['shapley']['values'][k]:+.4f}   "
+              f"diff {r['attribution_disagreement'][k]:+.4f}")
+    eff = r["efficiency"]
+    print(f"  efficiency: values sum to {eff['sum_of_values']:+.6f} against a "
+          f"score difference of {eff['score_difference']:+.6f} "
+          f"(residual {eff['residual']:+.2e}, "
+          f"{'efficient' if eff['efficient'] else 'NOT EFFICIENT'})")
+    print(f"\ncounterfactuals that flip the decision: {r['n_flipping_features']} "
+          f"of {len(r['counterfactuals'])}")
+    for cf in r["counterfactuals"]:
+        if cf["changed"]:
+            print(f"  {cf['feature']} -> {cf['to']}")
+    print("\nwrote results/latest-real.json")
+    return 0
+
+
 def main() -> int:
+    if "--real" in sys.argv[1:]:
+        return main_real()
     r = run()
     L, rp, t = r["ledger"], r["replay"], r["tamper"]
     print(f"ledger: {L['n_decisions']} decisions, chain intact {L['chain_intact']}")

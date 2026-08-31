@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T19:00:04+00:00",
+  "generated_at": "2026-08-31T21:57:56+00:00",
   "is_synthetic": true,
   "data_source": "synthetic credit applications (src/demo.py)",
   "ledger": {
@@ -23,6 +23,7 @@
     "intact_before": true,
     "detected": true,
     "detected_at": 3,
+    "field_edited": "dti",
     "intact_after_restore": true
   },
   "versioning": {

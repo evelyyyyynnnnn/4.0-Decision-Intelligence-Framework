@@ -1,8 +1,7 @@
 {
-  "generated_at": "2026-08-31T19:06:07+00:00",
+  "generated_at": "2026-08-31T21:58:01+00:00",
   "is_synthetic": true,
   "data_source": "ICU early-warning model (repo 2.0)",
-  "linked_to_repo_2": true,
   "n_observations": 7364,
   "event_rate": 0.1319,
   "n_operating_points": 60,
@@ -1236,5 +1235,6 @@
         "benefit_capture": 0.1645
       }
     }
-  }
+  },
+  "linked_to_repo_2": true
 }
