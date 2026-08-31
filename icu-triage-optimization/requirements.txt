@@ -1,0 +1,4 @@
+numpy>=1.24
+pytest>=7.0
+# scikit-learn only when linking to the ICU models in repo 2.0
+scikit-learn>=1.3

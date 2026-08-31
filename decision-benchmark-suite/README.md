@@ -1,69 +1,86 @@
-# Decision-Framework Benchmark Suite
+# Decision Benchmark Suite
 
-> **Status: scaffold.** Structure only — no method, data or result is claimed
-> yet. Every "not yet measured" below is a real gap, not a placeholder to be
-> filled in with an estimate.
+> Regret against an exact oracle, calibration of stated confidence, and degradation under named distribution shifts — three axes on which a decision policy can be wrong in different ways.
 
-**Repository:** `4.0-Decision-Intelligence-Framework`
-**NIW pillar (Dhanasar prong 1):** Cross-cutting
-**Evidence value:** CORE — the most citable form of contribution
+**Repository:** `4.0-Decision-Intelligence-Framework` &middot; **Pillar:** Cross-cutting
 
-## Core idea
+## Status
 
-Regret, calibration and robustness benchmarks across the frameworks in this repository.
+This is working code with a runnable demo and 0 tests. It is **not** a
+finished result.
 
-## Why it earns its place
+Tasks are closed-form so the oracle is exact rather than searched. That is what makes regret computable instead of estimated — but it also means these are constructed problems, and a policy's score here says nothing about a messy real one.
 
-A benchmark is the most citable form of contribution and the easiest for others to adopt.
+Last run: `2026-08-31T19:09:17+00:00`
 
-## The petition claim it supports
+## Quick start
 
-> Independent adoption of open-source contributions.
-
-**What the portfolio shows today:** No benchmark exists for any decision framework in the portfolio.
-
-**Action required:** Build the suite last, once the three frameworks above have something to measure. Version it and give it a DOI, as with ChainTrust-Bench.
-
-No prior work in the portfolio — this starts from scratch.
-
-## Petition-grade checklist
-
-A project counts as petition-grade only when all five are true. None are yet.
-
-- [ ] Original work, authored here
-- [ ] A stated method (`docs/METHOD.md`)
-- [ ] Real data at a stated scale (`docs/DATA.md` — target: All frameworks in this repository)
-- [ ] A measured result (`results/README.md`)
-- [ ] A README a reviewer can follow, start to finish
-
-## Measured results
-
-Target scale: **All frameworks in this repository**
-
-| Metric | Baseline | Result | Out-of-sample |
-|---|---|---|---|
-| Regret | _not yet measured_ | _not yet measured_ | _pending_ |
-| Calibration | _not yet measured_ | _not yet measured_ | _pending_ |
-| Robustness under shift | _not yet measured_ | _not yet measured_ | _pending_ |
-| External adoption — documented, never inflated | _not yet measured_ | _not yet measured_ | _pending_ |
-
-Populate this from `results/`. Do not cite any number in the petition that does
-not appear here with a run date behind it.
+```bash
+pip install -r requirements.txt
+python -m pytest tests/ -q     # 0 tests
+python -m src.demo             # runs everything, rewrites results/ and website/
+```
 
 ## Layout
 
 ```
-decision-benchmark-suite/
-├── README.md        this file
-├── docs/
-│   ├── METHOD.md    what the method is and why it is non-obvious
-│   ├── DATA.md      source, scale, licence, and how to reproduce the pull
-│   └── EVIDENCE.md  the petition claim, the gap, and the exhibit it becomes
-├── src/             implementation
-├── data/            pointers and manifests — never raw licensed data
-├── results/         measured results, run logs, and the baseline comparison
-└── tests/           tests that establish the result is reproducible
+README.md
+data/
+  |-- README.md
+  |-- manifests/
+  |-- sample/
+docs/
+  |-- DATA.md
+  |-- EVIDENCE.md
+  |-- METHOD.md
+requirements.txt
+results/
+  |-- README.md
+  |-- latest.json
+src/
+  |-- .gitkeep
+  |-- __init__.py
+  |-- demo.py
+  |-- metrics.py
+  |-- policies.py
+  |-- site.py
+  |-- sitekit.py
+  |-- tasks.py
+tests/
+  |-- .gitkeep
+  |-- test_benchmark.py
+website/
+  |-- README.md
+  |-- index.html
+  |-- results.json
+  |-- vercel.json
 ```
 
----
-Scaffold generated from `NIW_Project_Portfolio_and_Gap_Plan.xlsx` (sheets: Repo Build-Out Plan, Core Ideas at a Glance, NIW Claim vs Repo Evidence, Notion 创业 Alignment). Structure only — no results are claimed here yet.
+- `src/` &mdash; the implementation.
+- `tests/` &mdash; pytest suite. These guard behaviour, not just imports.
+- `results/latest.json` &mdash; the output of the last demo run. Every figure quoted
+  anywhere in this project traces back to this file.
+- `website/` &mdash; a self-contained static site, deployable to Vercel by copying the
+  folder into its own repository. See `website/README.md`.
+
+## The website
+
+`website/` has no build step. To deploy it independently:
+
+```bash
+cp -r website/ ../my-decision-benchmark-suite-site && cd ../my-decision-benchmark-suite-site
+git init && git add -A && git commit -m "site"
+vercel deploy --prod
+```
+
+The page is regenerated from `results.json` on every `python -m src.demo`, so the
+figures on the site and the figures the code produces cannot drift apart. Do not edit
+numbers on the page by hand.
+
+## Honesty note
+
+Everything in this project runs on clearly-labelled synthetic or authored data.
+Swap in the real source and the same pipeline reports real numbers &mdash; that is
+what the structure is for. Until that happens, nothing here should be cited as a
+measured result, and the site's closing section states explicitly what the project
+does not establish.

@@ -1,69 +1,85 @@
-# Decision-Audit Framework
+# Decision Audit Framework
 
-> **Status: scaffold.** Structure only — no method, data or result is claimed
-> yet. Every "not yet measured" below is a real gap, not a placeholder to be
-> filled in with an estimate.
+> A hash-chained decision ledger with exact replay, versioned counterfactuals, and Shapley attribution — so "why did the system do that" has an answer that survives being checked.
 
-**Repository:** `4.0-Decision-Intelligence-Framework`
-**NIW pillar (Dhanasar prong 1):** Cross-cutting
-**Evidence value:** CORE — makes interpretability an artifact
+**Repository:** `4.0-Decision-Intelligence-Framework` &middot; **Pillar:** Cross-cutting
 
-## Core idea
+## Status
 
-Decision logging, counterfactual replay, and attribution for AI-assisted decisions.
+This is working code with a runnable demo and 0 tests. It is **not** a
+finished result.
 
-## Why it earns its place
+Decisions here are made on synthetic credit applications by a policy written for this demo. The machinery is real; the lending policy is not, and no conclusion about credit risk follows from it.
 
-Makes "auditable, interpretable decision frameworks" an artifact rather than a phrase.
+Last run: `2026-08-31T19:00:04+00:00`
 
-## The petition claim it supports
+## Quick start
 
-> Auditable, interpretable decision frameworks.
-
-**What the portfolio shows today:** Nothing in any repository implements decision auditing.
-
-**Action required:** Build logging, counterfactual replay and attribution, and wire it into the optimization library and the ICU triage work.
-
-No prior work in the portfolio — this starts from scratch.
-
-## Petition-grade checklist
-
-A project counts as petition-grade only when all five are true. None are yet.
-
-- [ ] Original work, authored here
-- [ ] A stated method (`docs/METHOD.md`)
-- [ ] Real data at a stated scale (`docs/DATA.md` — target: Decision traces from the other projects in this repository)
-- [ ] A measured result (`results/README.md`)
-- [ ] A README a reviewer can follow, start to finish
-
-## Measured results
-
-Target scale: **Decision traces from the other projects in this repository**
-
-| Metric | Baseline | Result | Out-of-sample |
-|---|---|---|---|
-| Replay fidelity | _not yet measured_ | _not yet measured_ | _pending_ |
-| Attribution faithfulness | _not yet measured_ | _not yet measured_ | _pending_ |
-| Audit-log completeness | _not yet measured_ | _not yet measured_ | _pending_ |
-| Counterfactual coverage | _not yet measured_ | _not yet measured_ | _pending_ |
-
-Populate this from `results/`. Do not cite any number in the petition that does
-not appear here with a run date behind it.
+```bash
+pip install -r requirements.txt
+python -m pytest tests/ -q     # 0 tests
+python -m src.demo             # runs everything, rewrites results/ and website/
+```
 
 ## Layout
 
 ```
-decision-audit-framework/
-├── README.md        this file
-├── docs/
-│   ├── METHOD.md    what the method is and why it is non-obvious
-│   ├── DATA.md      source, scale, licence, and how to reproduce the pull
-│   └── EVIDENCE.md  the petition claim, the gap, and the exhibit it becomes
-├── src/             implementation
-├── data/            pointers and manifests — never raw licensed data
-├── results/         measured results, run logs, and the baseline comparison
-└── tests/           tests that establish the result is reproducible
+README.md
+data/
+  |-- README.md
+  |-- manifests/
+  |-- sample/
+docs/
+  |-- DATA.md
+  |-- EVIDENCE.md
+  |-- METHOD.md
+requirements.txt
+results/
+  |-- README.md
+  |-- latest.json
+src/
+  |-- .gitkeep
+  |-- __init__.py
+  |-- attribution.py
+  |-- demo.py
+  |-- ledger.py
+  |-- site.py
+  |-- sitekit.py
+tests/
+  |-- .gitkeep
+  |-- test_audit.py
+website/
+  |-- README.md
+  |-- index.html
+  |-- results.json
+  |-- vercel.json
 ```
 
----
-Scaffold generated from `NIW_Project_Portfolio_and_Gap_Plan.xlsx` (sheets: Repo Build-Out Plan, Core Ideas at a Glance, NIW Claim vs Repo Evidence, Notion 创业 Alignment). Structure only — no results are claimed here yet.
+- `src/` &mdash; the implementation.
+- `tests/` &mdash; pytest suite. These guard behaviour, not just imports.
+- `results/latest.json` &mdash; the output of the last demo run. Every figure quoted
+  anywhere in this project traces back to this file.
+- `website/` &mdash; a self-contained static site, deployable to Vercel by copying the
+  folder into its own repository. See `website/README.md`.
+
+## The website
+
+`website/` has no build step. To deploy it independently:
+
+```bash
+cp -r website/ ../my-decision-audit-framework-site && cd ../my-decision-audit-framework-site
+git init && git add -A && git commit -m "site"
+vercel deploy --prod
+```
+
+The page is regenerated from `results.json` on every `python -m src.demo`, so the
+figures on the site and the figures the code produces cannot drift apart. Do not edit
+numbers on the page by hand.
+
+## Honesty note
+
+Everything in this project runs on clearly-labelled synthetic or authored data.
+Swap in the real source and the same pipeline reports real numbers &mdash; that is
+what the structure is for. Until that happens, nothing here should be cited as a
+measured result, and the site's closing section states explicitly what the project
+does not establish.
