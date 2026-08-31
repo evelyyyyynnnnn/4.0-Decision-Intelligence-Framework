@@ -1,0 +1,388 @@
+{
+  "generated_at": "2026-08-31T18:56:48+00:00",
+  "is_synthetic": true,
+  "data_source": "synthetic scenario samples (src/problems.py)",
+  "portfolio": {
+    "n_assets": 8,
+    "n_train": 600,
+    "n_test": 4000,
+    "alpha": 0.9,
+    "weights": {
+      "equal weight": [
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125,
+        0.125
+      ],
+      "deterministic (mean only)": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "SAA mean-variance": [
+        0.0,
+        0.0,
+        0.0,
+        0.1483,
+        0.0,
+        0.6655,
+        0.0,
+        0.1861
+      ],
+      "CVaR-90": [
+        0.0,
+        0.0,
+        0.0,
+        0.2945,
+        0.0,
+        0.35,
+        0.0055,
+        0.35
+      ],
+      "robust (box)": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.8717,
+        0.0,
+        0.1283
+      ]
+    },
+    "concentration": {
+      "equal weight": 0.125,
+      "deterministic (mean only)": 1.0,
+      "SAA mean-variance": 0.4996,
+      "CVaR-90": 0.3318,
+      "robust (box)": 0.7763
+    },
+    "in_sample": {
+      "equal weight": {
+        "mean": -0.039039,
+        "std": 0.170692,
+        "var": 0.13611,
+        "cvar": 0.321447,
+        "worst": 0.779305,
+        "p05_best": -0.261076
+      },
+      "deterministic (mean only)": {
+        "mean": -0.075427,
+        "std": 0.134402,
+        "var": 0.085171,
+        "cvar": 0.203573,
+        "worst": 0.500377,
+        "p05_best": -0.264985
+      },
+      "SAA mean-variance": {
+        "mean": -0.061307,
+        "std": 0.123852,
+        "var": 0.075758,
+        "cvar": 0.209717,
+        "worst": 0.554454,
+        "p05_best": -0.2182
+      },
+      "CVaR-90": {
+        "mean": -0.047563,
+        "std": 0.124867,
+        "var": 0.093918,
+        "cvar": 0.22838,
+        "worst": 0.603657,
+        "p05_best": -0.202048
+      },
+      "robust (box)": {
+        "mean": -0.073088,
+        "std": 0.129948,
+        "var": 0.076358,
+        "cvar": 0.20322,
+        "worst": 0.532079,
+        "p05_best": -0.252033
+      }
+    },
+    "out_of_sample": {
+      "equal weight": {
+        "mean": -0.043458,
+        "std": 0.171315,
+        "var": 0.126893,
+        "cvar": 0.332458,
+        "worst": 1.137356,
+        "p05_best": -0.257601
+      },
+      "deterministic (mean only)": {
+        "mean": -0.039689,
+        "std": 0.214454,
+        "var": 0.22484,
+        "cvar": 0.389887,
+        "worst": 1.247734,
+        "p05_best": -0.354464
+      },
+      "SAA mean-variance": {
+        "mean": -0.044818,
+        "std": 0.183817,
+        "var": 0.166992,
+        "cvar": 0.342382,
+        "worst": 1.099684,
+        "p05_best": -0.302047
+      },
+      "CVaR-90": {
+        "mean": -0.049761,
+        "std": 0.168687,
+        "var": 0.131822,
+        "cvar": 0.315405,
+        "worst": 0.995715,
+        "p05_best": -0.276084
+      },
+      "robust (box)": {
+        "mean": -0.039741,
+        "std": 0.202214,
+        "var": 0.202247,
+        "cvar": 0.373063,
+        "worst": 1.198325,
+        "p05_best": -0.334161
+      }
+    },
+    "regret": {
+      "equal weight": {
+        "mean_regret": 0.064599,
+        "max_regret": 0.536571,
+        "frac_best": 0.3315
+      },
+      "deterministic (mean only)": {
+        "mean_regret": 0.068368,
+        "max_regret": 0.513303,
+        "frac_best": 0.3573
+      },
+      "SAA mean-variance": {
+        "mean_regret": 0.063239,
+        "max_regret": 0.357626,
+        "frac_best": 0.0
+      },
+      "CVaR-90": {
+        "mean_regret": 0.058296,
+        "max_regret": 0.362399,
+        "frac_best": 0.2575
+      },
+      "robust (box)": {
+        "mean_regret": 0.068316,
+        "max_regret": 0.433364,
+        "frac_best": 0.0537
+      }
+    }
+  },
+  "staffing": {
+    "n_units": 6,
+    "budget": 247.61,
+    "alpha": 0.9,
+    "unmet_penalty": 6.0,
+    "plans": {
+      "deterministic (mean demand)": [
+        40.66,
+        56.5,
+        24.93,
+        56.79,
+        32.97,
+        35.76
+      ],
+      "SAA expected cost": [
+        42.58,
+        55.81,
+        24.94,
+        52.95,
+        34.05,
+        37.29
+      ],
+      "CVaR-90": [
+        39.56,
+        54.72,
+        24.16,
+        62.63,
+        32.6,
+        33.94
+      ]
+    },
+    "in_sample": {
+      "deterministic (mean demand)": {
+        "mean": 135.670382,
+        "std": 191.99603,
+        "var": 197.132025,
+        "cvar": 583.054872,
+        "worst": 2013.328578,
+        "p05_best": 52.306015
+      },
+      "SAA expected cost": {
+        "mean": 134.61976,
+        "std": 193.135669,
+        "var": 197.463361,
+        "cvar": 587.727407,
+        "worst": 2013.328578,
+        "p05_best": 52.229757
+      },
+      "CVaR-90": {
+        "mean": 138.762158,
+        "std": 190.788554,
+        "var": 203.344314,
+        "cvar": 579.868715,
+        "worst": 2013.328578,
+        "p05_best": 56.762587
+      }
+    },
+    "out_of_sample": {
+      "deterministic (mean demand)": {
+        "mean": 160.71839,
+        "std": 154.773541,
+        "var": 257.071752,
+        "cvar": 534.403225,
+        "worst": 1777.866676,
+        "p05_best": 78.031319
+      },
+      "SAA expected cost": {
+        "mean": 153.607778,
+        "std": 151.492214,
+        "var": 239.603819,
+        "cvar": 516.703199,
+        "worst": 1777.866676,
+        "p05_best": 75.323726
+      },
+      "CVaR-90": {
+        "mean": 168.271871,
+        "std": 159.572358,
+        "var": 274.275322,
+        "cvar": 556.310743,
+        "worst": 1777.866676,
+        "p05_best": 81.400946
+      }
+    },
+    "service": {
+      "deterministic (mean demand)": {
+        "unmet_rate": 0.1856,
+        "mean_unmet": 13.0462,
+        "p95_unmet": 74.2357,
+        "shifts_fully_covered": 0.366
+      },
+      "SAA expected cost": {
+        "unmet_rate": 0.1714,
+        "mean_unmet": 12.0304,
+        "p95_unmet": 70.6269,
+        "shifts_fully_covered": 0.419
+      },
+      "CVaR-90": {
+        "unmet_rate": 0.2034,
+        "mean_unmet": 14.1253,
+        "p95_unmet": 78.5807,
+        "shifts_fully_covered": 0.3165
+      }
+    },
+    "regret": {
+      "deterministic (mean demand)": {
+        "mean_regret": 7.314193,
+        "max_regret": 36.692687,
+        "frac_best": 0.3802
+      },
+      "SAA expected cost": {
+        "mean_regret": 0.203581,
+        "max_regret": 63.568287,
+        "frac_best": 0.9868
+      },
+      "CVaR-90": {
+        "mean_regret": 14.867674,
+        "max_regret": 67.72627,
+        "frac_best": 0.3337
+      }
+    },
+    "surge_is_common": 0.4718
+  },
+  "optimism": [
+    {
+      "method": "deterministic (mean only)",
+      "in_sample_cvar": 0.203573,
+      "out_of_sample_cvar": 0.389887,
+      "optimism": 0.186314
+    },
+    {
+      "method": "robust (box)",
+      "in_sample_cvar": 0.20322,
+      "out_of_sample_cvar": 0.373063,
+      "optimism": 0.169843
+    },
+    {
+      "method": "SAA mean-variance",
+      "in_sample_cvar": 0.209717,
+      "out_of_sample_cvar": 0.342382,
+      "optimism": 0.132665
+    },
+    {
+      "method": "CVaR-90",
+      "in_sample_cvar": 0.22838,
+      "out_of_sample_cvar": 0.315405,
+      "optimism": 0.087025
+    },
+    {
+      "method": "equal weight",
+      "in_sample_cvar": 0.321447,
+      "out_of_sample_cvar": 0.332458,
+      "optimism": 0.011011
+    }
+  ],
+  "scenario_sweep": {
+    "rows": [
+      {
+        "n_train": 200,
+        "tail_scenarios": 19,
+        "cvar_method_oos_cvar": 0.32144,
+        "saa_method_oos_cvar": 0.389193,
+        "gap": -0.067753,
+        "cvar_concentration": 0.3054
+      },
+      {
+        "n_train": 400,
+        "tail_scenarios": 39,
+        "cvar_method_oos_cvar": 0.337596,
+        "saa_method_oos_cvar": 0.375751,
+        "gap": -0.038155,
+        "cvar_concentration": 0.2906
+      },
+      {
+        "n_train": 800,
+        "tail_scenarios": 79,
+        "cvar_method_oos_cvar": 0.346844,
+        "saa_method_oos_cvar": 0.391079,
+        "gap": -0.044235,
+        "cvar_concentration": 0.2924
+      },
+      {
+        "n_train": 1600,
+        "tail_scenarios": 159,
+        "cvar_method_oos_cvar": 0.329531,
+        "saa_method_oos_cvar": 0.398515,
+        "gap": -0.068984,
+        "cvar_concentration": 0.2993
+      },
+      {
+        "n_train": 3200,
+        "tail_scenarios": 319,
+        "cvar_method_oos_cvar": 0.331609,
+        "saa_method_oos_cvar": 0.392337,
+        "gap": -0.060728,
+        "cvar_concentration": 0.2958
+      },
+      {
+        "n_train": 6400,
+        "tail_scenarios": 639,
+        "cvar_method_oos_cvar": 0.338644,
+        "saa_method_oos_cvar": 0.384794,
+        "gap": -0.04615,
+        "cvar_concentration": 0.2902
+      }
+    ],
+    "gap_narrows": false
+  }
+}

@@ -1,0 +1,1240 @@
+{
+  "generated_at": "2026-08-31T19:06:07+00:00",
+  "is_synthetic": true,
+  "data_source": "ICU early-warning model (repo 2.0)",
+  "linked_to_repo_2": true,
+  "n_observations": 7364,
+  "event_rate": 0.1319,
+  "n_operating_points": 60,
+  "frontier": [
+    {
+      "threshold": 0.00487,
+      "sensitivity": 1.0,
+      "false_alerts_per_100": 86.706,
+      "alerts_per_100": 99.891,
+      "ppv": 0.132,
+      "missed": 0,
+      "nurse_load": 3.996
+    },
+    {
+      "threshold": 0.01312,
+      "sensitivity": 0.9949,
+      "false_alerts_per_100": 85.09,
+      "alerts_per_100": 98.207,
+      "ppv": 0.1336,
+      "missed": 5,
+      "nurse_load": 3.928
+    },
+    {
+      "threshold": 0.01805,
+      "sensitivity": 0.9866,
+      "false_alerts_per_100": 83.501,
+      "alerts_per_100": 96.51,
+      "ppv": 0.1348,
+      "missed": 13,
+      "nurse_load": 3.86
+    },
+    {
+      "threshold": 0.02231,
+      "sensitivity": 0.966,
+      "false_alerts_per_100": 82.075,
+      "alerts_per_100": 94.813,
+      "ppv": 0.1343,
+      "missed": 33,
+      "nurse_load": 3.793
+    },
+    {
+      "threshold": 0.02607,
+      "sensitivity": 0.9578,
+      "false_alerts_per_100": 80.5,
+      "alerts_per_100": 93.129,
+      "ppv": 0.1356,
+      "missed": 41,
+      "nurse_load": 3.725
+    },
+    {
+      "threshold": 0.02937,
+      "sensitivity": 0.9537,
+      "false_alerts_per_100": 78.857,
+      "alerts_per_100": 91.431,
+      "ppv": 0.1375,
+      "missed": 45,
+      "nurse_load": 3.657
+    },
+    {
+      "threshold": 0.03209,
+      "sensitivity": 0.9475,
+      "false_alerts_per_100": 77.254,
+      "alerts_per_100": 89.747,
+      "ppv": 0.1392,
+      "missed": 51,
+      "nurse_load": 3.59
+    },
+    {
+      "threshold": 0.03472,
+      "sensitivity": 0.9413,
+      "false_alerts_per_100": 75.638,
+      "alerts_per_100": 88.05,
+      "ppv": 0.141,
+      "missed": 57,
+      "nurse_load": 3.522
+    },
+    {
+      "threshold": 0.03709,
+      "sensitivity": 0.9361,
+      "false_alerts_per_100": 74.022,
+      "alerts_per_100": 86.366,
+      "ppv": 0.1429,
+      "missed": 62,
+      "nurse_load": 3.455
+    },
+    {
+      "threshold": 0.03978,
+      "sensitivity": 0.931,
+      "false_alerts_per_100": 72.393,
+      "alerts_per_100": 84.669,
+      "ppv": 0.145,
+      "missed": 67,
+      "nurse_load": 3.387
+    },
+    {
+      "threshold": 0.04205,
+      "sensitivity": 0.9289,
+      "false_alerts_per_100": 70.736,
+      "alerts_per_100": 82.985,
+      "ppv": 0.1476,
+      "missed": 69,
+      "nurse_load": 3.319
+    },
+    {
+      "threshold": 0.04436,
+      "sensitivity": 0.9238,
+      "false_alerts_per_100": 69.106,
+      "alerts_per_100": 81.287,
+      "ppv": 0.1498,
+      "missed": 74,
+      "nurse_load": 3.251
+    },
+    {
+      "threshold": 0.04711,
+      "sensitivity": 0.9197,
+      "false_alerts_per_100": 67.477,
+      "alerts_per_100": 79.603,
+      "ppv": 0.1523,
+      "missed": 78,
+      "nurse_load": 3.184
+    },
+    {
+      "threshold": 0.04937,
+      "sensitivity": 0.9145,
+      "false_alerts_per_100": 65.847,
+      "alerts_per_100": 77.906,
+      "ppv": 0.1548,
+      "missed": 83,
+      "nurse_load": 3.116
+    },
+    {
+      "threshold": 0.05236,
+      "sensitivity": 0.9073,
+      "false_alerts_per_100": 64.245,
+      "alerts_per_100": 76.209,
+      "ppv": 0.157,
+      "missed": 90,
+      "nurse_load": 3.048
+    },
+    {
+      "threshold": 0.05521,
+      "sensitivity": 0.9011,
+      "false_alerts_per_100": 62.643,
+      "alerts_per_100": 74.525,
+      "ppv": 0.1594,
+      "missed": 96,
+      "nurse_load": 2.981
+    },
+    {
+      "threshold": 0.05762,
+      "sensitivity": 0.896,
+      "false_alerts_per_100": 61.013,
+      "alerts_per_100": 72.827,
+      "ppv": 0.1622,
+      "missed": 101,
+      "nurse_load": 2.913
+    },
+    {
+      "threshold": 0.06051,
+      "sensitivity": 0.8857,
+      "false_alerts_per_100": 59.465,
+      "alerts_per_100": 71.143,
+      "ppv": 0.1642,
+      "missed": 111,
+      "nurse_load": 2.846
+    },
+    {
+      "threshold": 0.06348,
+      "sensitivity": 0.8785,
+      "false_alerts_per_100": 57.863,
+      "alerts_per_100": 69.446,
+      "ppv": 0.1668,
+      "missed": 118,
+      "nurse_load": 2.778
+    },
+    {
+      "threshold": 0.06653,
+      "sensitivity": 0.8651,
+      "false_alerts_per_100": 56.355,
+      "alerts_per_100": 67.762,
+      "ppv": 0.1683,
+      "missed": 131,
+      "nurse_load": 2.71
+    },
+    {
+      "threshold": 0.06971,
+      "sensitivity": 0.8599,
+      "false_alerts_per_100": 54.726,
+      "alerts_per_100": 66.065,
+      "ppv": 0.1716,
+      "missed": 136,
+      "nurse_load": 2.643
+    },
+    {
+      "threshold": 0.07311,
+      "sensitivity": 0.8476,
+      "false_alerts_per_100": 53.205,
+      "alerts_per_100": 64.381,
+      "ppv": 0.1736,
+      "missed": 148,
+      "nurse_load": 2.575
+    },
+    {
+      "threshold": 0.07615,
+      "sensitivity": 0.8352,
+      "false_alerts_per_100": 51.67,
+      "alerts_per_100": 62.683,
+      "ppv": 0.1757,
+      "missed": 160,
+      "nurse_load": 2.507
+    },
+    {
+      "threshold": 0.07923,
+      "sensitivity": 0.8249,
+      "false_alerts_per_100": 50.122,
+      "alerts_per_100": 60.999,
+      "ppv": 0.1783,
+      "missed": 170,
+      "nurse_load": 2.44
+    },
+    {
+      "threshold": 0.0823,
+      "sensitivity": 0.8157,
+      "false_alerts_per_100": 48.547,
+      "alerts_per_100": 59.302,
+      "ppv": 0.1814,
+      "missed": 179,
+      "nurse_load": 2.372
+    },
+    {
+      "threshold": 0.08583,
+      "sensitivity": 0.7992,
+      "false_alerts_per_100": 47.067,
+      "alerts_per_100": 57.605,
+      "ppv": 0.1829,
+      "missed": 195,
+      "nurse_load": 2.304
+    },
+    {
+      "threshold": 0.08879,
+      "sensitivity": 0.7889,
+      "false_alerts_per_100": 45.519,
+      "alerts_per_100": 55.921,
+      "ppv": 0.186,
+      "missed": 205,
+      "nurse_load": 2.237
+    },
+    {
+      "threshold": 0.09272,
+      "sensitivity": 0.7775,
+      "false_alerts_per_100": 43.971,
+      "alerts_per_100": 54.223,
+      "ppv": 0.1891,
+      "missed": 216,
+      "nurse_load": 2.169
+    },
+    {
+      "threshold": 0.09582,
+      "sensitivity": 0.7673,
+      "false_alerts_per_100": 42.423,
+      "alerts_per_100": 52.539,
+      "ppv": 0.1926,
+      "missed": 226,
+      "nurse_load": 2.102
+    },
+    {
+      "threshold": 0.09919,
+      "sensitivity": 0.7518,
+      "false_alerts_per_100": 40.929,
+      "alerts_per_100": 50.842,
+      "ppv": 0.195,
+      "missed": 241,
+      "nurse_load": 2.034
+    },
+    {
+      "threshold": 0.10291,
+      "sensitivity": 0.7374,
+      "false_alerts_per_100": 39.435,
+      "alerts_per_100": 49.158,
+      "ppv": 0.1978,
+      "missed": 255,
+      "nurse_load": 1.966
+    },
+    {
+      "threshold": 0.10635,
+      "sensitivity": 0.7188,
+      "false_alerts_per_100": 37.982,
+      "alerts_per_100": 47.461,
+      "ppv": 0.1997,
+      "missed": 273,
+      "nurse_load": 1.898
+    },
+    {
+      "threshold": 0.11024,
+      "sensitivity": 0.7085,
+      "false_alerts_per_100": 36.434,
+      "alerts_per_100": 45.777,
+      "ppv": 0.2041,
+      "missed": 283,
+      "nurse_load": 1.831
+    },
+    {
+      "threshold": 0.11379,
+      "sensitivity": 0.6993,
+      "false_alerts_per_100": 34.859,
+      "alerts_per_100": 44.079,
+      "ppv": 0.2092,
+      "missed": 292,
+      "nurse_load": 1.763
+    },
+    {
+      "threshold": 0.11849,
+      "sensitivity": 0.689,
+      "false_alerts_per_100": 33.311,
+      "alerts_per_100": 42.395,
+      "ppv": 0.2143,
+      "missed": 302,
+      "nurse_load": 1.696
+    },
+    {
+      "threshold": 0.12205,
+      "sensitivity": 0.6704,
+      "false_alerts_per_100": 31.858,
+      "alerts_per_100": 40.698,
+      "ppv": 0.2172,
+      "missed": 320,
+      "nurse_load": 1.628
+    },
+    {
+      "threshold": 0.12611,
+      "sensitivity": 0.6529,
+      "false_alerts_per_100": 30.391,
+      "alerts_per_100": 39.001,
+      "ppv": 0.2208,
+      "missed": 337,
+      "nurse_load": 1.56
+    },
+    {
+      "threshold": 0.13049,
+      "sensitivity": 0.6395,
+      "false_alerts_per_100": 28.884,
+      "alerts_per_100": 37.317,
+      "ppv": 0.226,
+      "missed": 350,
+      "nurse_load": 1.493
+    },
+    {
+      "threshold": 0.13538,
+      "sensitivity": 0.6262,
+      "false_alerts_per_100": 27.363,
+      "alerts_per_100": 35.619,
+      "ppv": 0.2318,
+      "missed": 363,
+      "nurse_load": 1.425
+    },
+    {
+      "threshold": 0.14012,
+      "sensitivity": 0.6169,
+      "false_alerts_per_100": 25.801,
+      "alerts_per_100": 33.935,
+      "ppv": 0.2397,
+      "missed": 372,
+      "nurse_load": 1.357
+    },
+    {
+      "threshold": 0.14606,
+      "sensitivity": 0.6066,
+      "false_alerts_per_100": 24.24,
+      "alerts_per_100": 32.238,
+      "ppv": 0.2481,
+      "missed": 382,
+      "nurse_load": 1.29
+    },
+    {
+      "threshold": 0.15172,
+      "sensitivity": 0.5922,
+      "false_alerts_per_100": 22.746,
+      "alerts_per_100": 30.554,
+      "ppv": 0.2556,
+      "missed": 396,
+      "nurse_load": 1.222
+    },
+    {
+      "threshold": 0.15763,
+      "sensitivity": 0.5778,
+      "false_alerts_per_100": 21.238,
+      "alerts_per_100": 28.857,
+      "ppv": 0.264,
+      "missed": 410,
+      "nurse_load": 1.154
+    },
+    {
+      "threshold": 0.16307,
+      "sensitivity": 0.5664,
+      "false_alerts_per_100": 19.704,
+      "alerts_per_100": 27.173,
+      "ppv": 0.2749,
+      "missed": 421,
+      "nurse_load": 1.087
+    },
+    {
+      "threshold": 0.16971,
+      "sensitivity": 0.5427,
+      "false_alerts_per_100": 18.319,
+      "alerts_per_100": 25.475,
+      "ppv": 0.2809,
+      "missed": 444,
+      "nurse_load": 1.019
+    },
+    {
+      "threshold": 0.17753,
+      "sensitivity": 0.5273,
+      "false_alerts_per_100": 16.839,
+      "alerts_per_100": 23.791,
+      "ppv": 0.2922,
+      "missed": 459,
+      "nurse_load": 0.952
+    },
+    {
+      "threshold": 0.18615,
+      "sensitivity": 0.5036,
+      "false_alerts_per_100": 15.454,
+      "alerts_per_100": 22.094,
+      "ppv": 0.3006,
+      "missed": 482,
+      "nurse_load": 0.884
+    },
+    {
+      "threshold": 0.19431,
+      "sensitivity": 0.4789,
+      "false_alerts_per_100": 14.082,
+      "alerts_per_100": 20.397,
+      "ppv": 0.3096,
+      "missed": 506,
+      "nurse_load": 0.816
+    },
+    {
+      "threshold": 0.20638,
+      "sensitivity": 0.4521,
+      "false_alerts_per_100": 12.751,
+      "alerts_per_100": 18.713,
+      "ppv": 0.3186,
+      "missed": 532,
+      "nurse_load": 0.749
+    },
+    {
+      "threshold": 0.21908,
+      "sensitivity": 0.4325,
+      "false_alerts_per_100": 11.312,
+      "alerts_per_100": 17.015,
+      "ppv": 0.3352,
+      "missed": 551,
+      "nurse_load": 0.681
+    },
+    {
+      "threshold": 0.23197,
+      "sensitivity": 0.4006,
+      "false_alerts_per_100": 10.049,
+      "alerts_per_100": 15.331,
+      "ppv": 0.3446,
+      "missed": 582,
+      "nurse_load": 0.613
+    },
+    {
+      "threshold": 0.24842,
+      "sensitivity": 0.3666,
+      "false_alerts_per_100": 8.8,
+      "alerts_per_100": 13.634,
+      "ppv": 0.3546,
+      "missed": 615,
+      "nurse_load": 0.545
+    },
+    {
+      "threshold": 0.267,
+      "sensitivity": 0.3306,
+      "false_alerts_per_100": 7.591,
+      "alerts_per_100": 11.95,
+      "ppv": 0.3648,
+      "missed": 650,
+      "nurse_load": 0.478
+    },
+    {
+      "threshold": 0.28821,
+      "sensitivity": 0.2987,
+      "false_alerts_per_100": 6.315,
+      "alerts_per_100": 10.253,
+      "ppv": 0.3841,
+      "missed": 681,
+      "nurse_load": 0.41
+    },
+    {
+      "threshold": 0.3094,
+      "sensitivity": 0.2585,
+      "false_alerts_per_100": 5.16,
+      "alerts_per_100": 8.569,
+      "ppv": 0.3978,
+      "missed": 720,
+      "nurse_load": 0.343
+    },
+    {
+      "threshold": 0.33827,
+      "sensitivity": 0.2163,
+      "false_alerts_per_100": 4.02,
+      "alerts_per_100": 6.871,
+      "ppv": 0.415,
+      "missed": 761,
+      "nurse_load": 0.275
+    },
+    {
+      "threshold": 0.36983,
+      "sensitivity": 0.1792,
+      "false_alerts_per_100": 2.825,
+      "alerts_per_100": 5.187,
+      "ppv": 0.4555,
+      "missed": 797,
+      "nurse_load": 0.207
+    },
+    {
+      "threshold": 0.41385,
+      "sensitivity": 0.1267,
+      "false_alerts_per_100": 1.82,
+      "alerts_per_100": 3.49,
+      "ppv": 0.4786,
+      "missed": 848,
+      "nurse_load": 0.14
+    },
+    {
+      "threshold": 0.48799,
+      "sensitivity": 0.0731,
+      "false_alerts_per_100": 0.828,
+      "alerts_per_100": 1.793,
+      "ppv": 0.5379,
+      "missed": 900,
+      "nurse_load": 0.072
+    },
+    {
+      "threshold": 0.65535,
+      "sensitivity": 0.0031,
+      "false_alerts_per_100": 0.068,
+      "alerts_per_100": 0.109,
+      "ppv": 0.375,
+      "missed": 968,
+      "nurse_load": 0.004
+    }
+  ],
+  "baseline_frontier": [
+    {
+      "threshold": -116.21022,
+      "sensitivity": 1.0,
+      "false_alerts_per_100": 86.706,
+      "alerts_per_100": 99.891,
+      "ppv": 0.132,
+      "missed": 0,
+      "nurse_load": 3.996
+    },
+    {
+      "threshold": -109.1279,
+      "sensitivity": 0.9969,
+      "false_alerts_per_100": 85.062,
+      "alerts_per_100": 98.207,
+      "ppv": 0.1338,
+      "missed": 3,
+      "nurse_load": 3.928
+    },
+    {
+      "threshold": -105.7325,
+      "sensitivity": 0.9907,
+      "false_alerts_per_100": 83.446,
+      "alerts_per_100": 96.51,
+      "ppv": 0.1354,
+      "missed": 9,
+      "nurse_load": 3.86
+    },
+    {
+      "threshold": -102.69499,
+      "sensitivity": 0.9794,
+      "false_alerts_per_100": 81.898,
+      "alerts_per_100": 94.813,
+      "ppv": 0.1362,
+      "missed": 20,
+      "nurse_load": 3.793
+    },
+    {
+      "threshold": -100.36967,
+      "sensitivity": 0.9681,
+      "false_alerts_per_100": 80.364,
+      "alerts_per_100": 93.129,
+      "ppv": 0.1371,
+      "missed": 31,
+      "nurse_load": 3.725
+    },
+    {
+      "threshold": -98.48549,
+      "sensitivity": 0.9588,
+      "false_alerts_per_100": 78.789,
+      "alerts_per_100": 91.431,
+      "ppv": 0.1383,
+      "missed": 40,
+      "nurse_load": 3.657
+    },
+    {
+      "threshold": -96.87392,
+      "sensitivity": 0.9444,
+      "false_alerts_per_100": 77.295,
+      "alerts_per_100": 89.747,
+      "ppv": 0.1388,
+      "missed": 54,
+      "nurse_load": 3.59
+    },
+    {
+      "threshold": -95.37692,
+      "sensitivity": 0.9361,
+      "false_alerts_per_100": 75.706,
+      "alerts_per_100": 88.05,
+      "ppv": 0.1402,
+      "missed": 62,
+      "nurse_load": 3.522
+    },
+    {
+      "threshold": -94.2305,
+      "sensitivity": 0.93,
+      "false_alerts_per_100": 74.104,
+      "alerts_per_100": 86.366,
+      "ppv": 0.142,
+      "missed": 68,
+      "nurse_load": 3.455
+    },
+    {
+      "threshold": -93.17151,
+      "sensitivity": 0.9176,
+      "false_alerts_per_100": 72.569,
+      "alerts_per_100": 84.669,
+      "ppv": 0.1429,
+      "missed": 80,
+      "nurse_load": 3.387
+    },
+    {
+      "threshold": -92.21115,
+      "sensitivity": 0.9104,
+      "false_alerts_per_100": 70.98,
+      "alerts_per_100": 82.985,
+      "ppv": 0.1447,
+      "missed": 87,
+      "nurse_load": 3.319
+    },
+    {
+      "threshold": -91.50092,
+      "sensitivity": 0.898,
+      "false_alerts_per_100": 69.446,
+      "alerts_per_100": 81.287,
+      "ppv": 0.1457,
+      "missed": 99,
+      "nurse_load": 3.251
+    },
+    {
+      "threshold": -90.6937,
+      "sensitivity": 0.8836,
+      "false_alerts_per_100": 67.952,
+      "alerts_per_100": 79.603,
+      "ppv": 0.1464,
+      "missed": 113,
+      "nurse_load": 3.184
+    },
+    {
+      "threshold": -89.99496,
+      "sensitivity": 0.8682,
+      "false_alerts_per_100": 66.458,
+      "alerts_per_100": 77.906,
+      "ppv": 0.1469,
+      "missed": 128,
+      "nurse_load": 3.116
+    },
+    {
+      "threshold": -89.40711,
+      "sensitivity": 0.8538,
+      "false_alerts_per_100": 64.951,
+      "alerts_per_100": 76.209,
+      "ppv": 0.1477,
+      "missed": 142,
+      "nurse_load": 3.048
+    },
+    {
+      "threshold": -88.76473,
+      "sensitivity": 0.8476,
+      "false_alerts_per_100": 63.349,
+      "alerts_per_100": 74.525,
+      "ppv": 0.15,
+      "missed": 148,
+      "nurse_load": 2.981
+    },
+    {
+      "threshold": -88.19063,
+      "sensitivity": 0.8321,
+      "false_alerts_per_100": 61.855,
+      "alerts_per_100": 72.827,
+      "ppv": 0.1507,
+      "missed": 163,
+      "nurse_load": 2.913
+    },
+    {
+      "threshold": -87.588,
+      "sensitivity": 0.8218,
+      "false_alerts_per_100": 60.307,
+      "alerts_per_100": 71.143,
+      "ppv": 0.1523,
+      "missed": 173,
+      "nurse_load": 2.846
+    },
+    {
+      "threshold": -87.02275,
+      "sensitivity": 0.8074,
+      "false_alerts_per_100": 58.8,
+      "alerts_per_100": 69.446,
+      "ppv": 0.1533,
+      "missed": 187,
+      "nurse_load": 2.778
+    },
+    {
+      "threshold": -86.51475,
+      "sensitivity": 0.7981,
+      "false_alerts_per_100": 57.238,
+      "alerts_per_100": 67.762,
+      "ppv": 0.1553,
+      "missed": 196,
+      "nurse_load": 2.71
+    },
+    {
+      "threshold": -85.97208,
+      "sensitivity": 0.7878,
+      "false_alerts_per_100": 55.676,
+      "alerts_per_100": 66.065,
+      "ppv": 0.1572,
+      "missed": 206,
+      "nurse_load": 2.643
+    },
+    {
+      "threshold": -85.44178,
+      "sensitivity": 0.7693,
+      "false_alerts_per_100": 54.237,
+      "alerts_per_100": 64.381,
+      "ppv": 0.1576,
+      "missed": 224,
+      "nurse_load": 2.575
+    },
+    {
+      "threshold": -84.90292,
+      "sensitivity": 0.757,
+      "false_alerts_per_100": 52.702,
+      "alerts_per_100": 62.683,
+      "ppv": 0.1592,
+      "missed": 236,
+      "nurse_load": 2.507
+    },
+    {
+      "threshold": -84.43329,
+      "sensitivity": 0.7446,
+      "false_alerts_per_100": 51.181,
+      "alerts_per_100": 60.999,
+      "ppv": 0.161,
+      "missed": 248,
+      "nurse_load": 2.44
+    },
+    {
+      "threshold": -83.84662,
+      "sensitivity": 0.7281,
+      "false_alerts_per_100": 49.701,
+      "alerts_per_100": 59.302,
+      "ppv": 0.1619,
+      "missed": 264,
+      "nurse_load": 2.372
+    },
+    {
+      "threshold": -83.41372,
+      "sensitivity": 0.7096,
+      "false_alerts_per_100": 48.248,
+      "alerts_per_100": 57.605,
+      "ppv": 0.1624,
+      "missed": 282,
+      "nurse_load": 2.304
+    },
+    {
+      "threshold": -82.8498,
+      "sensitivity": 0.6941,
+      "false_alerts_per_100": 46.768,
+      "alerts_per_100": 55.921,
+      "ppv": 0.1637,
+      "missed": 297,
+      "nurse_load": 2.237
+    },
+    {
+      "threshold": -82.37022,
+      "sensitivity": 0.6797,
+      "false_alerts_per_100": 45.261,
+      "alerts_per_100": 54.223,
+      "ppv": 0.1653,
+      "missed": 311,
+      "nurse_load": 2.169
+    },
+    {
+      "threshold": -81.86616,
+      "sensitivity": 0.6694,
+      "false_alerts_per_100": 43.713,
+      "alerts_per_100": 52.539,
+      "ppv": 0.168,
+      "missed": 321,
+      "nurse_load": 2.102
+    },
+    {
+      "threshold": -81.39923,
+      "sensitivity": 0.6612,
+      "false_alerts_per_100": 42.124,
+      "alerts_per_100": 50.842,
+      "ppv": 0.1715,
+      "missed": 329,
+      "nurse_load": 2.034
+    },
+    {
+      "threshold": -80.89228,
+      "sensitivity": 0.6426,
+      "false_alerts_per_100": 40.684,
+      "alerts_per_100": 49.158,
+      "ppv": 0.1724,
+      "missed": 347,
+      "nurse_load": 1.966
+    },
+    {
+      "threshold": -80.43868,
+      "sensitivity": 0.6272,
+      "false_alerts_per_100": 39.191,
+      "alerts_per_100": 47.461,
+      "ppv": 0.1742,
+      "missed": 362,
+      "nurse_load": 1.898
+    },
+    {
+      "threshold": -80.03702,
+      "sensitivity": 0.6087,
+      "false_alerts_per_100": 37.751,
+      "alerts_per_100": 45.777,
+      "ppv": 0.1753,
+      "missed": 380,
+      "nurse_load": 1.831
+    },
+    {
+      "threshold": -79.54241,
+      "sensitivity": 0.5932,
+      "false_alerts_per_100": 36.257,
+      "alerts_per_100": 44.079,
+      "ppv": 0.1774,
+      "missed": 395,
+      "nurse_load": 1.763
+    },
+    {
+      "threshold": -78.97657,
+      "sensitivity": 0.5808,
+      "false_alerts_per_100": 34.737,
+      "alerts_per_100": 42.395,
+      "ppv": 0.1807,
+      "missed": 407,
+      "nurse_load": 1.696
+    },
+    {
+      "threshold": -78.43127,
+      "sensitivity": 0.5705,
+      "false_alerts_per_100": 33.175,
+      "alerts_per_100": 40.698,
+      "ppv": 0.1849,
+      "missed": 417,
+      "nurse_load": 1.628
+    },
+    {
+      "threshold": -77.8867,
+      "sensitivity": 0.5602,
+      "false_alerts_per_100": 31.613,
+      "alerts_per_100": 39.001,
+      "ppv": 0.1894,
+      "missed": 427,
+      "nurse_load": 1.56
+    },
+    {
+      "threshold": -77.40007,
+      "sensitivity": 0.5469,
+      "false_alerts_per_100": 30.106,
+      "alerts_per_100": 37.317,
+      "ppv": 0.1932,
+      "missed": 440,
+      "nurse_load": 1.493
+    },
+    {
+      "threshold": -76.94182,
+      "sensitivity": 0.5386,
+      "false_alerts_per_100": 28.517,
+      "alerts_per_100": 35.619,
+      "ppv": 0.1994,
+      "missed": 448,
+      "nurse_load": 1.425
+    },
+    {
+      "threshold": -76.38107,
+      "sensitivity": 0.5221,
+      "false_alerts_per_100": 27.051,
+      "alerts_per_100": 33.935,
+      "ppv": 0.2029,
+      "missed": 464,
+      "nurse_load": 1.357
+    },
+    {
+      "threshold": -75.77944,
+      "sensitivity": 0.5067,
+      "false_alerts_per_100": 25.557,
+      "alerts_per_100": 32.238,
+      "ppv": 0.2072,
+      "missed": 479,
+      "nurse_load": 1.29
+    },
+    {
+      "threshold": -75.25468,
+      "sensitivity": 0.4871,
+      "false_alerts_per_100": 24.131,
+      "alerts_per_100": 30.554,
+      "ppv": 0.2102,
+      "missed": 498,
+      "nurse_load": 1.222
+    },
+    {
+      "threshold": -74.60965,
+      "sensitivity": 0.4717,
+      "false_alerts_per_100": 22.637,
+      "alerts_per_100": 28.857,
+      "ppv": 0.2155,
+      "missed": 513,
+      "nurse_load": 1.154
+    },
+    {
+      "threshold": -74.04252,
+      "sensitivity": 0.4593,
+      "false_alerts_per_100": 21.116,
+      "alerts_per_100": 27.173,
+      "ppv": 0.2229,
+      "missed": 525,
+      "nurse_load": 1.087
+    },
+    {
+      "threshold": -73.45393,
+      "sensitivity": 0.447,
+      "false_alerts_per_100": 19.582,
+      "alerts_per_100": 25.475,
+      "ppv": 0.2313,
+      "missed": 537,
+      "nurse_load": 1.019
+    },
+    {
+      "threshold": -72.83414,
+      "sensitivity": 0.4253,
+      "false_alerts_per_100": 18.183,
+      "alerts_per_100": 23.791,
+      "ppv": 0.2357,
+      "missed": 558,
+      "nurse_load": 0.952
+    },
+    {
+      "threshold": -72.10825,
+      "sensitivity": 0.4089,
+      "false_alerts_per_100": 16.703,
+      "alerts_per_100": 22.094,
+      "ppv": 0.244,
+      "missed": 574,
+      "nurse_load": 0.884
+    },
+    {
+      "threshold": -71.41794,
+      "sensitivity": 0.38,
+      "false_alerts_per_100": 15.386,
+      "alerts_per_100": 20.397,
+      "ppv": 0.2457,
+      "missed": 602,
+      "nurse_load": 0.816
+    },
+    {
+      "threshold": -70.71914,
+      "sensitivity": 0.3625,
+      "false_alerts_per_100": 13.933,
+      "alerts_per_100": 18.713,
+      "ppv": 0.2554,
+      "missed": 619,
+      "nurse_load": 0.749
+    },
+    {
+      "threshold": -69.96008,
+      "sensitivity": 0.344,
+      "false_alerts_per_100": 12.48,
+      "alerts_per_100": 17.015,
+      "ppv": 0.2666,
+      "missed": 637,
+      "nurse_load": 0.681
+    },
+    {
+      "threshold": -69.1759,
+      "sensitivity": 0.3306,
+      "false_alerts_per_100": 10.972,
+      "alerts_per_100": 15.331,
+      "ppv": 0.2843,
+      "missed": 650,
+      "nurse_load": 0.613
+    },
+    {
+      "threshold": -68.24083,
+      "sensitivity": 0.3141,
+      "false_alerts_per_100": 9.492,
+      "alerts_per_100": 13.634,
+      "ppv": 0.3038,
+      "missed": 666,
+      "nurse_load": 0.545
+    },
+    {
+      "threshold": -67.18018,
+      "sensitivity": 0.2945,
+      "false_alerts_per_100": 8.066,
+      "alerts_per_100": 11.95,
+      "ppv": 0.325,
+      "missed": 685,
+      "nurse_load": 0.478
+    },
+    {
+      "threshold": -65.89545,
+      "sensitivity": 0.2636,
+      "false_alerts_per_100": 6.776,
+      "alerts_per_100": 10.253,
+      "ppv": 0.3391,
+      "missed": 715,
+      "nurse_load": 0.41
+    },
+    {
+      "threshold": -64.54944,
+      "sensitivity": 0.2348,
+      "false_alerts_per_100": 5.473,
+      "alerts_per_100": 8.569,
+      "ppv": 0.3613,
+      "missed": 743,
+      "nurse_load": 0.343
+    },
+    {
+      "threshold": -62.42303,
+      "sensitivity": 0.2049,
+      "false_alerts_per_100": 4.169,
+      "alerts_per_100": 6.871,
+      "ppv": 0.3933,
+      "missed": 772,
+      "nurse_load": 0.275
+    },
+    {
+      "threshold": -59.55561,
+      "sensitivity": 0.1699,
+      "false_alerts_per_100": 2.947,
+      "alerts_per_100": 5.187,
+      "ppv": 0.4319,
+      "missed": 806,
+      "nurse_load": 0.207
+    },
+    {
+      "threshold": -56.34916,
+      "sensitivity": 0.1164,
+      "false_alerts_per_100": 1.955,
+      "alerts_per_100": 3.49,
+      "ppv": 0.4397,
+      "missed": 858,
+      "nurse_load": 0.14
+    },
+    {
+      "threshold": -51.28911,
+      "sensitivity": 0.0639,
+      "false_alerts_per_100": 0.951,
+      "alerts_per_100": 1.793,
+      "ppv": 0.4697,
+      "missed": 909,
+      "nurse_load": 0.072
+    },
+    {
+      "threshold": -35.0,
+      "sensitivity": 0.0082,
+      "false_alerts_per_100": 0.095,
+      "alerts_per_100": 0.204,
+      "ppv": 0.5333,
+      "missed": 963,
+      "nurse_load": 0.008
+    }
+  ],
+  "n_dominated": 0,
+  "pooled": {
+    "n_pooled": 120,
+    "n_on_front": 62,
+    "baseline_points_dominated": 53,
+    "baseline_points_total": 60,
+    "model_points_dominated": 5,
+    "model_points_total": 60,
+    "front_share_model": 0.8871
+  },
+  "hypervolume": {
+    "model": 74.53,
+    "baseline": 68.464
+  },
+  "knee": {
+    "threshold": 0.16307,
+    "sensitivity": 0.5664,
+    "false_alerts_per_100": 19.704,
+    "alerts_per_100": 27.173,
+    "ppv": 0.2749,
+    "missed": 421,
+    "nurse_load": 1.087
+  },
+  "governance": {
+    "0.70": {
+      "model": {
+        "threshold": 0.11024,
+        "sensitivity": 0.7085,
+        "false_alerts_per_100": 36.434,
+        "alerts_per_100": 45.777,
+        "ppv": 0.2041,
+        "missed": 283,
+        "nurse_load": 1.831
+      },
+      "baseline": {
+        "threshold": -83.41372,
+        "sensitivity": 0.7096,
+        "false_alerts_per_100": 48.248,
+        "alerts_per_100": 57.605,
+        "ppv": 0.1624,
+        "missed": 282,
+        "nurse_load": 2.304
+      },
+      "false_alert_reduction_pct": 24.49
+    },
+    "0.80": {
+      "model": {
+        "threshold": 0.0823,
+        "sensitivity": 0.8157,
+        "false_alerts_per_100": 48.547,
+        "alerts_per_100": 59.302,
+        "ppv": 0.1814,
+        "missed": 179,
+        "nurse_load": 2.372
+      },
+      "baseline": {
+        "threshold": -87.02275,
+        "sensitivity": 0.8074,
+        "false_alerts_per_100": 58.8,
+        "alerts_per_100": 69.446,
+        "ppv": 0.1533,
+        "missed": 187,
+        "nurse_load": 2.778
+      },
+      "false_alert_reduction_pct": 17.44
+    },
+    "0.90": {
+      "model": {
+        "threshold": 0.05521,
+        "sensitivity": 0.9011,
+        "false_alerts_per_100": 62.643,
+        "alerts_per_100": 74.525,
+        "ppv": 0.1594,
+        "missed": 96,
+        "nurse_load": 2.981
+      },
+      "baseline": {
+        "threshold": -92.21115,
+        "sensitivity": 0.9104,
+        "false_alerts_per_100": 70.98,
+        "alerts_per_100": 82.985,
+        "ppv": 0.1447,
+        "missed": 87,
+        "nurse_load": 3.319
+      },
+      "false_alert_reduction_pct": 11.75
+    },
+    "0.95": {
+      "model": {
+        "threshold": 0.02937,
+        "sensitivity": 0.9537,
+        "false_alerts_per_100": 78.857,
+        "alerts_per_100": 91.431,
+        "ppv": 0.1375,
+        "missed": 45,
+        "nurse_load": 3.657
+      },
+      "baseline": {
+        "threshold": -98.48549,
+        "sensitivity": 0.9588,
+        "false_alerts_per_100": 78.789,
+        "alerts_per_100": 91.431,
+        "ppv": 0.1383,
+        "missed": 40,
+        "nurse_load": 3.657
+      },
+      "false_alert_reduction_pct": -0.09
+    }
+  },
+  "triage": {
+    "capacity": 368,
+    "policies": {
+      "top-k by risk": {
+        "reviewed": 368,
+        "caught": 169,
+        "missed": 802,
+        "wasted_reviews": 199,
+        "catch_rate": 0.174,
+        "review_yield": 0.4592,
+        "benefit_realised": 158.3521,
+        "benefit_available": 962.5169,
+        "benefit_capture": 0.1645
+      },
+      "top-k by expected benefit": {
+        "reviewed": 368,
+        "caught": 132,
+        "missed": 839,
+        "wasted_reviews": 236,
+        "catch_rate": 0.1359,
+        "review_yield": 0.3587,
+        "benefit_realised": 185.6404,
+        "benefit_available": 962.5169,
+        "benefit_capture": 0.1929
+      },
+      "fixed threshold": {
+        "reviewed": 369,
+        "caught": 169,
+        "missed": 802,
+        "wasted_reviews": 200,
+        "catch_rate": 0.174,
+        "review_yield": 0.458,
+        "benefit_realised": 158.3521,
+        "benefit_available": 962.5169,
+        "benefit_capture": 0.1645
+      }
+    }
+  }
+}
