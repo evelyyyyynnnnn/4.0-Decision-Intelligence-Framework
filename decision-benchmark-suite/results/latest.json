@@ -1,0 +1,334 @@
+{
+  "generated_at": "2026-08-31T21:57:57+00:00",
+  "is_synthetic": true,
+  "data_source": "closed-form benchmark tasks with exact oracles (src/tasks.py)",
+  "newsvendor": {
+    "task": "newsvendor",
+    "shifts": [
+      -16.0,
+      -8.0,
+      0.0,
+      8.0,
+      16.0
+    ],
+    "policies": {
+      "empirical fractile": {
+        "regret": {
+          "mean": 44.674679,
+          "median": 40.0,
+          "p90": 90.0,
+          "max": 245.0,
+          "frac_optimal": 0.0805,
+          "total": 178698.7152
+        },
+        "calibration": {
+          "ece": 0.6195,
+          "bins": [
+            {
+              "bin": 0.65,
+              "n": 4000,
+              "predicted": 0.7,
+              "observed": 0.0805
+            }
+          ]
+        },
+        "accuracy": 0.0805,
+        "robustness": {
+          "baseline_regret": 44.674679,
+          "worst_case_regret": 83.486827,
+          "degradation_per_unit_shift": 1.988252,
+          "relative_worst": 1.8688,
+          "shifts": {
+            "-16.0": 68.122581,
+            "-8.0": 56.079374,
+            "0.0": 44.674679,
+            "8.0": 59.625981,
+            "16.0": 83.486827
+          }
+        }
+      },
+      "order the mean": {
+        "regret": {
+          "mean": 61.102342,
+          "median": 39.556681,
+          "p90": 158.736531,
+          "max": 350.0,
+          "frac_optimal": 0.1,
+          "total": 244409.3665
+        },
+        "calibration": {
+          "ece": 0.6,
+          "bins": [
+            {
+              "bin": 0.65,
+              "n": 4000,
+              "predicted": 0.7,
+              "observed": 0.1
+            }
+          ]
+        },
+        "accuracy": 0.1,
+        "robustness": {
+          "baseline_regret": 61.102342,
+          "worst_case_regret": 136.933964,
+          "degradation_per_unit_shift": 2.456614,
+          "relative_worst": 2.2411,
+          "shifts": {
+            "-16.0": 62.667518,
+            "-8.0": 58.911196,
+            "0.0": 61.102342,
+            "8.0": 97.739903,
+            "16.0": 136.933964
+          }
+        }
+      },
+      "always order 50": {
+        "regret": {
+          "mean": 61.102342,
+          "median": 39.556681,
+          "p90": 158.736531,
+          "max": 350.0,
+          "frac_optimal": 0.1,
+          "total": 244409.3665
+        },
+        "calibration": {
+          "ece": 0.4,
+          "bins": [
+            {
+              "bin": 0.55,
+              "n": 4000,
+              "predicted": 0.5,
+              "observed": 0.1
+            }
+          ]
+        },
+        "accuracy": 0.1,
+        "robustness": {
+          "baseline_regret": 61.102342,
+          "worst_case_regret": 136.933964,
+          "degradation_per_unit_shift": 2.456614,
+          "relative_worst": 2.2411,
+          "shifts": {
+            "-16.0": 62.667518,
+            "-8.0": 58.911196,
+            "0.0": 61.102342,
+            "8.0": 97.739903,
+            "16.0": 136.933964
+          }
+        }
+      }
+    }
+  },
+  "triage": {
+    "task": "triage",
+    "shifts": [
+      -1.2,
+      -0.6,
+      0.0,
+      0.6,
+      1.2
+    ],
+    "policies": {
+      "Bayes-optimal given the signal": {
+        "regret": {
+          "mean": 0.065482,
+          "median": 0.0,
+          "p90": 0.284592,
+          "max": 1.904674,
+          "frac_optimal": 0.7973,
+          "total": 261.9289
+        },
+        "calibration": {
+          "ece": 0.19606,
+          "bins": [
+            {
+              "bin": 0.55,
+              "n": 396,
+              "predicted": 0.5517,
+              "observed": 0.9949
+            },
+            {
+              "bin": 0.65,
+              "n": 633,
+              "predicted": 0.6574,
+              "observed": 0.9573
+            },
+            {
+              "bin": 0.75,
+              "n": 1194,
+              "predicted": 0.7545,
+              "observed": 0.8258
+            },
+            {
+              "bin": 0.85,
+              "n": 1378,
+              "predicted": 0.8478,
+              "observed": 0.6139
+            },
+            {
+              "bin": 0.95,
+              "n": 399,
+              "predicted": 0.9233,
+              "observed": 0.8947
+            }
+          ]
+        },
+        "accuracy": 0.7973,
+        "robustness": {
+          "baseline_regret": 0.065482,
+          "worst_case_regret": 0.131346,
+          "degradation_per_unit_shift": 0.008861,
+          "relative_worst": 2.0058,
+          "shifts": {
+            "-1.2": 0.131346,
+            "-0.6": 0.10202,
+            "0.0": 0.065482,
+            "0.6": 0.03706,
+            "1.2": 0.020256
+          }
+        }
+      },
+      "fitted threshold": {
+        "regret": {
+          "mean": 0.06561,
+          "median": 0.0,
+          "p90": 0.285404,
+          "max": 1.904674,
+          "frac_optimal": 0.7953,
+          "total": 262.44
+        },
+        "calibration": {
+          "ece": 0.01414,
+          "bins": [
+            {
+              "bin": 0.55,
+              "n": 559,
+              "predicted": 0.553,
+              "observed": 0.576
+            },
+            {
+              "bin": 0.65,
+              "n": 607,
+              "predicted": 0.6513,
+              "observed": 0.6409
+            },
+            {
+              "bin": 0.75,
+              "n": 734,
+              "predicted": 0.7527,
+              "observed": 0.7616
+            },
+            {
+              "bin": 0.85,
+              "n": 993,
+              "predicted": 0.8515,
+              "observed": 0.8449
+            },
+            {
+              "bin": 0.95,
+              "n": 1107,
+              "predicted": 0.9464,
+              "observed": 0.9684
+            }
+          ]
+        },
+        "accuracy": 0.7953,
+        "robustness": {
+          "baseline_regret": 0.06561,
+          "worst_case_regret": 0.141659,
+          "degradation_per_unit_shift": 0.011834,
+          "relative_worst": 2.1591,
+          "shifts": {
+            "-1.2": 0.141659,
+            "-0.6": 0.107314,
+            "0.0": 0.06561,
+            "0.6": 0.036756,
+            "1.2": 0.017625
+          }
+        }
+      },
+      "always treat": {
+        "regret": {
+          "mean": 0.118716,
+          "median": 0.0,
+          "p90": 0.511002,
+          "max": 0.925431,
+          "frac_optimal": 0.6923,
+          "total": 474.8629
+        },
+        "calibration": {
+          "ece": 0.19225,
+          "bins": [
+            {
+              "bin": 0.55,
+              "n": 4000,
+              "predicted": 0.5,
+              "observed": 0.6923
+            }
+          ]
+        },
+        "accuracy": 0.6923,
+        "robustness": {
+          "baseline_regret": 0.118716,
+          "worst_case_regret": 0.417052,
+          "degradation_per_unit_shift": 0.084739,
+          "relative_worst": 3.513,
+          "shifts": {
+            "-1.2": 0.417052,
+            "-0.6": 0.24775,
+            "0.0": 0.118716,
+            "0.6": 0.043566,
+            "1.2": 0.011802
+          }
+        }
+      },
+      "never treat": {
+        "regret": {
+          "mean": 0.995044,
+          "median": 0.580434,
+          "p90": 2.777225,
+          "max": 5.977095,
+          "frac_optimal": 0.3078,
+          "total": 3980.1755
+        },
+        "calibration": {
+          "ece": 0.19225,
+          "bins": [
+            {
+              "bin": 0.55,
+              "n": 4000,
+              "predicted": 0.5,
+              "observed": 0.3078
+            }
+          ]
+        },
+        "accuracy": 0.3078,
+        "robustness": {
+          "baseline_regret": 0.995044,
+          "worst_case_regret": 2.654578,
+          "degradation_per_unit_shift": 0.376497,
+          "relative_worst": 2.6678,
+          "shifts": {
+            "-1.2": 0.183436,
+            "-0.6": 0.478212,
+            "0.0": 0.995044,
+            "0.6": 1.741008,
+            "1.2": 2.654578
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "newsvendor_critical_fractile": 0.7778,
+    "newsvendor_optimal_order": 63.765,
+    "triage_treat_threshold_prob": 0.125
+  },
+  "oracle_gap": {
+    "clairvoyant_cost": 3.964,
+    "best_fixed_action_cost": 48.7778,
+    "distributional_optimum_cost": 48.7778,
+    "irreducible_regret": 44.8138,
+    "note": "regret in the table is against the clairvoyant oracle; the achievable floor is the best fixed action"
+  }
+}

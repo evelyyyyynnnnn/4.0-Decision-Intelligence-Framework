@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision Audit Framework</title>
+<meta name="description" content="A hash-chained decision ledger with exact replay, versioned counterfactuals, and Shapley attribution — so &quot;why did the system do that&quot; has an answer that survives being checked.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FCFCFD; --surface:#FFFFFF; --surface-2:#F4F5F8;
+  --ink:#16191F; --ink-2:#40474F; --muted:#6C7480;
+  --line:#E2E5EA; --line-2:#EFF1F4;
+  --accent:#1D5B70; --accent-2:#E6F0F3;
+  --ok:#2C6B4F; --ok-bg:#E5F1EA;
+  --warn:#8A6212; --warn-bg:#F7EFDC;
+  --demo:#6E4B8F; --demo-bg:#F0EAF6;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+    --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+    --line:#282F38; --line-2:#20262E;
+    --accent:#72B3CB; --accent-2:#18272E;
+    --ok:#7BC09F; --ok-bg:#15251E;
+    --warn:#D8AD5E; --warn-bg:#292216;
+    --demo:#B79AD6; --demo-bg:#241C2E;
+  }
+}
+:root[data-theme=dark]{
+  --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+  --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+  --line:#282F38; --line-2:#20262E;
+  --accent:#72B3CB; --accent-2:#18272E;
+  --ok:#7BC09F; --ok-bg:#15251E;
+  --warn:#D8AD5E; --warn-bg:#292216;
+  --demo:#B79AD6; --demo-bg:#241C2E;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 88px}
+h1,h2,h3{font-family:Spectral,Georgia,"Songti SC",serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4.2vw,42px);font-weight:700;letter-spacing:-.015em;line-height:1.14}
+h2{font-size:clamp(20px,2.5vw,25px);font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack-lg{display:flex;flex-direction:column;gap:22px}
+section{margin-top:52px}
+
+header.mast{border-bottom:1px solid var(--line);padding:44px 0 26px;margin-bottom:8px;
+  display:flex;flex-direction:column;gap:15px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--ink-2);font-size:16.5px;max-width:66ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px;background:var(--surface-2);
+  color:var(--muted);font-weight:500;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.demo{background:var(--demo-bg);color:var(--demo)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+
+.banner{display:flex;gap:13px;align-items:flex-start;background:var(--demo-bg);
+  border-radius:9px;padding:15px 18px;margin-top:26px}
+.banner .bi{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--demo);flex:none;padding-top:3px;font-weight:600}
+.banner p{font-size:14.2px;color:var(--ink-2)}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.metric{background:var(--surface);padding:15px 16px;display:flex;flex-direction:column;gap:5px}
+.metric .mk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);line-height:1.35}
+.metric .mv{font-family:Spectral,Georgia,serif;font-size:26px;font-weight:600;
+  font-variant-numeric:tabular-nums;line-height:1.1;color:var(--accent)}
+.metric .mn{font-size:12.4px;color:var(--muted);line-height:1.4}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.8px;min-width:520px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:10px 14px;border-bottom:1px solid var(--line-2);vertical-align:top;line-height:1.5}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr:last-child td{border-bottom:0}
+
+pre{margin:0;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:15px 17px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;
+  font-size:12.8px;line-height:1.62;color:var(--ink-2)}
+ul.tight{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:7px}
+ul.tight li::marker{color:var(--muted)}
+.note{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.foot{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px;display:flex;flex-direction:column;gap:9px}
+figure{margin:0}
+svg.chart{display:block;width:100%;height:auto}
+@media (max-width:600px){.wrap{padding:0 17px 68px}.banner{flex-direction:column;gap:7px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <div class="eyebrow">4.0-Decision-Intelligence-Framework &middot; Cross-cutting</div>
+  <h1>Decision Audit Framework</h1>
+  <p class="lede">A hash-chained decision ledger with exact replay, versioned counterfactuals, and Shapley attribution — so &quot;why did the system do that&quot; has an answer that survives being checked.</p>
+  <div class="tags"><span class="tag ">hash-chained ledger</span><span class="tag ">exact replay</span><span class="tag ">counterfactuals</span><span class="tag ">exact Shapley</span><span class="tag demo">synthetic decisions</span></div>
+</header>
+<div class="banner">
+  <span class="bi">Data</span>
+  <p>Decisions here are made on synthetic credit applications by a policy written for this demo. The machinery is real; the lending policy is not, and no conclusion about credit risk follows from it.</p>
+</div>
+
+<section>
+  <h2>The question this answers</h2>
+  <div class="stack">
+    <p>The one asked after a decision goes wrong: <em>why did the system do that, and
+    what would it have done if the inputs had been different?</em> Answering it needs
+    three things ordinary logging does not provide — the inputs exactly as they were,
+    the policy version that actually ran, and a guarantee that neither has been edited
+    since.</p>
+    <p>Replay is exact, not approximate. A policy is a pure function of its recorded
+    inputs, so re-running it reproduces the decision bit for bit. That is a real
+    restriction on how policies may be written, and it is what makes the rest possible.</p>
+  </div>
+</section>
+
+<section>
+  <h2>This run</h2>
+  <div class="stack-lg">
+    <div class="metrics"><div class="metric"><span class="mk">Decisions logged</span><span class="mv">120</span><span class="mn">chain intact: True</span></div><div class="metric"><span class="mk">Replayed exactly</span><span class="mv">120/120</span><span class="mn">bit for bit</span></div><div class="metric"><span class="mk">Version flips</span><span class="mv">6</span><span class="mn">of 40 cases, v1 → v2</span></div><div class="metric"><span class="mk">Attribution gap</span><span class="mv">0.1587</span><span class="mn">occlusion vs Shapley</span></div></div>
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      generated 2026-08-31T21:57:56+00:00 &middot;
+      actions: {&#x27;decline&#x27;: 47, &#x27;approve&#x27;: 73} &middot;
+      policies: credit-approval@1.0
+    </p>
+    <div class="tw"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr><td>Chain intact before tampering</td><td class="n">True</td></tr><tr><td>Edited input detected</td><td class="n">True</td></tr><tr><td>Detected at record</td><td class="n">3</td></tr><tr><td>Chain intact after restore</td><td class="n">True</td></tr><tr><td>Decisions reproduced on replay</td><td class="n">120/120</td></tr></tbody></table></div>
+    <p>Editing one recorded input — lowering a declined applicant's debt-to-income to
+    make the decline look unjustified — breaks the hash chain at exactly that record.
+    The chain proves the log has not been altered since it was written. It does not
+    prove who wrote it; there is no signing here, and tamper-<em>evident</em> is the
+    accurate word.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Counterfactuals run the policy that actually ran</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Case</th><th>v1</th><th>v2</th><th>Delinquencies</th><th>v1 score</th><th>v2 score</th></tr></thead><tbody><tr><td>APP-0001</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.614</td><td class="n">-0.136</td></tr><tr><td>APP-0003</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.472</td><td class="n">-0.278</td></tr><tr><td>APP-0009</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.077</td><td class="n">-0.673</td></tr><tr><td>APP-0019</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.324</td><td class="n">-0.426</td></tr><tr><td>APP-0020</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.008</td><td class="n">-0.742</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>Why the version matters</h3>
+      <p>Policy v2 weights delinquencies more heavily than v1, and
+      6 of 40 decisions change as a result. A counterfactual
+      that re-scored an old decision with today's policy would answer <em>"what would we
+      do now"</em> — a different and usually less useful question than <em>"what would we
+      have done then"</em>.</p>
+      <p>Conflating the two is how a review concludes the system behaved reasonably when
+      it did not: the current policy would have declined the case, so the decline looks
+      justified, even though the policy in force at the time approved it.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Attribution — APP-0023</h2>
+  <div class="stack-lg">
+    <p>Declined with a score of -3.1917. Inputs:
+    <code>{&#x27;dti&#x27;: 0.5884, &#x27;utilisation&#x27;: 0.8503, &#x27;delinquencies&#x27;: 3.0, &#x27;tenure_years&#x27;: 5.5412, &#x27;income_k&#x27;: 81.5168}</code></p>
+    <figure><svg class="chart" viewBox="0 0 680 184" role="img" aria-label="Bar chart of results"><text x="180" y="26.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">dti</text><rect x="190" y="9" width="289.1" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="488.1" y="26.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">1.130</text><text x="180" y="61.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">utilisation</text><rect x="190" y="44" width="304.2" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="503.2" y="61.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">1.189</text><text x="180" y="96.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">delinquencies</text><rect x="190" y="79" width="422.0" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="621.0" y="96.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">1.650</text><text x="180" y="131.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">tenure_years</text><rect x="190" y="114" width="8.3" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="207.3" y="131.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.032</text><text x="180" y="166.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">income_k</text><rect x="190" y="149" width="32.4" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="231.4" y="166.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.127</text></svg></figure>
+    <div class="tw"><table><thead><tr><th>Feature</th><th>Occlusion</th><th>Shapley</th><th>Difference</th></tr></thead><tbody><tr><td>dti</td><td class="n">-1.2892</td><td class="n">-1.1305</td><td class="n">-0.1587</td></tr><tr><td>utilisation</td><td class="n">-1.3481</td><td class="n">-1.1894</td><td class="n">-0.1587</td></tr><tr><td>delinquencies</td><td class="n">-1.6500</td><td class="n">-1.6500</td><td class="n">+0.0000</td></tr><tr><td>tenure_years</td><td class="n">+0.0325</td><td class="n">+0.0325</td><td class="n">+0.0000</td></tr><tr><td>income_k</td><td class="n">+0.1267</td><td class="n">+0.1267</td><td class="n">+0.0000</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>Where the two methods disagree, and why</h3>
+      <p>They agree exactly on <code>delinquencies</code>, <code>tenure_years</code> and
+      <code>income_k</code>, and differ by 0.1587 on
+      <code>dti</code> and <code>utilisation</code> — the two features the policy
+      combines in an interaction term.</p>
+      <p>Occlusion removes one feature at a time, so each of the interacting pair
+      receives <em>full</em> credit for their shared effect and the interaction is
+      counted twice. Shapley averages over every ordering, which splits it. On a purely
+      additive policy the two methods return identical values, and an earlier version of
+      this demo used exactly such a policy — producing a table where the columns matched
+      perfectly and demonstrated nothing about why anyone would pay for Shapley.</p>
+      <p>Efficiency check: the Shapley values sum to -3.8107 against
+      a score difference of -3.8107, residual
+      -9.52e-07. That identity is what makes them an allocation rather than
+      a set of importances, and it is asserted in the test suite.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What would have changed the answer</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Feature</th><th>Changed to</th><th>Original score</th><th>Counterfactual score</th><th>Decision flips</th></tr></thead><tbody><tr><td>dti</td><td class="n">0.2</td><td class="n">-3.1917</td><td class="n">-1.4555</td><td>no</td></tr><tr><td>utilisation</td><td class="n">0.15</td><td class="n">-3.1917</td><td class="n">-1.3047</td><td>no</td></tr><tr><td>delinquencies</td><td class="n">0.0</td><td class="n">-3.1917</td><td class="n">-1.5417</td><td>no</td></tr><tr><td>income_k</td><td class="n">150.0</td><td class="n">-3.1917</td><td class="n">-2.4384</td><td>no</td></tr><tr><td>tenure_years</td><td class="n">20.0</td><td class="n">-3.1917</td><td class="n">-2.3242</td><td>no</td></tr></tbody></table></div>
+    <p>0 single-feature changes would have flipped this
+    decision. That is the form of explanation an applicant can act on, and a regulator
+    can check, in a way that a ranked importance list is not.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce it</h2>
+  <div class="stack">
+    <pre>cd decision-audit-framework
+pip install -r requirements.txt
+python -m pytest tests/ -q
+python -m src.demo</pre>
+  </div>
+</section>
+
+<section>
+  <h2>What this does not establish</h2>
+  <div class="stack">
+    <ul class="tight">
+      <li>The credit policy is invented for this demo. Nothing here is a statement
+      about lending, fairness, or credit risk.</li>
+      <li>Exact replay requires policies to be pure functions of recorded inputs. A
+      policy that reads a database, calls a model server, or depends on wall-clock
+      time cannot be replayed this way, and most production policies do at least one
+      of those.</li>
+      <li>The hash chain is tamper-evident, not tamper-proof, and it is not signed.
+      It shows the log has changed; it cannot say who changed it.</li>
+      <li>Exact Shapley enumerates all orderings and is used here for five features.
+      Beyond eight it falls back to sampling, and the sampled values carry error
+      that this demo does not quantify.</li>
+      <li>No fairness or disparate-impact analysis. Attribution says what drove a
+      decision, not whether the decision was right.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="foot">
+  <p>4.0-Decision-Intelligence-Framework &middot; decision-audit-framework &middot; part of a five-repository portfolio on optimization-driven,
+     system-level decision frameworks.</p>
+  <p>Every figure on this page was produced by running <code>python -m src.demo</code> in this
+     project and reading <code>results.json</code>. Nothing here is hand-entered. The run used clearly-labelled synthetic data; swap in the real source and the same pipeline reports real numbers.</p>
+</div>
+</div>
+</body>
+</html>
