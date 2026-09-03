@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ICU Triage Optimization</title>
+<meta name="description" content="Pareto frontiers over alert thresholds and review-capacity triage — the join between the healthcare models and the operations-research framing, demonstrated rather than asserted.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FCFCFD; --surface:#FFFFFF; --surface-2:#F4F5F8;
+  --ink:#16191F; --ink-2:#40474F; --muted:#6C7480;
+  --line:#E2E5EA; --line-2:#EFF1F4;
+  --accent:#1D5B70; --accent-2:#E6F0F3;
+  --ok:#2C6B4F; --ok-bg:#E5F1EA;
+  --warn:#8A6212; --warn-bg:#F7EFDC;
+  --demo:#6E4B8F; --demo-bg:#F0EAF6;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+    --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+    --line:#282F38; --line-2:#20262E;
+    --accent:#72B3CB; --accent-2:#18272E;
+    --ok:#7BC09F; --ok-bg:#15251E;
+    --warn:#D8AD5E; --warn-bg:#292216;
+    --demo:#B79AD6; --demo-bg:#241C2E;
+  }
+}
+:root[data-theme=dark]{
+  --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+  --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+  --line:#282F38; --line-2:#20262E;
+  --accent:#72B3CB; --accent-2:#18272E;
+  --ok:#7BC09F; --ok-bg:#15251E;
+  --warn:#D8AD5E; --warn-bg:#292216;
+  --demo:#B79AD6; --demo-bg:#241C2E;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 88px}
+h1,h2,h3{font-family:Spectral,Georgia,"Songti SC",serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4.2vw,42px);font-weight:700;letter-spacing:-.015em;line-height:1.14}
+h2{font-size:clamp(20px,2.5vw,25px);font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack-lg{display:flex;flex-direction:column;gap:22px}
+section{margin-top:52px}
+
+header.mast{border-bottom:1px solid var(--line);padding:44px 0 26px;margin-bottom:8px;
+  display:flex;flex-direction:column;gap:15px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--ink-2);font-size:16.5px;max-width:66ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px;background:var(--surface-2);
+  color:var(--muted);font-weight:500;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.demo{background:var(--demo-bg);color:var(--demo)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+
+.banner{display:flex;gap:13px;align-items:flex-start;background:var(--demo-bg);
+  border-radius:9px;padding:15px 18px;margin-top:26px}
+.banner .bi{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--demo);flex:none;padding-top:3px;font-weight:600}
+.banner p{font-size:14.2px;color:var(--ink-2)}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.metric{background:var(--surface);padding:15px 16px;display:flex;flex-direction:column;gap:5px}
+.metric .mk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);line-height:1.35}
+.metric .mv{font-family:Spectral,Georgia,serif;font-size:26px;font-weight:600;
+  font-variant-numeric:tabular-nums;line-height:1.1;color:var(--accent)}
+.metric .mn{font-size:12.4px;color:var(--muted);line-height:1.4}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.8px;min-width:520px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:10px 14px;border-bottom:1px solid var(--line-2);vertical-align:top;line-height:1.5}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr:last-child td{border-bottom:0}
+
+pre{margin:0;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:15px 17px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;
+  font-size:12.8px;line-height:1.62;color:var(--ink-2)}
+ul.tight{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:7px}
+ul.tight li::marker{color:var(--muted)}
+.note{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.foot{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px;display:flex;flex-direction:column;gap:9px}
+figure{margin:0}
+svg.chart{display:block;width:100%;height:auto}
+@media (max-width:600px){.wrap{padding:0 17px 68px}.banner{flex-direction:column;gap:7px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <div class="eyebrow">4.0-Decision-Intelligence-Framework &middot; Healthcare Safety</div>
+  <h1>ICU Triage Optimization</h1>
+  <p class="lede">Pareto frontiers over alert thresholds and review-capacity triage — the join between the healthcare models and the operations-research framing, demonstrated rather than asserted.</p>
+  <div class="tags"><span class="tag ">Pareto frontier</span><span class="tag ">hypervolume</span><span class="tag ">capacity-constrained triage</span><span class="tag ">links to repo 2.0</span><span class="tag demo">synthetic cohort</span></div>
+</header>
+<div class="banner">
+  <span class="bi">Data</span>
+  <p>Risk scores come from the ICU early-warning model in repo 2.0, trained on its synthetic cohort. No real patients, and no clinical conclusion follows. What is real is the optimisation: the frontiers, the domination analysis and the triage comparison are computed from those scores.</p>
+</div>
+
+<section>
+  <h2>There is no best threshold, and that is not a limitation</h2>
+  <div class="stack">
+    <p>A missed deterioration and a false alarm are different kinds of harm, and no
+    exchange rate between them is a technical fact. So this project does not pick a
+    threshold. It computes the frontier of non-dominated options and leaves the choice
+    with the people who carry the consequences.</p>
+    <p>What optimisation <em>can</em> settle is which settings are dominated — another
+    setting is better on every axis at once — and those can be discarded on technical
+    grounds alone.</p>
+  </div>
+</section>
+
+<section>
+  <h2>This run</h2>
+  <div class="stack-lg">
+    <div class="metrics"><div class="metric"><span class="mk">Observations</span><span class="mv">7,364</span><span class="mn">event rate 13.2%</span></div><div class="metric"><span class="mk">Baseline settings dominated</span><span class="mv">53/60</span><span class="mn">beaten outright by the model</span></div><div class="metric"><span class="mk">Hypervolume</span><span class="mv">74.5 vs 68.5</span><span class="mn">model vs single-vital alarm</span></div><div class="metric"><span class="mk">Benefit capture gain</span><span class="mv">+0.028</span><span class="mn">benefit ranking vs risk ranking</span></div></div>
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      generated 2026-08-31T21:58:01+00:00 &middot;
+      ICU early-warning model (repo 2.0) &middot;
+      60 thresholds swept
+    </p>
+    <figure><svg class="chart" viewBox="0 0 680 210" role="img" aria-label="Line chart"><line x1="46" y1="12.0" x2="666" y2="12.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="16.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">1.00</text><line x1="46" y1="54.0" x2="666" y2="54.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="58.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.75</text><line x1="46" y1="96.0" x2="666" y2="96.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="100.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.50</text><line x1="46" y1="138.0" x2="666" y2="138.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="142.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.25</text><line x1="46" y1="180.0" x2="666" y2="180.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="184.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.00</text><path d="M666.0,12.0 L654.4,12.9 L643.1,14.3 L632.9,17.7 L621.6,19.1 L609.8,19.8 L598.4,20.8 L586.8,21.9 L575.2,22.8 L563.6,23.6 L551.7,24.0 L540.1,24.8 L528.4,25.5 L516.7,26.4 L505.3,27.6 L493.8,28.7 L482.1,29.5 L471.1,31.3 L459.6,32.5 L448.8,34.7 L437.1,35.6 L426.3,37.7 L415.3,39.8 L404.2,41.5 L392.9,43.1 L382.3,45.8 L371.3,47.6 L360.2,49.5 L349.1,51.2 L338.4,53.8 L327.7,56.3 L317.3,59.4 L306.2,61.1 L295.0,62.7 L283.9,64.4 L273.5,67.5 L263.0,70.5 L252.2,72.8 L241.3,75.0 L230.2,76.6 L219.0,78.3 L208.3,80.7 L197.5,83.2 L186.5,85.1 L176.6,89.1 L166.0,91.7 L156.1,95.7 L146.3,99.8 L136.8,104.3 L126.5,107.6 L117.4,113.0 L108.5,118.7 L99.8,124.8 L90.7,130.2 L82.4,137.0 L74.3,144.1 L65.7,150.3 L58.5,159.2 L51.4,168.2 L46.0,180.0" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="25" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--accent)">model</text><path d="M666.0,12.0 L654.2,12.5 L642.7,13.6 L631.6,15.5 L620.6,17.4 L609.3,18.9 L598.7,21.4 L587.3,22.8 L575.8,23.8 L564.8,25.9 L553.5,27.1 L542.5,29.2 L531.8,31.6 L521.1,34.2 L510.3,36.6 L498.9,37.7 L488.2,40.3 L477.1,42.0 L466.3,44.5 L455.1,46.0 L443.9,47.8 L433.6,50.9 L422.7,53.0 L411.8,55.0 L401.2,57.8 L390.8,60.9 L380.2,63.6 L369.4,66.0 L358.3,67.7 L347.0,69.1 L336.7,72.2 L326.0,74.8 L315.7,77.9 L305.0,80.6 L294.1,82.6 L282.9,84.4 L271.7,86.1 L261.0,88.4 L249.6,89.8 L239.1,92.5 L228.4,95.1 L218.2,98.4 L207.5,101.0 L196.6,103.1 L185.6,105.2 L175.6,108.8 L165.0,111.6 L155.6,116.5 L145.2,119.4 L134.8,122.6 L124.0,124.8 L113.4,127.6 L103.2,130.9 L94.0,136.1 L84.7,141.0 L75.3,146.0 L66.6,151.9 L59.5,160.9 L52.3,169.8 L46.2,179.1" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="40" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--warn)">single-vital alarm</text><text x="356.0" y="204" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">false alerts per 100 observations</text><text x="12" y="96.0" text-anchor="middle" transform="rotate(-90 12 96.0)" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">sensitivity</text></svg></figure>
+  </div>
+</section>
+
+<section>
+  <h2>Where domination actually shows up</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Comparison</th><th>Points</th><th>Non-dominated</th><th>Dominated</th></tr></thead><tbody><tr><td>Model thresholds alone</td><td class="n">60</td><td class="n">60</td><td class="n">0</td></tr><tr><td>Model + baseline pooled</td><td class="n">120</td><td class="n">62</td><td class="n">58</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>A single sweep is almost all frontier, and that is not a result</h3>
+      <p>All 60 model settings sit on their own frontier
+      here, and reporting that as a Pareto result would say nothing: while both
+      objectives are strictly moving, no setting can dominate another.</p>
+      <p>The stronger version of that claim &mdash; that a single-score sweep can
+      <em>never</em> produce a dominated point &mdash; is false, and two successive
+      tests were needed to pin down why. Domination appears whenever one objective
+      <em>saturates</em>: once sensitivity plateaus at 1.0, further loosening adds false
+      alerts and catches nothing more; and on a well-separated score, false alerts reach
+      zero while sensitivity is still climbing, so a setting with 83% sensitivity and no
+      false alerts is beaten by one with 99.8% sensitivity and no false alerts. The
+      correct statement is that a dominated point on a single sweep always has a
+      dominator tying it on one objective, which is now verified across a range of class
+      separations. This run shows none because neither objective saturates within the
+      swept range.</p>
+      <p>The question with content is what happens when the model's settings and the
+      single-vital alarm's settings compete. Pooled,
+      <strong>53 of 60</strong>
+      baseline settings are beaten outright by some model setting — and
+      <strong>5</strong> model settings are beaten by some
+      baseline setting. The model dominates mostly, not everywhere, and the second
+      number is the one a paper would usually omit.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Under a governance-set sensitivity floor</h2>
+  <div class="stack-lg">
+    <figure><svg class="chart" viewBox="0 0 680 114" role="img" aria-label="Bar chart of results"><text x="180" y="26.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">70% sensitivity</text><rect x="190" y="9" width="422.0" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="621.0" y="26.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">24.5%</text><text x="180" y="61.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">80% sensitivity</text><rect x="190" y="44" width="300.5" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="499.5" y="61.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">17.4%</text><text x="180" y="96.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">90% sensitivity</text><rect x="190" y="79" width="202.5" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="401.5" y="96.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">11.8%</text></svg></figure>
+    <div class="tw"><table><thead><tr><th>Required sensitivity</th><th>Model FA/100</th><th>Baseline FA/100</th><th>Reduction</th><th>Model PPV</th></tr></thead><tbody><tr><td class="n">70%</td><td class="n">36.43</td><td class="n">48.25</td><td class="n">+24.5%</td><td class="n">0.204</td></tr><tr><td class="n">80%</td><td class="n">48.55</td><td class="n">58.80</td><td class="n">+17.4%</td><td class="n">0.181</td></tr><tr><td class="n">90%</td><td class="n">62.64</td><td class="n">70.98</td><td class="n">+11.8%</td><td class="n">0.159</td></tr><tr><td class="n">95%</td><td class="n">78.86</td><td class="n">78.79</td><td class="n">-0.1%</td><td class="n">0.138</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>The benefit disappears exactly where governance sits</h3>
+      <p>Alerting policies are specified the way clinical governance specifies them: fix
+      the sensitivity that will be accepted, then minimise alerts inside that
+      constraint. Read the reduction column down. At 70% required sensitivity the model
+      removes 24.5% of false alerts; at 80%,
+      17.4%; at 90%,
+      11.8%; and at 95% it is
+      -0.1% — no better than thresholding a
+      single vital sign.</p>
+      <p>That matters more than the headline number, because 95% is the region real ICU
+      governance tends to demand. A model evaluated only at a convenient operating point
+      would look useful and would not be, and this is the analysis that shows it.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Triage: who gets the 368 review slots?</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Policy</th><th>Reviewed</th><th>Caught</th><th>Missed</th><th>Review yield</th><th>Benefit capture</th></tr></thead><tbody><tr><td>top-k by risk</td><td class="n">368</td><td class="n">169</td><td class="n">802</td><td class="n">0.459</td><td class="n">0.165</td></tr><tr><td>top-k by expected benefit</td><td class="n">368</td><td class="n">132</td><td class="n">839</td><td class="n">0.359</td><td class="n">0.193</td></tr><tr><td>fixed threshold</td><td class="n">369</td><td class="n">169</td><td class="n">802</td><td class="n">0.458</td><td class="n">0.165</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>Risk and benefit are not the same quantity</h3>
+      <p>Ranking by expected benefit catches
+      <strong>fewer</strong> events than ranking by risk
+      (132 against
+      169) and captures
+      <strong>more</strong> benefit
+      (0.193 against
+      0.165).</p>
+      <p>That is the intended behaviour, not a defect. A patient certain to deteriorate
+      but for whom review changes nothing should rank below a patient at moderate risk
+      whose course review would change. Ranking by risk is the standard approach and it
+      is wrong wherever the two diverge — which is also why "events caught" is the wrong
+      thing to optimise a triage policy against.</p>
+      <p>The fixed threshold does the same work as top-k by risk here while producing an
+      alert count nobody chose. Under a hard capacity constraint, a threshold is the
+      wrong instrument.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce it</h2>
+  <div class="stack">
+    <pre>cd icu-triage-optimization
+pip install -r requirements.txt
+python -m pytest tests/ -q
+python -m src.demo</pre>
+    <p>The demo imports the ICU early-warning model from repo 2.0 by file path, under
+    its own module namespace, so both projects stay independently copyable. If repo 2.0
+    is absent it falls back to synthetic scores and says so on this page.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What this does not establish</h2>
+  <div class="stack">
+    <ul class="tight">
+      <li>Scores come from a model trained on a synthetic cohort. Nothing here is a
+      clinical result.</li>
+      <li>Benefit-if-caught is generated, not measured. In reality it would come from
+      an intervention-effect estimate, which is a harder problem than the ranking
+      built on top of it.</li>
+      <li>Alert burden is counted per observation. Real alarm fatigue depends on
+      clustering, timing and who is in the room.</li>
+      <li>The knee point is offered as a place to start a conversation, not an
+      answer. Where a curve bends hardest is a property of the axes' scaling.</li>
+      <li>Triage assumes review slots are interchangeable and reviews are equally
+      effective whoever performs them.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="foot">
+  <p>4.0-Decision-Intelligence-Framework &middot; icu-triage-optimization &middot; part of a five-repository portfolio on optimization-driven,
+     system-level decision frameworks.</p>
+  <p>Every figure on this page was produced by running <code>python -m src.demo</code> in this
+     project and reading <code>results.json</code>. Nothing here is hand-entered. The run used clearly-labelled synthetic data; swap in the real source and the same pipeline reports real numbers.</p>
+</div>
+</div>
+</body>
+</html>

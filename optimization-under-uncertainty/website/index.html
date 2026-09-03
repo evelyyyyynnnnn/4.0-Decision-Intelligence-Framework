@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Optimization Under Uncertainty</title>
+<meta name="description" content="Deterministic, sample-average, CVaR and robust formulations of the same allocation problem — fitted in-sample, judged out-of-sample, in portfolio allocation and hospital staffing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FCFCFD; --surface:#FFFFFF; --surface-2:#F4F5F8;
+  --ink:#16191F; --ink-2:#40474F; --muted:#6C7480;
+  --line:#E2E5EA; --line-2:#EFF1F4;
+  --accent:#1D5B70; --accent-2:#E6F0F3;
+  --ok:#2C6B4F; --ok-bg:#E5F1EA;
+  --warn:#8A6212; --warn-bg:#F7EFDC;
+  --demo:#6E4B8F; --demo-bg:#F0EAF6;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+    --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+    --line:#282F38; --line-2:#20262E;
+    --accent:#72B3CB; --accent-2:#18272E;
+    --ok:#7BC09F; --ok-bg:#15251E;
+    --warn:#D8AD5E; --warn-bg:#292216;
+    --demo:#B79AD6; --demo-bg:#241C2E;
+  }
+}
+:root[data-theme=dark]{
+  --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+  --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+  --line:#282F38; --line-2:#20262E;
+  --accent:#72B3CB; --accent-2:#18272E;
+  --ok:#7BC09F; --ok-bg:#15251E;
+  --warn:#D8AD5E; --warn-bg:#292216;
+  --demo:#B79AD6; --demo-bg:#241C2E;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 88px}
+h1,h2,h3{font-family:Spectral,Georgia,"Songti SC",serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4.2vw,42px);font-weight:700;letter-spacing:-.015em;line-height:1.14}
+h2{font-size:clamp(20px,2.5vw,25px);font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack-lg{display:flex;flex-direction:column;gap:22px}
+section{margin-top:52px}
+
+header.mast{border-bottom:1px solid var(--line);padding:44px 0 26px;margin-bottom:8px;
+  display:flex;flex-direction:column;gap:15px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--ink-2);font-size:16.5px;max-width:66ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px;background:var(--surface-2);
+  color:var(--muted);font-weight:500;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.demo{background:var(--demo-bg);color:var(--demo)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+
+.banner{display:flex;gap:13px;align-items:flex-start;background:var(--demo-bg);
+  border-radius:9px;padding:15px 18px;margin-top:26px}
+.banner .bi{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--demo);flex:none;padding-top:3px;font-weight:600}
+.banner p{font-size:14.2px;color:var(--ink-2)}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.metric{background:var(--surface);padding:15px 16px;display:flex;flex-direction:column;gap:5px}
+.metric .mk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);line-height:1.35}
+.metric .mv{font-family:Spectral,Georgia,serif;font-size:26px;font-weight:600;
+  font-variant-numeric:tabular-nums;line-height:1.1;color:var(--accent)}
+.metric .mn{font-size:12.4px;color:var(--muted);line-height:1.4}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.8px;min-width:520px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:10px 14px;border-bottom:1px solid var(--line-2);vertical-align:top;line-height:1.5}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr:last-child td{border-bottom:0}
+
+pre{margin:0;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:15px 17px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;
+  font-size:12.8px;line-height:1.62;color:var(--ink-2)}
+ul.tight{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:7px}
+ul.tight li::marker{color:var(--muted)}
+.note{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.foot{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px;display:flex;flex-direction:column;gap:9px}
+figure{margin:0}
+svg.chart{display:block;width:100%;height:auto}
+@media (max-width:600px){.wrap{padding:0 17px 68px}.banner{flex-direction:column;gap:7px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <div class="eyebrow">4.0-Decision-Intelligence-Framework &middot; Cross-cutting — the endeavor itself</div>
+  <h1>Optimization Under Uncertainty</h1>
+  <p class="lede">Deterministic, sample-average, CVaR and robust formulations of the same allocation problem — fitted in-sample, judged out-of-sample, in portfolio allocation and hospital staffing.</p>
+  <div class="tags"><span class="tag ">SAA</span><span class="tag ">CVaR LP</span><span class="tag ">box-robust</span><span class="tag ">out-of-sample</span><span class="tag demo">synthetic scenarios</span></div>
+</header>
+<div class="banner">
+  <span class="bi">Data</span>
+  <p>Scenarios are generated by src/problems.py, deliberately as mixtures with crash and surge regimes: on Gaussian data every method here would score identically and the comparison would be empty. Every method is fitted on one sample and scored on a different, larger one.</p>
+</div>
+
+<section>
+  <h2>Four ways to be wrong about the future</h2>
+  <div class="stack">
+    <p>All four formulations solve the same allocation problem and differ only in what
+    they optimise against: the mean scenario, the average across sampled scenarios, the
+    worst tail, or an adversarially chosen parameter inside an uncertainty set. Two
+    problems, because a bad decision costs different things — money in one, unmet
+    clinical demand in the other, and the second is not symmetric with over-provision.</p>
+    <p>Every method is fitted on one scenario sample and scored on a different, larger
+    one. That split is the whole discipline: a stochastic program evaluated on the
+    scenarios it optimised over reports its own objective back to itself.</p>
+  </div>
+</section>
+
+<section>
+  <h2>This run</h2>
+  <div class="stack-lg">
+    <div class="metrics"><div class="metric"><span class="mk">Best out-of-sample CVaR</span><span class="mv">0.3154</span><span class="mn">CVaR-90</span></div><div class="metric"><span class="mk">Scenarios</span><span class="mv">600 → 4,000</span><span class="mn">train → test</span></div><div class="metric"><span class="mk">Staffing budget</span><span class="mv">248</span><span class="mn">6 units</span></div><div class="metric"><span class="mk">Demand correlation</span><span class="mv">0.47</span><span class="mn">across units</span></div></div>
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      generated 2026-08-31T21:58:06+00:00 &middot;
+      8 assets &middot; 6 hospital units &middot;
+      unmet demand penalised 6× idle capacity
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Portfolio allocation — CVaR wins</h2>
+  <div class="stack-lg">
+    <figure><svg class="chart" viewBox="0 0 680 184" role="img" aria-label="Bar chart of results"><text x="180" y="26.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">equal weight</text><rect x="190" y="9" width="359.8" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="558.8" y="26.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.3325</text><text x="180" y="61.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">deterministic (mean only)</text><rect x="190" y="44" width="422.0" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="621.0" y="61.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.3899</text><text x="180" y="96.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">SAA mean-variance</text><rect x="190" y="79" width="370.6" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="569.6" y="96.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.3424</text><text x="180" y="131.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">CVaR-90</text><rect x="190" y="114" width="341.4" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="540.4" y="131.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.3154</text><text x="180" y="166.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">robust (box)</text><rect x="190" y="149" width="403.8" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="602.8" y="166.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.3731</text></svg></figure>
+    <div class="tw"><table><thead><tr><th>Method</th><th>Mean loss</th><th>CVaR-90</th><th>Worst case</th><th>Concentration</th><th>Mean regret</th><th>% best</th></tr></thead><tbody><tr><td>equal weight</td><td class="n">-0.0435</td><td class="n">0.3325</td><td class="n">1.1374</td><td class="n">0.125</td><td class="n">0.0646</td><td class="n">33.1%</td></tr><tr><td>deterministic (mean only)</td><td class="n">-0.0397</td><td class="n">0.3899</td><td class="n">1.2477</td><td class="n">1.000</td><td class="n">0.0684</td><td class="n">35.7%</td></tr><tr><td>SAA mean-variance</td><td class="n">-0.0448</td><td class="n">0.3424</td><td class="n">1.0997</td><td class="n">0.500</td><td class="n">0.0632</td><td class="n">0.0%</td></tr><tr><td>CVaR-90</td><td class="n">-0.0498</td><td class="n">0.3154</td><td class="n">0.9957</td><td class="n">0.332</td><td class="n">0.0583</td><td class="n">25.8%</td></tr><tr><td>robust (box)</td><td class="n">-0.0397</td><td class="n">0.3731</td><td class="n">1.1983</td><td class="n">0.776</td><td class="n">0.0683</td><td class="n">5.4%</td></tr></tbody></table></div>
+    <p>The CVaR formulation gives the lowest tail loss, the lowest worst case,
+    <em>and</em> the highest mean return, at a concentration well below the
+    deterministic solution. That combination is not guaranteed and is worth stating
+    plainly: on this generator, protecting the tail cost nothing.</p>
+    <div class="tw"><table><thead><tr><th>Method</th><th>In-sample CVaR</th><th>Out-of-sample CVaR</th><th>Optimism</th></tr></thead><tbody><tr><td>deterministic (mean only)</td><td class="n">0.2036</td><td class="n">0.3899</td><td class="n">+0.1863</td></tr><tr><td>robust (box)</td><td class="n">0.2032</td><td class="n">0.3731</td><td class="n">+0.1698</td></tr><tr><td>SAA mean-variance</td><td class="n">0.2097</td><td class="n">0.3424</td><td class="n">+0.1327</td></tr><tr><td>CVaR-90</td><td class="n">0.2284</td><td class="n">0.3154</td><td class="n">+0.0870</td></tr><tr><td>equal weight</td><td class="n">0.3214</td><td class="n">0.3325</td><td class="n">+0.0110</td></tr></tbody></table></div>
+    <p>Optimism is how much each method flatters itself when scored on the sample it was
+    fitted to. Equal weighting fits nothing and so has almost none
+    (+0.0110); every optimised method has more. That
+    column is the argument for the out-of-sample split, made with the numbers rather
+    than asserted.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The bug that looked like a finding</h2>
+  <div class="stack-lg">
+    <div class="note">
+      <h3>Pure CVaR minimisation put everything in two assets</h3>
+      <p>The first version of the CVaR portfolio had no position limit. It scored
+      <em>worse out of sample than equal weighting</em>, with a concentration of 1.000.
+      The obvious diagnosis was tail overfitting — CVaR-90 estimates its objective from
+      the worst 10% of the training sample, which at 600 scenarios is 60 points.</p>
+      <p>That diagnosis was wrong, and the sweep below is what ruled it out. If the
+      problem were sample size, the disadvantage would shrink as the sample grew. It did
+      not: at 6,400 scenarios the gap was unchanged and concentration was still above
+      0.97. The cause was the formulation. Minimising CVaR over a simplex is a linear
+      program, and a linear program's optimum sits at a vertex, so the solver has no
+      reason to hold more than a handful of assets.</p>
+      <p>Adding a return target did not fix it either, because the concentrated solution
+      already had the highest expected return and the constraint never bound. What was
+      missing is a position limit — which every real mandate carries. With one, CVaR
+      becomes the best method on the board.</p>
+    </div>
+    <figure><svg class="chart" viewBox="0 0 680 210" role="img" aria-label="Line chart"><line x1="46" y1="12.0" x2="666" y2="12.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="16.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.40</text><line x1="46" y1="54.0" x2="666" y2="54.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="58.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.38</text><line x1="46" y1="96.0" x2="666" y2="96.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="100.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.36</text><line x1="46" y1="138.0" x2="666" y2="138.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="142.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.34</text><line x1="46" y1="180.0" x2="666" y2="180.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="184.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.32</text><path d="M46.0,180.0 L66.0,144.8 L106.0,124.6 L186.0,162.4 L346.0,157.8 L666.0,142.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="25" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--accent)">CVaR method</text><path d="M46.0,32.3 L66.0,61.6 L106.0,28.2 L186.0,12.0 L346.0,25.5 L666.0,41.9" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="40" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--warn)">SAA method</text><text x="356.0" y="204" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">training scenarios</text><text x="12" y="96.0" text-anchor="middle" transform="rotate(-90 12 96.0)" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">out-of-sample CVaR-90</text></svg></figure>
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      Sweep re-run with the position limit in place; CVaR now beats SAA at every sample
+      size, by 0.068 to 0.069 CVaR.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Hospital staffing — CVaR loses, for a structural reason</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Method</th><th>In-sample CVaR</th><th>Out-of-sample CVaR</th><th>Mean cost</th><th>Unmet rate</th><th>Shifts fully covered</th></tr></thead><tbody><tr><td>deterministic (mean demand)</td><td class="n">583.1</td><td class="n">534.4</td><td class="n">160.72</td><td class="n">18.6%</td><td class="n">36.6%</td></tr><tr><td>SAA expected cost</td><td class="n">587.7</td><td class="n">516.7</td><td class="n">153.61</td><td class="n">17.1%</td><td class="n">41.9%</td></tr><tr><td>CVaR-90</td><td class="n">579.9</td><td class="n">556.3</td><td class="n">168.27</td><td class="n">20.3%</td><td class="n">31.6%</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>The CVaR plan solved its objective and still lost</h3>
+      <p>Read the first two numeric columns together. The CVaR plan has the
+      <strong>best in-sample</strong> tail cost (579.9,
+      better than both alternatives) and the <strong>worst out-of-sample</strong> tail
+      cost (556.3). It optimised exactly what it
+      was asked to and the answer did not transfer.</p>
+      <p>The reason is in the last metric on this page: mean pairwise demand correlation
+      across units is <strong>0.47</strong>. The surge is a
+      <em>common</em> shock — an epidemic or a mass-casualty event hits every unit at
+      once — and no reallocation of a <em>fixed</em> budget can hedge a common shock.
+      The CVaR plan pays for tail protection it cannot deliver, and the payment shows up
+      as a worse mean.</p>
+      <p>This is the opposite of the portfolio result and for a precise reason. There,
+      correlation rises in the crash regime but stays below 1, so diversification still
+      buys something. Here it does not. The lesson is not "CVaR is good" or "CVaR is
+      bad" — it is that tail-focused allocation helps only when the tail risk is
+      partly idiosyncratic, and the honest answer to a common shock is a bigger budget,
+      not a cleverer split of the one you have.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce it</h2>
+  <div class="stack">
+    <pre>cd optimization-under-uncertainty
+pip install -r requirements.txt
+python -m pytest tests/ -q
+python -m src.demo</pre>
+    <p>Solvers use scipy's <code>linprog</code> and SLSQP so the repository has no
+    modelling-language dependency. That caps problem size, and a production version
+    belongs in cvxpy or Pyomo.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What this does not establish</h2>
+  <div class="stack">
+    <ul class="tight">
+      <li>Both problems are synthetic. The generators were written by the same person as
+      the solvers, and the conclusions are about those generators.</li>
+      <li>The staffing result depends on how much of the surge is common across units.
+      A hospital whose demand shocks are unit-specific would show the opposite.</li>
+      <li>The robust formulation uses a box uncertainty set with a closed-form inner
+      maximisation. Ellipsoidal and budgeted sets behave differently and are not
+      implemented.</li>
+      <li>No transaction costs, no rebalancing, no multi-period dynamics. Single-period
+      allocation only.</li>
+      <li>Staffing treats nurses as divisible and interchangeable. Real rostering has
+      integrality, skill mix and shift-pattern constraints.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="foot">
+  <p>4.0-Decision-Intelligence-Framework &middot; optimization-under-uncertainty &middot; part of a five-repository portfolio on optimization-driven,
+     system-level decision frameworks.</p>
+  <p>Every figure on this page was produced by running <code>python -m src.demo</code> in this
+     project and reading <code>results.json</code>. Nothing here is hand-entered. The run used clearly-labelled synthetic data; swap in the real source and the same pipeline reports real numbers.</p>
+</div>
+</div>
+</body>
+</html>
