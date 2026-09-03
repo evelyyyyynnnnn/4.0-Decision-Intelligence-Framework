@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision Benchmark Suite</title>
+<meta name="description" content="Regret against an exact oracle, calibration of stated confidence, and degradation under named distribution shifts — three axes on which a decision policy can be wrong in different ways.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#FCFCFD; --surface:#FFFFFF; --surface-2:#F4F5F8;
+  --ink:#16191F; --ink-2:#40474F; --muted:#6C7480;
+  --line:#E2E5EA; --line-2:#EFF1F4;
+  --accent:#1D5B70; --accent-2:#E6F0F3;
+  --ok:#2C6B4F; --ok-bg:#E5F1EA;
+  --warn:#8A6212; --warn-bg:#F7EFDC;
+  --demo:#6E4B8F; --demo-bg:#F0EAF6;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+    --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+    --line:#282F38; --line-2:#20262E;
+    --accent:#72B3CB; --accent-2:#18272E;
+    --ok:#7BC09F; --ok-bg:#15251E;
+    --warn:#D8AD5E; --warn-bg:#292216;
+    --demo:#B79AD6; --demo-bg:#241C2E;
+  }
+}
+:root[data-theme=dark]{
+  --bg:#0F1216; --surface:#161A20; --surface-2:#1C212A;
+  --ink:#E9ECF0; --ink-2:#BEC5CE; --muted:#8A939F;
+  --line:#282F38; --line-2:#20262E;
+  --accent:#72B3CB; --accent-2:#18272E;
+  --ok:#7BC09F; --ok-bg:#15251E;
+  --warn:#D8AD5E; --warn-bg:#292216;
+  --demo:#B79AD6; --demo-bg:#241C2E;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15.5px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 88px}
+h1,h2,h3{font-family:Spectral,Georgia,"Songti SC",serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,4.2vw,42px);font-weight:700;letter-spacing:-.015em;line-height:1.14}
+h2{font-size:clamp(20px,2.5vw,25px);font-weight:600;letter-spacing:-.01em}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+a{color:var(--accent)}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:.88em}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack-lg{display:flex;flex-direction:column;gap:22px}
+section{margin-top:52px}
+
+header.mast{border-bottom:1px solid var(--line);padding:44px 0 26px;margin-bottom:8px;
+  display:flex;flex-direction:column;gap:15px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--ink-2);font-size:16.5px;max-width:66ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px;background:var(--surface-2);
+  color:var(--muted);font-weight:500;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.demo{background:var(--demo-bg);color:var(--demo)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+
+.banner{display:flex;gap:13px;align-items:flex-start;background:var(--demo-bg);
+  border-radius:9px;padding:15px 18px;margin-top:26px}
+.banner .bi{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--demo);flex:none;padding-top:3px;font-weight:600}
+.banner p{font-size:14.2px;color:var(--ink-2)}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.metric{background:var(--surface);padding:15px 16px;display:flex;flex-direction:column;gap:5px}
+.metric .mk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);line-height:1.35}
+.metric .mv{font-family:Spectral,Georgia,serif;font-size:26px;font-weight:600;
+  font-variant-numeric:tabular-nums;line-height:1.1;color:var(--accent)}
+.metric .mn{font-size:12.4px;color:var(--muted);line-height:1.4}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.8px;min-width:520px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);font-weight:500;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--surface-2)}
+td{padding:10px 14px;border-bottom:1px solid var(--line-2);vertical-align:top;line-height:1.5}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr:last-child td{border-bottom:0}
+
+pre{margin:0;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:15px 17px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;
+  font-size:12.8px;line-height:1.62;color:var(--ink-2)}
+ul.tight{margin:0;padding-left:19px;display:flex;flex-direction:column;gap:7px}
+ul.tight li::marker{color:var(--muted)}
+.note{background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+  padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.foot{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px;display:flex;flex-direction:column;gap:9px}
+figure{margin:0}
+svg.chart{display:block;width:100%;height:auto}
+@media (max-width:600px){.wrap{padding:0 17px 68px}.banner{flex-direction:column;gap:7px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <div class="eyebrow">4.0-Decision-Intelligence-Framework &middot; Cross-cutting</div>
+  <h1>Decision Benchmark Suite</h1>
+  <p class="lede">Regret against an exact oracle, calibration of stated confidence, and degradation under named distribution shifts — three axes on which a decision policy can be wrong in different ways.</p>
+  <div class="tags"><span class="tag ">exact oracles</span><span class="tag ">regret distribution</span><span class="tag ">named shifts</span><span class="tag demo">closed-form tasks</span></div>
+</header>
+<div class="banner">
+  <span class="bi">Data</span>
+  <p>Tasks are closed-form so the oracle is exact rather than searched. That is what makes regret computable instead of estimated — but it also means these are constructed problems, and a policy&#x27;s score here says nothing about a messy real one.</p>
+</div>
+
+<section>
+  <h2>Three ways a decision policy is wrong</h2>
+  <div class="stack">
+    <p><strong>Regret</strong>: how much payoff it gave up against the best available
+    decision. <strong>Calibration</strong>: whether its stated confidence means
+    anything, which is what decides when a human should be asked.
+    <strong>Robustness</strong>: how fast it degrades as the world moves away from what
+    it was fitted on.</p>
+    <p>A policy can be excellent on one and useless on another, and the table below has
+    a case of exactly that.</p>
+  </div>
+</section>
+
+<section>
+  <h2>This run</h2>
+  <div class="stack-lg">
+    <div class="metrics"><div class="metric"><span class="mk">Tasks</span><span class="mv">2</span><span class="mn">both with exact oracles</span></div><div class="metric"><span class="mk">Policies scored</span><span class="mv">7</span><span class="mn">across both tasks</span></div><div class="metric"><span class="mk">Shifts per task</span><span class="mv">5</span><span class="mn">named, not generic</span></div><div class="metric"><span class="mk">Best newsvendor policy</span><span class="mv">44.7</span><span class="mn">empirical fractile</span></div></div>
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      generated 2026-08-31T21:57:57+00:00 &middot;
+      newsvendor critical fractile 0.7778 &middot;
+      optimal order 63.8 &middot;
+      triage treats above P=0.125
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Which oracle you measure against decides what the number means</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Reference</th><th>Mean cost</th><th>What it means</th></tr></thead><tbody><tr><td>Clairvoyant oracle</td><td class="n">3.96</td><td>Picks the best order AFTER seeing realised demand. Unreachable.</td></tr><tr><td>Best fixed action</td><td class="n">48.78</td><td>The achievable floor — the best single order over the whole sample.</td></tr><tr><td>Distributional optimum</td><td class="n">48.78</td><td>Critical-fractile order given the TRUE distribution.</td></tr></tbody></table></div>
+    <div class="note">
+      <h3>The clairvoyant gap is not a performance gap</h3>
+      <p>Regret in the newsvendor table is measured against an oracle that chooses after
+      seeing realised demand. No policy can approach it: the gap is
+      <strong>44.8</strong> and it is dominated by the variance of demand itself,
+      not by anything a decision-maker could do better.</p>
+      <p>So the column that carries information is <em>excess over floor</em>. The
+      empirical-fractile policy scores
+      -0.14 — it is
+      sitting on the achievable optimum with nothing left to learn. Ordering the mean
+      scores +16.29, and that
+      number is the real cost of ignoring the cost asymmetry.</p>
+      <p>Reporting the raw regret alone would make a perfect policy look like it had a
+      44-point problem.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Newsvendor — ordering under asymmetric cost</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Policy</th><th>Mean regret</th><th>Excess over floor</th><th>p90 regret</th><th>% optimal</th><th>ECE</th><th>Degradation / unit shift</th><th>Worst / baseline</th></tr></thead><tbody><tr><td>empirical fractile</td><td class="n">44.6747</td><td class="n">-0.139</td><td class="n">90.000</td><td class="n">8.1%</td><td class="n">0.6195</td><td class="n">1.9883</td><td class="n">1.87×</td></tr><tr><td>order the mean</td><td class="n">61.1023</td><td class="n">+16.289</td><td class="n">158.737</td><td class="n">10.0%</td><td class="n">0.6000</td><td class="n">2.4566</td><td class="n">2.24×</td></tr><tr><td>always order 50</td><td class="n">61.1023</td><td class="n">+16.289</td><td class="n">158.737</td><td class="n">10.0%</td><td class="n">0.4000</td><td class="n">2.4566</td><td class="n">2.24×</td></tr></tbody></table></div>
+    <figure><svg class="chart" viewBox="0 0 680 210" role="img" aria-label="Line chart"><line x1="46" y1="12.0" x2="666" y2="12.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="16.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">136.93</text><line x1="46" y1="54.0" x2="666" y2="54.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="58.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">113.87</text><line x1="46" y1="96.0" x2="666" y2="96.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="100.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">90.80</text><line x1="46" y1="138.0" x2="666" y2="138.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="142.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">67.74</text><line x1="46" y1="180.0" x2="666" y2="180.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="184.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">44.67</text><path d="M46.0,137.3 L201.0,159.2 L356.0,180.0 L511.0,152.8 L666.0,109.3" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="25" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--accent)">empirical fractile</text><path d="M46.0,147.2 L201.0,154.1 L356.0,150.1 L511.0,83.4 L666.0,12.0" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="40" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--warn)">order the mean</text><path d="M46.0,147.2 L201.0,154.1 L356.0,150.1 L511.0,83.4 L666.0,12.0" fill="none" stroke="var(--ok)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="55" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ok)">always order 50</text><text x="356.0" y="204" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">distribution shift</text><text x="12" y="96.0" text-anchor="middle" transform="rotate(-90 12 96.0)" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">mean regret</text></svg></figure>
+  </div>
+</section>
+
+<section>
+  <div class="stack">
+    <div class="note">
+      <h3>Two policies scoring identically is a sanity check, not a coincidence</h3>
+      <p>"Order the mean" and "always order 50" produce the same regret because mean
+      demand in this task is 50. If those two rows ever diverged, the fitting code would
+      be doing something other than what it claims.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Triage — treat or wait on a noisy signal</h2>
+  <div class="stack-lg">
+    <div class="tw"><table><thead><tr><th>Policy</th><th>Mean regret</th><th>Excess over floor</th><th>p90 regret</th><th>% optimal</th><th>ECE</th><th>Degradation / unit shift</th><th>Worst / baseline</th></tr></thead><tbody><tr><td>Bayes-optimal given the signal</td><td class="n">0.0655</td><td class="n">—</td><td class="n">0.285</td><td class="n">79.7%</td><td class="n">0.1961</td><td class="n">0.0089</td><td class="n">2.01×</td></tr><tr><td>fitted threshold</td><td class="n">0.0656</td><td class="n">—</td><td class="n">0.285</td><td class="n">79.5%</td><td class="n">0.0141</td><td class="n">0.0118</td><td class="n">2.16×</td></tr><tr><td>always treat</td><td class="n">0.1187</td><td class="n">—</td><td class="n">0.511</td><td class="n">69.2%</td><td class="n">0.1923</td><td class="n">0.0847</td><td class="n">3.51×</td></tr><tr><td>never treat</td><td class="n">0.9950</td><td class="n">—</td><td class="n">2.777</td><td class="n">30.8%</td><td class="n">0.1923</td><td class="n">0.3765</td><td class="n">2.67×</td></tr></tbody></table></div>
+    <figure><svg class="chart" viewBox="0 0 680 210" role="img" aria-label="Line chart"><line x1="46" y1="12.0" x2="666" y2="12.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="16.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">2.65</text><line x1="46" y1="54.0" x2="666" y2="54.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="58.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">1.99</text><line x1="46" y1="96.0" x2="666" y2="96.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="100.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">1.33</text><line x1="46" y1="138.0" x2="666" y2="138.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="142.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.67</text><line x1="46" y1="180.0" x2="666" y2="180.0" stroke="currentColor" opacity=".12" stroke-width="1"/><text x="38" y="184.0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">0.01</text><path d="M46.0,172.4 L201.0,174.3 L356.0,176.6 L511.0,178.4 L666.0,179.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="25" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--accent)">Bayes-optimal given th</text><path d="M46.0,171.7 L201.0,173.9 L356.0,176.6 L511.0,178.4 L666.0,179.6" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="40" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--warn)">fitted threshold</text><path d="M46.0,154.2 L201.0,165.0 L356.0,173.2 L511.0,178.0 L666.0,180.0" fill="none" stroke="var(--ok)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="55" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ok)">always treat</text><path d="M46.0,169.1 L201.0,150.4 L356.0,117.5 L511.0,70.1 L666.0,12.0" fill="none" stroke="var(--demo)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="666" y="70" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--demo)">never treat</text><text x="356.0" y="204" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">distribution shift</text><text x="12" y="96.0" text-anchor="middle" transform="rotate(-90 12 96.0)" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">mean regret</text></svg></figure>
+  </div>
+</section>
+
+<section>
+  <div class="stack">
+    <div class="note">
+      <h3>The Bayes policy wins on regret and loses badly on calibration</h3>
+      <p>The Bayes-optimal policy and the fitted threshold are separated by
+      0.0001
+      in mean regret — effectively tied, which is the expected result: with a
+      one-dimensional signal and a monotone posterior, a well-fitted threshold
+      <em>is</em> the Bayes rule. Nothing is gained from the generative model here, and
+      that is worth knowing before building one.</p>
+      <p>They separate sharply on calibration. The threshold policy's ECE is
+      0.0141; the Bayes policy's
+      is 0.1961,
+      an order of magnitude worse. Its confidence is a well-calibrated estimate of
+      <em>the patient's risk</em>, and it is being scored here as a claim about
+      <em>its own correctness</em>. Those are different quantities, and conflating them
+      is how a system ends up escalating the wrong cases to a human.</p>
+      <p>On robustness the ordering flips back: the Bayes policy degrades at
+      0.0089
+      per unit of shift against
+      0.0118
+      for the threshold, because a threshold fitted to one distribution is fitted to
+      that distribution. Three axes, three different winners.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce it</h2>
+  <div class="stack">
+    <pre>cd decision-benchmark-suite
+pip install -r requirements.txt
+python -m pytest tests/ -q
+python -m src.demo</pre>
+    <p>To benchmark your own policy, implement <code>fit(sample)</code>,
+    <code>decide(sample) -&gt; action indices</code> and
+    <code>confidence(sample) -&gt; [0,1]</code>, then add it to the list in
+    <code>src/demo.py</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What this does not establish</h2>
+  <div class="stack">
+    <ul class="tight">
+      <li>Two constructed tasks with closed-form solutions. That is what makes exact
+      regret possible and also what makes the results unrepresentative of real
+      decision problems.</li>
+      <li>Robustness is measured against the shifts named in the table. A policy robust
+      to a mean shift can be fragile to a variance or correlation shift, and neither is
+      tested here.</li>
+      <li>The Bayes policy uses the true generative model. Real systems estimate it,
+      and that estimation error is not represented.</li>
+      <li>No sequential or feedback effects: every decision is independent, and no
+      decision changes the distribution of later ones.</li>
+      <li>The suite has never been run against the other projects in this repository,
+      which is the obvious next step and has not been done.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="foot">
+  <p>4.0-Decision-Intelligence-Framework &middot; decision-benchmark-suite &middot; part of a five-repository portfolio on optimization-driven,
+     system-level decision frameworks.</p>
+  <p>Every figure on this page was produced by running <code>python -m src.demo</code> in this
+     project and reading <code>results.json</code>. Nothing here is hand-entered. The run used clearly-labelled synthetic data; swap in the real source and the same pipeline reports real numbers.</p>
+</div>
+</div>
+</body>
+</html>
