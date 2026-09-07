@@ -170,6 +170,7 @@ def portfolio_study_real(root):
     return {
         "assets": meta["assets"],
         "n_assets": n,
+        "data_source": meta["data_source"],
         "n_train": meta["train"]["n_days"], "n_test": meta["test"]["n_days"],
         "alpha": ALPHA,
         "split": meta["split"], "split_rationale": meta["split_rationale"],
@@ -196,8 +197,7 @@ def run_real() -> dict:
     results = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "is_synthetic": False,
-        "data_source": "real daily closes from Stooq; see data/MANIFEST.json for "
-                       "URLs, hashes and retrieval times",
+        "data_source": port["data_source"],
         "portfolio": port,
         "optimism": in_vs_out(port),
         "staffing_reported": False,

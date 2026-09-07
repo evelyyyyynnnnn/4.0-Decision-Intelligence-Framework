@@ -1,0 +1,345 @@
+{
+  "generated_at": "2026-09-07T00:12:00+00:00",
+  "is_synthetic": false,
+  "data_source": "real daily returns of the 10 Fama-French industry portfolios (value-weighted); see data/MANIFEST.json for the URL, hash and retrieval time",
+  "portfolio": {
+    "assets": [
+      "Durbl",
+      "Enrgy",
+      "HiTec",
+      "Hlth",
+      "Manuf",
+      "NoDur",
+      "Other",
+      "Shops",
+      "Telcm",
+      "Utils"
+    ],
+    "n_assets": 10,
+    "data_source": "real daily returns of the 10 Fama-French industry portfolios (value-weighted); see data/MANIFEST.json for the URL, hash and retrieval time",
+    "n_train": 1794,
+    "n_test": 1197,
+    "alpha": 0.9,
+    "split": "chronological",
+    "split_rationale": "real markets give one history, so the only honest split is in time. A random split leaks the test period's regime into the training set and restores the stationarity guarantee that makes the simulated comparison easy.",
+    "train_window": {
+      "n_days": 1794,
+      "first": "2014-09-09",
+      "last": "2021-10-21"
+    },
+    "test_window": {
+      "n_days": 1197,
+      "first": "2021-10-22",
+      "last": "2026-07-31"
+    },
+    "worst_day_train": -0.11532,
+    "worst_day_test": -0.06162,
+    "weights": {
+      "equal weight": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "deterministic (mean only)": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "SAA mean-variance": [
+        0.0,
+        0.0,
+        0.0,
+        0.123,
+        0.0,
+        0.4281,
+        0.0,
+        0.2141,
+        0.1492,
+        0.0856
+      ],
+      "CVaR-90": [
+        0.0,
+        0.0,
+        0.0789,
+        0.0918,
+        0.0,
+        0.233,
+        0.0,
+        0.35,
+        0.0,
+        0.2463
+      ],
+      "robust (box)": [
+        0.0,
+        0.0,
+        0.3259,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6741,
+        0.0,
+        0.0
+      ]
+    },
+    "concentration": {
+      "equal weight": 0.1,
+      "deterministic (mean only)": 1.0,
+      "SAA mean-variance": 0.2738,
+      "CVaR-90": 0.2521,
+      "robust (box)": 0.5606
+    },
+    "in_sample": {
+      "equal weight": {
+        "mean": -0.000538,
+        "std": 0.011149,
+        "var": 0.009684,
+        "cvar": 0.019799,
+        "worst": 0.11532,
+        "p05_best": -0.015592
+      },
+      "deterministic (mean only)": {
+        "mean": -0.000953,
+        "std": 0.018126,
+        "var": 0.0171,
+        "cvar": 0.031211,
+        "worst": 0.1449,
+        "p05_best": -0.02734
+      },
+      "SAA mean-variance": {
+        "mean": -0.000456,
+        "std": 0.009541,
+        "var": 0.008394,
+        "cvar": 0.016786,
+        "worst": 0.09619,
+        "p05_best": -0.012201
+      },
+      "CVaR-90": {
+        "mean": -0.000538,
+        "std": 0.009854,
+        "var": 0.008848,
+        "cvar": 0.017099,
+        "worst": 0.10608,
+        "p05_best": -0.012552
+      },
+      "robust (box)": {
+        "mean": -0.000769,
+        "std": 0.011434,
+        "var": 0.011215,
+        "cvar": 0.020807,
+        "worst": 0.114681,
+        "p05_best": -0.016124
+      }
+    },
+    "out_of_sample": {
+      "equal weight": {
+        "mean": -0.000445,
+        "std": 0.010053,
+        "var": 0.011082,
+        "cvar": 0.018001,
+        "worst": 0.06162,
+        "p05_best": -0.016042
+      },
+      "deterministic (mean only)": {
+        "mean": -0.000482,
+        "std": 0.029523,
+        "var": 0.03458,
+        "cvar": 0.052237,
+        "worst": 0.1155,
+        "p05_best": -0.04732
+      },
+      "SAA mean-variance": {
+        "mean": -0.000285,
+        "std": 0.008317,
+        "var": 0.009096,
+        "cvar": 0.014877,
+        "worst": 0.047698,
+        "p05_best": -0.012585
+      },
+      "CVaR-90": {
+        "mean": -0.00042,
+        "std": 0.008889,
+        "var": 0.009837,
+        "cvar": 0.015958,
+        "worst": 0.048285,
+        "p05_best": -0.013626
+      },
+      "robust (box)": {
+        "mean": -0.000531,
+        "std": 0.01277,
+        "var": 0.014328,
+        "cvar": 0.02327,
+        "worst": 0.061042,
+        "p05_best": -0.019163
+      }
+    },
+    "regret": {
+      "equal weight": {
+        "mean_regret": 0.011263,
+        "max_regret": 0.13311,
+        "frac_best": 0.0451
+      },
+      "deterministic (mean only)": {
+        "mean_regret": 0.011227,
+        "max_regret": 0.107962,
+        "frac_best": 0.4277
+      },
+      "SAA mean-variance": {
+        "mean_regret": 0.011423,
+        "max_regret": 0.148062,
+        "frac_best": 0.2373
+      },
+      "CVaR-90": {
+        "mean_regret": 0.011288,
+        "max_regret": 0.148497,
+        "frac_best": 0.0852
+      },
+      "robust (box)": {
+        "mean_regret": 0.011177,
+        "max_regret": 0.144756,
+        "frac_best": 0.2047
+      }
+    },
+    "provenance": [
+      {
+        "symbol": "Durbl",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Enrgy",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "HiTec",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Hlth",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Manuf",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "NoDur",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Other",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Shops",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Telcm",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      },
+      {
+        "symbol": "Utils",
+        "status": "ok",
+        "n_days": 2991,
+        "first": "2014-09-09",
+        "last": "2026-07-31",
+        "sha256": "b1a23edba335ddd3",
+        "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/10_Industry_Portfolios_daily_CSV.zip"
+      }
+    ],
+    "staffing_remains_simulated_because": "there is no public series of per-unit hospital staffing demand to download; a proxy would not make it a staffing study."
+  },
+  "optimism": [
+    {
+      "method": "deterministic (mean only)",
+      "in_sample_cvar": 0.031211,
+      "out_of_sample_cvar": 0.052237,
+      "optimism": 0.021026
+    },
+    {
+      "method": "robust (box)",
+      "in_sample_cvar": 0.020807,
+      "out_of_sample_cvar": 0.02327,
+      "optimism": 0.002463
+    },
+    {
+      "method": "CVaR-90",
+      "in_sample_cvar": 0.017099,
+      "out_of_sample_cvar": 0.015958,
+      "optimism": -0.001141
+    },
+    {
+      "method": "equal weight",
+      "in_sample_cvar": 0.019799,
+      "out_of_sample_cvar": 0.018001,
+      "optimism": -0.001798
+    },
+    {
+      "method": "SAA mean-variance",
+      "in_sample_cvar": 0.016786,
+      "out_of_sample_cvar": 0.014877,
+      "optimism": -0.001909
+    }
+  ],
+  "staffing_reported": false,
+  "staffing_withheld_because": "there is no public series of per-unit hospital staffing demand to download; a proxy would not make it a staffing study."
+}
