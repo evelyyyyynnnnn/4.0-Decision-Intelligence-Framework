@@ -1,0 +1,202 @@
+{
+  "generated_at": "2026-09-06T23:58:26+00:00",
+  "is_synthetic": false,
+  "data_source": "Statlog German Credit Data (UCI); see data/MANIFEST.json for the URL, hash and retrieval time",
+  "policy_is_authored_not_fitted": true,
+  "features_used": [
+    "installment_rate",
+    "delinquencies",
+    "employment_years",
+    "credit_amount_k",
+    "age"
+  ],
+  "features_dropped": [
+    "income_k",
+    "dti"
+  ],
+  "dropped_because": "this dataset records no income figure, and a debt-to-income ratio cannot be derived from an installment rate alone. Renaming the installment rate to dti would put a different quantity under a name readers already understand.",
+  "provenance": {
+    "dataset": "Statlog German Credit Data (UCI ML Repository)",
+    "n_cases": 1000,
+    "n_bad_risk": 300,
+    "bad_rate": 0.3,
+    "features_used": [
+      "installment_rate",
+      "delinquencies",
+      "employment_years",
+      "credit_amount_k",
+      "age"
+    ],
+    "features_dropped": [
+      "income_k",
+      "dti"
+    ],
+    "dropped_because": "this dataset records no income figure, and a debt-to-income ratio cannot be derived from an installment rate alone. Renaming the installment rate to dti would put a different quantity under a name readers already understand.",
+    "sha256": "e12d9d5def6845c0",
+    "url": "https://archive.ics.uci.edu/static/public/144/statlog+german+credit+data.zip",
+    "retrieved_utc": "2026-09-06T23:58:26+00:00"
+  },
+  "ledger": {
+    "n_decisions": 1000,
+    "chain_intact": true,
+    "first_broken_index": -1,
+    "policies": [
+      "credit-approval-de@1.0"
+    ],
+    "action_counts": {
+      "decline": 889,
+      "approve": 111
+    }
+  },
+  "replay": {
+    "n": 1000,
+    "reproduced": 1000,
+    "failures": []
+  },
+  "tamper": {
+    "intact_before": true,
+    "detected": true,
+    "detected_at": 3,
+    "field_edited": "installment_rate",
+    "intact_after_restore": true
+  },
+  "versioning": {
+    "policy": "credit-approval-de",
+    "from": "1.0",
+    "to": "2.0",
+    "decisions_changed": 15,
+    "share_changed": 0.015
+  },
+  "outcome_check": {
+    "declined": 889,
+    "approved": 111,
+    "bad_rate_overall": 0.3,
+    "bad_rate_among_declined": 0.3105,
+    "bad_rate_among_approved": 0.2162,
+    "lift": 1.035,
+    "note": "the policy is authored, not fitted to this data, so a lift near 1.0 would mean it separates nothing -- which is a finding about the policy, not a failure of the audit trail"
+  },
+  "case": {
+    "case_id": "GC-0378",
+    "seq": 378,
+    "action": "decline",
+    "score": -15.74124,
+    "inputs": {
+      "installment_rate": 4.0,
+      "delinquencies": 0.0,
+      "employment_years": 10.0,
+      "credit_amount_k": 14.318,
+      "age": 57.0
+    }
+  },
+  "occlusion": {
+    "installment_rate": -7.13992,
+    "delinquencies": 0.0,
+    "employment_years": 0.27,
+    "credit_amount_k": -14.53524,
+    "age": 0.204
+  },
+  "shapley": {
+    "values": {
+      "installment_rate": -4.42996,
+      "delinquencies": 0.0,
+      "employment_years": 0.27,
+      "credit_amount_k": -11.82528,
+      "age": 0.204
+    },
+    "mode": "exact",
+    "n_orderings": 120
+  },
+  "attribution_disagreement": {
+    "installment_rate": -2.70996,
+    "delinquencies": 0.0,
+    "employment_years": 0.0,
+    "credit_amount_k": -2.70996,
+    "age": 0.0
+  },
+  "max_disagreement": 2.70996,
+  "efficiency": {
+    "sum_of_values": -15.78124,
+    "score_difference": -15.78124,
+    "residual": 0.0,
+    "efficient": true
+  },
+  "counterfactuals": [
+    {
+      "feature": "installment_rate",
+      "to": 1.0,
+      "seq": 378,
+      "available": true,
+      "overrides": {
+        "installment_rate": 1.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -15.74124,
+      "counterfactual_score": -5.03136,
+      "changed": false,
+      "score_delta": 10.70988
+    },
+    {
+      "feature": "delinquencies",
+      "to": 0.0,
+      "seq": 378,
+      "available": true,
+      "overrides": {
+        "delinquencies": 0.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -15.74124,
+      "counterfactual_score": -15.74124,
+      "changed": false,
+      "score_delta": 0.0
+    },
+    {
+      "feature": "credit_amount_k",
+      "to": 1.0,
+      "seq": 378,
+      "available": true,
+      "overrides": {
+        "credit_amount_k": 1.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -15.74124,
+      "counterfactual_score": -0.026,
+      "changed": false,
+      "score_delta": 15.71524
+    },
+    {
+      "feature": "employment_years",
+      "to": 10.0,
+      "seq": 378,
+      "available": true,
+      "overrides": {
+        "employment_years": 10.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -15.74124,
+      "counterfactual_score": -15.74124,
+      "changed": false,
+      "score_delta": 0.0
+    },
+    {
+      "feature": "age",
+      "to": 55.0,
+      "seq": 378,
+      "available": true,
+      "overrides": {
+        "age": 55.0
+      },
+      "original_action": "decline",
+      "counterfactual_action": "decline",
+      "original_score": -15.74124,
+      "counterfactual_score": -15.76524,
+      "changed": false,
+      "score_delta": -0.024
+    }
+  ],
+  "n_flipping_features": 0
+}

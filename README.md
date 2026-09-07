@@ -68,15 +68,12 @@ Regret, calibration and robustness benchmarks across the frameworks in this repo
 ├── optimization-under-uncertainty/
 ├── decision-audit-framework/
 ├── icu-triage-optimization/
-├── decision-benchmark-suite/
-│
-│   ── earlier work, promoted out of previous/ ──
-├── efficiency-toolkit/
-├── geo-mapping-system/
-└── llm-fine-tuning-template/
+└── decision-benchmark-suite/
 ```
 
 Every rebuilt project carries the same skeleton: `README.md`, `src/`, `data/`, `results/`, `tests/`, `website/`.
+
+> Earlier and off-theme prior work (dashboards, consumer apps, templates, and other non-endeavor folders) has been moved to a separate `archive-prior-work` repository to keep this repository focused on the endeavor. It remains recoverable from this repository's git history.
 
 ## Ground rules
 
@@ -87,21 +84,6 @@ Every rebuilt project carries the same skeleton: `README.md`, `src/`, `data/`, `
 3. **Adoption must be documentable** — named institutions, dated
    correspondence, registry statistics. Never an inflated count.
 4. **Third-party and forked code stays labelled** and is never counted.
-
-## Earlier work
-
-There is no `previous/` folder any more. Everything that was in it has been promoted to the top level, so every piece of work in this repository is a first-class folder that can be opened, read and continued.
-
-Nothing was deleted except items the rebuild genuinely supersedes; those remain in git history.
-
-| Folder | What it is | How it may be used |
-|---|---|---|
-| [`efficiency-toolkit/`](efficiency-toolkit/) | Academic reference and citation automation (two scripts). | Prior original work. Duplicated as `repo4-llm-efficiency-reference-search/` in repo 5.0. |
-| [`geo-mapping-system/`](geo-mapping-system/) | PoetMap / 寻踪·诗意盛唐 — Tang poet journeys as 3D geo-visualisation. Documents, meeting records and design files only; no code. | Documents only. Not citable as software. |
-| [`llm-fine-tuning-template/`](llm-fine-tuning-template/) | Qwen DPO preference-tuning scaffold. | Prior original work. Duplicated as `repo3-fine-tuning-template/` in repo 5.0. |
-
-**Read the third column before citing anything here.** Forks of third-party work, duplicates, retired projects and asset-only folders are labelled as such and are not part of the petition's evidence.
-
 
 ---
 Scaffold generated from `NIW_Project_Portfolio_and_Gap_Plan.xlsx` (sheets: Repo Build-Out Plan, Core Ideas at a Glance, NIW Claim vs Repo Evidence, Notion 创业 Alignment). Structure only — no results are claimed here yet.
