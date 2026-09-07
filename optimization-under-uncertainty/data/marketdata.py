@@ -21,6 +21,8 @@ from .datakit import Source
 STOOQ = "https://stooq.com/q/d/l/?s={sym}&d1={start}&d2={end}&i=d"
 FRENCH = ("https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
           "F-F_Research_Data_Factors_daily_CSV.zip")
+FRENCH_INDUSTRIES = ("https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/"
+                     "ftp/10_Industry_Portfolios_daily_CSV.zip")
 COINGECKO = ("https://api.coingecko.com/api/v3/coins/{coin}/market_chart"
              "?vs_currency=usd&days={days}&interval=daily")
 FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}"
@@ -44,6 +46,29 @@ def french_source() -> Source:
         dest="french/ff_daily.zip", publisher="Kenneth R. French Data Library",
         terms="free for research use, attribution requested",
         note="Mkt-RF, SMB, HML and the daily risk-free rate",
+    )
+
+
+def french_industries_source() -> Source:
+    """The 10 Fama-French industry portfolios, daily.
+
+    Ten value-weighted return series -- consumer non-durables, durables,
+    manufacturing, energy, tech, telecom, shops, health, utilities and a
+    residual -- that differ in their tails. Breadth of that kind is exactly what
+    the deterministic/SAA/CVaR/robust comparison needs: with ten sectors that
+    behave differently in a crash, a risk-aware allocation has something to earn
+    that equal weighting does not.
+
+    Unlike a per-ticker price feed, these are the canonical academic series,
+    retrievable by anyone with no account, so the fetch is reproducible.
+    """
+    return Source(
+        name="Fama-French 10 industry portfolios, daily",
+        url=FRENCH_INDUSTRIES,
+        dest="french/10_industry_daily.zip",
+        publisher="Kenneth R. French Data Library",
+        terms="free for research use, attribution requested",
+        note="daily value-weighted returns for 10 US industry portfolios",
     )
 
 
@@ -129,6 +154,59 @@ def parse_french(raw: bytes) -> tuple:
             data[c].append(float(v) / 100.0)   # the file is in percent
     if not dates:
         raise ValueError("no daily rows parsed from the French CSV")
+    return dates, data
+
+
+def parse_french_industries(raw: bytes) -> tuple:
+    """Return (dates, {industry: [returns]}) from the 10-industry daily zip.
+
+    The file stacks several blocks: value-weighted daily returns first, then
+    equal-weighted daily, then monthly and annual blocks, each behind a blank
+    line with its own header. Only the FIRST block -- value-weighted daily -- is
+    read; walking past the blank line would splice equal-weighted or annual
+    returns onto the same series and quietly corrupt every downstream number.
+
+    Returns are already returns, not prices, and the file quotes them in
+    percent, so each value is divided by 100. Missing observations are written
+    as -99.99 or -999; a day carrying either in any column is dropped whole,
+    because aligning ten industries requires one common calendar.
+    """
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        name = [n for n in z.namelist() if n.lower().endswith(".csv")][0]
+        text = z.read(name).decode("utf-8", errors="replace")
+
+    lines = text.splitlines()
+    start = None
+    for i, ln in enumerate(lines):
+        parts = [p.strip() for p in ln.split(",")]
+        # The header row has an empty first cell (the date column) followed by
+        # the industry names, and the row beneath it is an 8-digit date.
+        if parts and parts[0] == "" and len(parts) >= 4 and all(parts[1:]):
+            nxt = lines[i + 1].split(",")[0].strip() if i + 1 < len(lines) else ""
+            if nxt.isdigit() and len(nxt) == 8:
+                start = i
+                break
+    if start is None:
+        raise ValueError("could not find the industry header row in the "
+                         "French CSV")
+
+    cols = [p.strip() for p in lines[start].split(",")][1:]
+    dates, data = [], {c: [] for c in cols}
+    for ln in lines[start + 1:]:
+        s = ln.strip()
+        if not s:
+            break                      # end of the value-weighted daily block
+        parts = [p.strip() for p in s.split(",")]
+        if not parts[0].isdigit() or len(parts[0]) != 8:
+            break                      # monthly/annual blocks use short years
+        vals = [float(v) for v in parts[1:1 + len(cols)]]
+        if any(v <= -99.98 for v in vals):
+            continue                   # -99.99 / -999 mark a missing day
+        dates.append(datetime.strptime(parts[0], "%Y%m%d").date())
+        for c, v in zip(cols, vals):
+            data[c].append(v / 100.0)  # the file is in percent
+    if not dates:
+        raise ValueError("no daily industry rows parsed from the French CSV")
     return dates, data
 
 
