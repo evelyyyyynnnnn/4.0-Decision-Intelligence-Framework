@@ -185,7 +185,7 @@ def build_site(results: dict) -> pathlib.Path:
 <section>
   <h2>Reproduce it</h2>
   <div class="stack">
-    <pre>cd icu-triage-optimization
+    <pre>cd 3-icu-triage-optimization
 pip install -r requirements.txt
 python -m pytest tests/ -q
 python -m src.demo</pre>
