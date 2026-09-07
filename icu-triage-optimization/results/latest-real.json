@@ -1,0 +1,1270 @@
+{
+  "generated_at": "2026-09-06T23:58:50+00:00",
+  "is_synthetic": false,
+  "data_source": "PhysioNet MIMIC-IV clinical database demo (open access); see data/MANIFEST.json for file hashes and retrieval times",
+  "n_observations": 5303,
+  "event_rate": 0.3096,
+  "n_operating_points": 60,
+  "frontier": [
+    {
+      "threshold": 0.01621,
+      "sensitivity": 1.0,
+      "false_alerts_per_100": 68.923,
+      "alerts_per_100": 99.887,
+      "ppv": 0.31,
+      "missed": 0,
+      "nurse_load": 3.998
+    },
+    {
+      "threshold": 0.0308,
+      "sensitivity": 0.9994,
+      "false_alerts_per_100": 67.264,
+      "alerts_per_100": 98.209,
+      "ppv": 0.3151,
+      "missed": 1,
+      "nurse_load": 3.931
+    },
+    {
+      "threshold": 0.03854,
+      "sensitivity": 0.9976,
+      "false_alerts_per_100": 65.623,
+      "alerts_per_100": 96.511,
+      "ppv": 0.32,
+      "missed": 4,
+      "nurse_load": 3.863
+    },
+    {
+      "threshold": 0.05143,
+      "sensitivity": 0.9957,
+      "false_alerts_per_100": 62.285,
+      "alerts_per_100": 93.117,
+      "ppv": 0.3311,
+      "missed": 7,
+      "nurse_load": 3.727
+    },
+    {
+      "threshold": 0.05828,
+      "sensitivity": 0.9945,
+      "false_alerts_per_100": 60.645,
+      "alerts_per_100": 91.439,
+      "ppv": 0.3368,
+      "missed": 9,
+      "nurse_load": 3.66
+    },
+    {
+      "threshold": 0.06443,
+      "sensitivity": 0.9909,
+      "false_alerts_per_100": 59.061,
+      "alerts_per_100": 89.742,
+      "ppv": 0.3419,
+      "missed": 15,
+      "nurse_load": 3.592
+    },
+    {
+      "threshold": 0.06951,
+      "sensitivity": 0.9878,
+      "false_alerts_per_100": 57.458,
+      "alerts_per_100": 88.045,
+      "ppv": 0.3474,
+      "missed": 20,
+      "nurse_load": 3.524
+    },
+    {
+      "threshold": 0.07587,
+      "sensitivity": 0.9848,
+      "false_alerts_per_100": 55.874,
+      "alerts_per_100": 86.366,
+      "ppv": 0.3531,
+      "missed": 25,
+      "nurse_load": 3.457
+    },
+    {
+      "threshold": 0.08197,
+      "sensitivity": 0.9836,
+      "false_alerts_per_100": 54.215,
+      "alerts_per_100": 84.669,
+      "ppv": 0.3597,
+      "missed": 27,
+      "nurse_load": 3.389
+    },
+    {
+      "threshold": 0.08858,
+      "sensitivity": 0.9775,
+      "false_alerts_per_100": 52.706,
+      "alerts_per_100": 82.972,
+      "ppv": 0.3648,
+      "missed": 37,
+      "nurse_load": 3.321
+    },
+    {
+      "threshold": 0.09441,
+      "sensitivity": 0.975,
+      "false_alerts_per_100": 51.103,
+      "alerts_per_100": 81.294,
+      "ppv": 0.3714,
+      "missed": 41,
+      "nurse_load": 3.254
+    },
+    {
+      "threshold": 0.10244,
+      "sensitivity": 0.9671,
+      "false_alerts_per_100": 49.651,
+      "alerts_per_100": 79.596,
+      "ppv": 0.3762,
+      "missed": 54,
+      "nurse_load": 3.186
+    },
+    {
+      "threshold": 0.10882,
+      "sensitivity": 0.9616,
+      "false_alerts_per_100": 48.124,
+      "alerts_per_100": 77.899,
+      "ppv": 0.3822,
+      "missed": 63,
+      "nurse_load": 3.118
+    },
+    {
+      "threshold": 0.11452,
+      "sensitivity": 0.9555,
+      "false_alerts_per_100": 46.634,
+      "alerts_per_100": 76.221,
+      "ppv": 0.3882,
+      "missed": 73,
+      "nurse_load": 3.051
+    },
+    {
+      "threshold": 0.12139,
+      "sensitivity": 0.9507,
+      "false_alerts_per_100": 45.107,
+      "alerts_per_100": 74.543,
+      "ppv": 0.3949,
+      "missed": 81,
+      "nurse_load": 2.983
+    },
+    {
+      "threshold": 0.1272,
+      "sensitivity": 0.9421,
+      "false_alerts_per_100": 43.655,
+      "alerts_per_100": 72.827,
+      "ppv": 0.4006,
+      "missed": 95,
+      "nurse_load": 2.915
+    },
+    {
+      "threshold": 0.1335,
+      "sensitivity": 0.9348,
+      "false_alerts_per_100": 42.203,
+      "alerts_per_100": 71.148,
+      "ppv": 0.4068,
+      "missed": 107,
+      "nurse_load": 2.848
+    },
+    {
+      "threshold": 0.14071,
+      "sensitivity": 0.9294,
+      "false_alerts_per_100": 40.675,
+      "alerts_per_100": 69.451,
+      "ppv": 0.4143,
+      "missed": 116,
+      "nurse_load": 2.78
+    },
+    {
+      "threshold": 0.14794,
+      "sensitivity": 0.922,
+      "false_alerts_per_100": 39.204,
+      "alerts_per_100": 67.754,
+      "ppv": 0.4214,
+      "missed": 128,
+      "nurse_load": 2.712
+    },
+    {
+      "threshold": 0.1533,
+      "sensitivity": 0.9123,
+      "false_alerts_per_100": 37.828,
+      "alerts_per_100": 66.076,
+      "ppv": 0.4275,
+      "missed": 144,
+      "nurse_load": 2.645
+    },
+    {
+      "threshold": 0.16117,
+      "sensitivity": 0.9068,
+      "false_alerts_per_100": 36.3,
+      "alerts_per_100": 64.379,
+      "ppv": 0.4361,
+      "missed": 153,
+      "nurse_load": 2.577
+    },
+    {
+      "threshold": 0.16858,
+      "sensitivity": 0.8989,
+      "false_alerts_per_100": 34.848,
+      "alerts_per_100": 62.682,
+      "ppv": 0.444,
+      "missed": 166,
+      "nurse_load": 2.509
+    },
+    {
+      "threshold": 0.17654,
+      "sensitivity": 0.8886,
+      "false_alerts_per_100": 33.472,
+      "alerts_per_100": 60.984,
+      "ppv": 0.4511,
+      "missed": 183,
+      "nurse_load": 2.441
+    },
+    {
+      "threshold": 0.18492,
+      "sensitivity": 0.8782,
+      "false_alerts_per_100": 32.114,
+      "alerts_per_100": 59.306,
+      "ppv": 0.4585,
+      "missed": 200,
+      "nurse_load": 2.374
+    },
+    {
+      "threshold": 0.19496,
+      "sensitivity": 0.8642,
+      "false_alerts_per_100": 30.85,
+      "alerts_per_100": 57.609,
+      "ppv": 0.4645,
+      "missed": 223,
+      "nurse_load": 2.306
+    },
+    {
+      "threshold": 0.20583,
+      "sensitivity": 0.8477,
+      "false_alerts_per_100": 29.662,
+      "alerts_per_100": 55.912,
+      "ppv": 0.4695,
+      "missed": 250,
+      "nurse_load": 2.238
+    },
+    {
+      "threshold": 0.21459,
+      "sensitivity": 0.8331,
+      "false_alerts_per_100": 28.437,
+      "alerts_per_100": 54.233,
+      "ppv": 0.4757,
+      "missed": 274,
+      "nurse_load": 2.171
+    },
+    {
+      "threshold": 0.22665,
+      "sensitivity": 0.821,
+      "false_alerts_per_100": 27.117,
+      "alerts_per_100": 52.536,
+      "ppv": 0.4838,
+      "missed": 294,
+      "nurse_load": 2.103
+    },
+    {
+      "threshold": 0.23723,
+      "sensitivity": 0.8069,
+      "false_alerts_per_100": 25.853,
+      "alerts_per_100": 50.839,
+      "ppv": 0.4915,
+      "missed": 317,
+      "nurse_load": 2.035
+    },
+    {
+      "threshold": 0.24756,
+      "sensitivity": 0.7929,
+      "false_alerts_per_100": 24.609,
+      "alerts_per_100": 49.161,
+      "ppv": 0.4994,
+      "missed": 340,
+      "nurse_load": 1.968
+    },
+    {
+      "threshold": 0.25818,
+      "sensitivity": 0.7722,
+      "false_alerts_per_100": 23.553,
+      "alerts_per_100": 47.464,
+      "ppv": 0.5038,
+      "missed": 374,
+      "nurse_load": 1.9
+    },
+    {
+      "threshold": 0.26778,
+      "sensitivity": 0.7533,
+      "false_alerts_per_100": 22.44,
+      "alerts_per_100": 45.767,
+      "ppv": 0.5097,
+      "missed": 405,
+      "nurse_load": 1.832
+    },
+    {
+      "threshold": 0.27974,
+      "sensitivity": 0.7363,
+      "false_alerts_per_100": 21.29,
+      "alerts_per_100": 44.088,
+      "ppv": 0.5171,
+      "missed": 433,
+      "nurse_load": 1.765
+    },
+    {
+      "threshold": 0.29168,
+      "sensitivity": 0.7113,
+      "false_alerts_per_100": 20.366,
+      "alerts_per_100": 42.391,
+      "ppv": 0.5196,
+      "missed": 474,
+      "nurse_load": 1.697
+    },
+    {
+      "threshold": 0.304,
+      "sensitivity": 0.6924,
+      "false_alerts_per_100": 19.253,
+      "alerts_per_100": 40.694,
+      "ppv": 0.5269,
+      "missed": 505,
+      "nurse_load": 1.629
+    },
+    {
+      "threshold": 0.31353,
+      "sensitivity": 0.6699,
+      "false_alerts_per_100": 18.292,
+      "alerts_per_100": 39.035,
+      "ppv": 0.5314,
+      "missed": 542,
+      "nurse_load": 1.562
+    },
+    {
+      "threshold": 0.32499,
+      "sensitivity": 0.6474,
+      "false_alerts_per_100": 17.273,
+      "alerts_per_100": 37.318,
+      "ppv": 0.5371,
+      "missed": 579,
+      "nurse_load": 1.494
+    },
+    {
+      "threshold": 0.33637,
+      "sensitivity": 0.6291,
+      "false_alerts_per_100": 16.142,
+      "alerts_per_100": 35.621,
+      "ppv": 0.5469,
+      "missed": 609,
+      "nurse_load": 1.426
+    },
+    {
+      "threshold": 0.34781,
+      "sensitivity": 0.606,
+      "false_alerts_per_100": 15.18,
+      "alerts_per_100": 33.943,
+      "ppv": 0.5528,
+      "missed": 647,
+      "nurse_load": 1.358
+    },
+    {
+      "threshold": 0.35763,
+      "sensitivity": 0.5804,
+      "false_alerts_per_100": 14.275,
+      "alerts_per_100": 32.246,
+      "ppv": 0.5573,
+      "missed": 689,
+      "nurse_load": 1.291
+    },
+    {
+      "threshold": 0.36993,
+      "sensitivity": 0.556,
+      "false_alerts_per_100": 13.332,
+      "alerts_per_100": 30.549,
+      "ppv": 0.5636,
+      "missed": 729,
+      "nurse_load": 1.223
+    },
+    {
+      "threshold": 0.3861,
+      "sensitivity": 0.5305,
+      "false_alerts_per_100": 12.427,
+      "alerts_per_100": 28.852,
+      "ppv": 0.5693,
+      "missed": 771,
+      "nurse_load": 1.155
+    },
+    {
+      "threshold": 0.4005,
+      "sensitivity": 0.5146,
+      "false_alerts_per_100": 11.239,
+      "alerts_per_100": 27.173,
+      "ppv": 0.5864,
+      "missed": 797,
+      "nurse_load": 1.088
+    },
+    {
+      "threshold": 0.42268,
+      "sensitivity": 0.4854,
+      "false_alerts_per_100": 10.447,
+      "alerts_per_100": 25.476,
+      "ppv": 0.5899,
+      "missed": 845,
+      "nurse_load": 1.02
+    },
+    {
+      "threshold": 0.44146,
+      "sensitivity": 0.458,
+      "false_alerts_per_100": 9.598,
+      "alerts_per_100": 23.779,
+      "ppv": 0.5964,
+      "missed": 890,
+      "nurse_load": 0.952
+    },
+    {
+      "threshold": 0.46041,
+      "sensitivity": 0.4318,
+      "false_alerts_per_100": 8.731,
+      "alerts_per_100": 22.101,
+      "ppv": 0.6049,
+      "missed": 933,
+      "nurse_load": 0.885
+    },
+    {
+      "threshold": 0.47683,
+      "sensitivity": 0.4032,
+      "false_alerts_per_100": 7.92,
+      "alerts_per_100": 20.404,
+      "ppv": 0.6118,
+      "missed": 980,
+      "nurse_load": 0.817
+    },
+    {
+      "threshold": 0.49678,
+      "sensitivity": 0.3764,
+      "false_alerts_per_100": 7.053,
+      "alerts_per_100": 18.706,
+      "ppv": 0.623,
+      "missed": 1024,
+      "nurse_load": 0.749
+    },
+    {
+      "threshold": 0.52085,
+      "sensitivity": 0.3514,
+      "false_alerts_per_100": 6.147,
+      "alerts_per_100": 17.028,
+      "ppv": 0.639,
+      "missed": 1065,
+      "nurse_load": 0.682
+    },
+    {
+      "threshold": 0.54657,
+      "sensitivity": 0.3252,
+      "false_alerts_per_100": 5.261,
+      "alerts_per_100": 15.331,
+      "ppv": 0.6568,
+      "missed": 1108,
+      "nurse_load": 0.614
+    },
+    {
+      "threshold": 0.57308,
+      "sensitivity": 0.2929,
+      "false_alerts_per_100": 4.563,
+      "alerts_per_100": 13.634,
+      "ppv": 0.6653,
+      "missed": 1161,
+      "nurse_load": 0.546
+    },
+    {
+      "threshold": 0.60109,
+      "sensitivity": 0.2607,
+      "false_alerts_per_100": 3.885,
+      "alerts_per_100": 11.955,
+      "ppv": 0.6751,
+      "missed": 1214,
+      "nurse_load": 0.478
+    },
+    {
+      "threshold": 0.62789,
+      "sensitivity": 0.2272,
+      "false_alerts_per_100": 3.243,
+      "alerts_per_100": 10.277,
+      "ppv": 0.6844,
+      "missed": 1269,
+      "nurse_load": 0.411
+    },
+    {
+      "threshold": 0.66029,
+      "sensitivity": 0.1888,
+      "false_alerts_per_100": 2.715,
+      "alerts_per_100": 8.561,
+      "ppv": 0.6828,
+      "missed": 1332,
+      "nurse_load": 0.343
+    },
+    {
+      "threshold": 0.69509,
+      "sensitivity": 0.1571,
+      "false_alerts_per_100": 2.018,
+      "alerts_per_100": 6.883,
+      "ppv": 0.7068,
+      "missed": 1384,
+      "nurse_load": 0.275
+    },
+    {
+      "threshold": 0.74387,
+      "sensitivity": 0.1157,
+      "false_alerts_per_100": 1.603,
+      "alerts_per_100": 5.186,
+      "ppv": 0.6909,
+      "missed": 1452,
+      "nurse_load": 0.208
+    },
+    {
+      "threshold": 0.79603,
+      "sensitivity": 0.0725,
+      "false_alerts_per_100": 1.245,
+      "alerts_per_100": 3.489,
+      "ppv": 0.6432,
+      "missed": 1523,
+      "nurse_load": 0.14
+    },
+    {
+      "threshold": 0.84563,
+      "sensitivity": 0.042,
+      "false_alerts_per_100": 0.49,
+      "alerts_per_100": 1.791,
+      "ppv": 0.7263,
+      "missed": 1573,
+      "nurse_load": 0.072
+    },
+    {
+      "threshold": 0.95821,
+      "sensitivity": 0.0037,
+      "false_alerts_per_100": 0.0,
+      "alerts_per_100": 0.113,
+      "ppv": 1.0,
+      "missed": 1636,
+      "nurse_load": 0.005
+    }
+  ],
+  "baseline_frontier": [
+    {
+      "threshold": -136.698,
+      "sensitivity": 1.0,
+      "false_alerts_per_100": 68.923,
+      "alerts_per_100": 99.887,
+      "ppv": 0.31,
+      "missed": 0,
+      "nurse_load": 3.998
+    },
+    {
+      "threshold": -110.0,
+      "sensitivity": 0.9945,
+      "false_alerts_per_100": 67.452,
+      "alerts_per_100": 98.246,
+      "ppv": 0.3134,
+      "missed": 9,
+      "nurse_load": 3.932
+    },
+    {
+      "threshold": -105.0,
+      "sensitivity": 0.9896,
+      "false_alerts_per_100": 66.246,
+      "alerts_per_100": 96.889,
+      "ppv": 0.3163,
+      "missed": 17,
+      "nurse_load": 3.878
+    },
+    {
+      "threshold": -102.0,
+      "sensitivity": 0.9829,
+      "false_alerts_per_100": 64.944,
+      "alerts_per_100": 95.38,
+      "ppv": 0.3191,
+      "missed": 28,
+      "nurse_load": 3.817
+    },
+    {
+      "threshold": -99.0,
+      "sensitivity": 0.9769,
+      "false_alerts_per_100": 63.342,
+      "alerts_per_100": 93.589,
+      "ppv": 0.3232,
+      "missed": 38,
+      "nurse_load": 3.746
+    },
+    {
+      "threshold": -96.0,
+      "sensitivity": 0.9653,
+      "false_alerts_per_100": 61.776,
+      "alerts_per_100": 91.665,
+      "ppv": 0.3261,
+      "missed": 57,
+      "nurse_load": 3.669
+    },
+    {
+      "threshold": -95.0,
+      "sensitivity": 0.9629,
+      "false_alerts_per_100": 61.003,
+      "alerts_per_100": 90.817,
+      "ppv": 0.3283,
+      "missed": 61,
+      "nurse_load": 3.635
+    },
+    {
+      "threshold": -93.0,
+      "sensitivity": 0.9562,
+      "false_alerts_per_100": 58.797,
+      "alerts_per_100": 88.403,
+      "ppv": 0.3349,
+      "missed": 72,
+      "nurse_load": 3.538
+    },
+    {
+      "threshold": -92.0,
+      "sensitivity": 0.9543,
+      "false_alerts_per_100": 57.816,
+      "alerts_per_100": 87.366,
+      "ppv": 0.3382,
+      "missed": 75,
+      "nurse_load": 3.497
+    },
+    {
+      "threshold": -91.0,
+      "sensitivity": 0.9537,
+      "false_alerts_per_100": 56.515,
+      "alerts_per_100": 86.046,
+      "ppv": 0.3432,
+      "missed": 76,
+      "nurse_load": 3.444
+    },
+    {
+      "threshold": -90.0,
+      "sensitivity": 0.9525,
+      "false_alerts_per_100": 54.931,
+      "alerts_per_100": 84.424,
+      "ppv": 0.3493,
+      "missed": 78,
+      "nurse_load": 3.379
+    },
+    {
+      "threshold": -89.0,
+      "sensitivity": 0.9495,
+      "false_alerts_per_100": 53.441,
+      "alerts_per_100": 82.84,
+      "ppv": 0.3549,
+      "missed": 83,
+      "nurse_load": 3.315
+    },
+    {
+      "threshold": -88.0,
+      "sensitivity": 0.9428,
+      "false_alerts_per_100": 51.914,
+      "alerts_per_100": 81.105,
+      "ppv": 0.3599,
+      "missed": 94,
+      "nurse_load": 3.246
+    },
+    {
+      "threshold": -87.0,
+      "sensitivity": 0.9391,
+      "false_alerts_per_100": 50.311,
+      "alerts_per_100": 79.389,
+      "ppv": 0.3663,
+      "missed": 100,
+      "nurse_load": 3.177
+    },
+    {
+      "threshold": -86.0,
+      "sensitivity": 0.9336,
+      "false_alerts_per_100": 48.746,
+      "alerts_per_100": 77.654,
+      "ppv": 0.3723,
+      "missed": 109,
+      "nurse_load": 3.108
+    },
+    {
+      "threshold": -85.0,
+      "sensitivity": 0.919,
+      "false_alerts_per_100": 47.237,
+      "alerts_per_100": 75.693,
+      "ppv": 0.3759,
+      "missed": 133,
+      "nurse_load": 3.029
+    },
+    {
+      "threshold": -84.0,
+      "sensitivity": 0.9105,
+      "false_alerts_per_100": 45.861,
+      "alerts_per_100": 74.052,
+      "ppv": 0.3807,
+      "missed": 147,
+      "nurse_load": 2.964
+    },
+    {
+      "threshold": -83.0,
+      "sensitivity": 0.8965,
+      "false_alerts_per_100": 43.919,
+      "alerts_per_100": 71.676,
+      "ppv": 0.3873,
+      "missed": 170,
+      "nurse_load": 2.869
+    },
+    {
+      "threshold": -83.0,
+      "sensitivity": 0.8965,
+      "false_alerts_per_100": 43.919,
+      "alerts_per_100": 71.676,
+      "ppv": 0.3873,
+      "missed": 170,
+      "nurse_load": 2.869
+    },
+    {
+      "threshold": -82.0,
+      "sensitivity": 0.8825,
+      "false_alerts_per_100": 42.033,
+      "alerts_per_100": 69.357,
+      "ppv": 0.394,
+      "missed": 193,
+      "nurse_load": 2.776
+    },
+    {
+      "threshold": -82.0,
+      "sensitivity": 0.8825,
+      "false_alerts_per_100": 42.033,
+      "alerts_per_100": 69.357,
+      "ppv": 0.394,
+      "missed": 193,
+      "nurse_load": 2.776
+    },
+    {
+      "threshold": -81.0,
+      "sensitivity": 0.8685,
+      "false_alerts_per_100": 38.45,
+      "alerts_per_100": 65.34,
+      "ppv": 0.4115,
+      "missed": 216,
+      "nurse_load": 2.615
+    },
+    {
+      "threshold": -80.0,
+      "sensitivity": 0.8544,
+      "false_alerts_per_100": 36.621,
+      "alerts_per_100": 63.078,
+      "ppv": 0.4194,
+      "missed": 239,
+      "nurse_load": 2.525
+    },
+    {
+      "threshold": -80.0,
+      "sensitivity": 0.8544,
+      "false_alerts_per_100": 36.621,
+      "alerts_per_100": 63.078,
+      "ppv": 0.4194,
+      "missed": 239,
+      "nurse_load": 2.525
+    },
+    {
+      "threshold": -79.0,
+      "sensitivity": 0.8404,
+      "false_alerts_per_100": 34.188,
+      "alerts_per_100": 60.211,
+      "ppv": 0.4322,
+      "missed": 262,
+      "nurse_load": 2.41
+    },
+    {
+      "threshold": -79.0,
+      "sensitivity": 0.8404,
+      "false_alerts_per_100": 34.188,
+      "alerts_per_100": 60.211,
+      "ppv": 0.4322,
+      "missed": 262,
+      "nurse_load": 2.41
+    },
+    {
+      "threshold": -78.0,
+      "sensitivity": 0.8161,
+      "false_alerts_per_100": 31.756,
+      "alerts_per_100": 57.024,
+      "ppv": 0.4431,
+      "missed": 302,
+      "nurse_load": 2.282
+    },
+    {
+      "threshold": -78.0,
+      "sensitivity": 0.8161,
+      "false_alerts_per_100": 31.756,
+      "alerts_per_100": 57.024,
+      "ppv": 0.4431,
+      "missed": 302,
+      "nurse_load": 2.282
+    },
+    {
+      "threshold": -77.0,
+      "sensitivity": 0.7911,
+      "false_alerts_per_100": 28.965,
+      "alerts_per_100": 53.46,
+      "ppv": 0.4582,
+      "missed": 343,
+      "nurse_load": 2.14
+    },
+    {
+      "threshold": -77.0,
+      "sensitivity": 0.7911,
+      "false_alerts_per_100": 28.965,
+      "alerts_per_100": 53.46,
+      "ppv": 0.4582,
+      "missed": 343,
+      "nurse_load": 2.14
+    },
+    {
+      "threshold": -76.0,
+      "sensitivity": 0.754,
+      "false_alerts_per_100": 26.721,
+      "alerts_per_100": 50.066,
+      "ppv": 0.4663,
+      "missed": 404,
+      "nurse_load": 2.004
+    },
+    {
+      "threshold": -76.0,
+      "sensitivity": 0.754,
+      "false_alerts_per_100": 26.721,
+      "alerts_per_100": 50.066,
+      "ppv": 0.4663,
+      "missed": 404,
+      "nurse_load": 2.004
+    },
+    {
+      "threshold": -75.0,
+      "sensitivity": 0.7235,
+      "false_alerts_per_100": 23.741,
+      "alerts_per_100": 46.144,
+      "ppv": 0.4855,
+      "missed": 454,
+      "nurse_load": 1.847
+    },
+    {
+      "threshold": -75.0,
+      "sensitivity": 0.7235,
+      "false_alerts_per_100": 23.741,
+      "alerts_per_100": 46.144,
+      "ppv": 0.4855,
+      "missed": 454,
+      "nurse_load": 1.847
+    },
+    {
+      "threshold": -74.0,
+      "sensitivity": 0.6882,
+      "false_alerts_per_100": 20.988,
+      "alerts_per_100": 42.297,
+      "ppv": 0.5038,
+      "missed": 512,
+      "nurse_load": 1.693
+    },
+    {
+      "threshold": -74.0,
+      "sensitivity": 0.6882,
+      "false_alerts_per_100": 20.988,
+      "alerts_per_100": 42.297,
+      "ppv": 0.5038,
+      "missed": 512,
+      "nurse_load": 1.693
+    },
+    {
+      "threshold": -73.0,
+      "sensitivity": 0.6443,
+      "false_alerts_per_100": 18.065,
+      "alerts_per_100": 38.016,
+      "ppv": 0.5248,
+      "missed": 584,
+      "nurse_load": 1.522
+    },
+    {
+      "threshold": -73.0,
+      "sensitivity": 0.6443,
+      "false_alerts_per_100": 18.065,
+      "alerts_per_100": 38.016,
+      "ppv": 0.5248,
+      "missed": 584,
+      "nurse_load": 1.522
+    },
+    {
+      "threshold": -72.0,
+      "sensitivity": 0.5926,
+      "false_alerts_per_100": 15.614,
+      "alerts_per_100": 33.962,
+      "ppv": 0.5403,
+      "missed": 669,
+      "nurse_load": 1.359
+    },
+    {
+      "threshold": -72.0,
+      "sensitivity": 0.5926,
+      "false_alerts_per_100": 15.614,
+      "alerts_per_100": 33.962,
+      "ppv": 0.5403,
+      "missed": 669,
+      "nurse_load": 1.359
+    },
+    {
+      "threshold": -72.0,
+      "sensitivity": 0.5926,
+      "false_alerts_per_100": 15.614,
+      "alerts_per_100": 33.962,
+      "ppv": 0.5403,
+      "missed": 669,
+      "nurse_load": 1.359
+    },
+    {
+      "threshold": -71.0,
+      "sensitivity": 0.5298,
+      "false_alerts_per_100": 13.106,
+      "alerts_per_100": 29.512,
+      "ppv": 0.5559,
+      "missed": 772,
+      "nurse_load": 1.181
+    },
+    {
+      "threshold": -71.0,
+      "sensitivity": 0.5298,
+      "false_alerts_per_100": 13.106,
+      "alerts_per_100": 29.512,
+      "ppv": 0.5559,
+      "missed": 772,
+      "nurse_load": 1.181
+    },
+    {
+      "threshold": -71.0,
+      "sensitivity": 0.5298,
+      "false_alerts_per_100": 13.106,
+      "alerts_per_100": 29.512,
+      "ppv": 0.5559,
+      "missed": 772,
+      "nurse_load": 1.181
+    },
+    {
+      "threshold": -70.0,
+      "sensitivity": 0.4647,
+      "false_alerts_per_100": 10.485,
+      "alerts_per_100": 24.873,
+      "ppv": 0.5785,
+      "missed": 879,
+      "nurse_load": 0.995
+    },
+    {
+      "threshold": -70.0,
+      "sensitivity": 0.4647,
+      "false_alerts_per_100": 10.485,
+      "alerts_per_100": 24.873,
+      "ppv": 0.5785,
+      "missed": 879,
+      "nurse_load": 0.995
+    },
+    {
+      "threshold": -70.0,
+      "sensitivity": 0.4647,
+      "false_alerts_per_100": 10.485,
+      "alerts_per_100": 24.873,
+      "ppv": 0.5785,
+      "missed": 879,
+      "nurse_load": 0.995
+    },
+    {
+      "threshold": -69.0,
+      "sensitivity": 0.3867,
+      "false_alerts_per_100": 8.127,
+      "alerts_per_100": 20.102,
+      "ppv": 0.5957,
+      "missed": 1007,
+      "nurse_load": 0.805
+    },
+    {
+      "threshold": -69.0,
+      "sensitivity": 0.3867,
+      "false_alerts_per_100": 8.127,
+      "alerts_per_100": 20.102,
+      "ppv": 0.5957,
+      "missed": 1007,
+      "nurse_load": 0.805
+    },
+    {
+      "threshold": -69.0,
+      "sensitivity": 0.3867,
+      "false_alerts_per_100": 8.127,
+      "alerts_per_100": 20.102,
+      "ppv": 0.5957,
+      "missed": 1007,
+      "nurse_load": 0.805
+    },
+    {
+      "threshold": -68.0,
+      "sensitivity": 0.3161,
+      "false_alerts_per_100": 5.412,
+      "alerts_per_100": 15.199,
+      "ppv": 0.6439,
+      "missed": 1123,
+      "nurse_load": 0.608
+    },
+    {
+      "threshold": -68.0,
+      "sensitivity": 0.3161,
+      "false_alerts_per_100": 5.412,
+      "alerts_per_100": 15.199,
+      "ppv": 0.6439,
+      "missed": 1123,
+      "nurse_load": 0.608
+    },
+    {
+      "threshold": -67.0,
+      "sensitivity": 0.2339,
+      "false_alerts_per_100": 3.639,
+      "alerts_per_100": 10.881,
+      "ppv": 0.6655,
+      "missed": 1258,
+      "nurse_load": 0.435
+    },
+    {
+      "threshold": -67.0,
+      "sensitivity": 0.2339,
+      "false_alerts_per_100": 3.639,
+      "alerts_per_100": 10.881,
+      "ppv": 0.6655,
+      "missed": 1258,
+      "nurse_load": 0.435
+    },
+    {
+      "threshold": -66.0,
+      "sensitivity": 0.1705,
+      "false_alerts_per_100": 1.98,
+      "alerts_per_100": 7.26,
+      "ppv": 0.7273,
+      "missed": 1362,
+      "nurse_load": 0.291
+    },
+    {
+      "threshold": -66.0,
+      "sensitivity": 0.1705,
+      "false_alerts_per_100": 1.98,
+      "alerts_per_100": 7.26,
+      "ppv": 0.7273,
+      "missed": 1362,
+      "nurse_load": 0.291
+    },
+    {
+      "threshold": -65.0,
+      "sensitivity": 0.0914,
+      "false_alerts_per_100": 0.905,
+      "alerts_per_100": 3.734,
+      "ppv": 0.7576,
+      "missed": 1492,
+      "nurse_load": 0.149
+    },
+    {
+      "threshold": -65.0,
+      "sensitivity": 0.0914,
+      "false_alerts_per_100": 0.905,
+      "alerts_per_100": 3.734,
+      "ppv": 0.7576,
+      "missed": 1492,
+      "nurse_load": 0.149
+    },
+    {
+      "threshold": -65.0,
+      "sensitivity": 0.0914,
+      "false_alerts_per_100": 0.905,
+      "alerts_per_100": 3.734,
+      "ppv": 0.7576,
+      "missed": 1492,
+      "nurse_load": 0.149
+    }
+  ],
+  "n_dominated": 1,
+  "pooled": {
+    "n_pooled": 120,
+    "n_on_front": 65,
+    "baseline_points_dominated": 52,
+    "baseline_points_total": 60,
+    "model_points_dominated": 3,
+    "model_points_total": 60,
+    "front_share_model": 0.8769
+  },
+  "hypervolume": {
+    "model": 84.449,
+    "baseline": 81.597
+  },
+  "knee": {
+    "threshold": 0.24756,
+    "sensitivity": 0.7929,
+    "false_alerts_per_100": 24.609,
+    "alerts_per_100": 49.161,
+    "ppv": 0.4994,
+    "missed": 340,
+    "nurse_load": 1.968
+  },
+  "governance": {
+    "0.70": {
+      "model": {
+        "threshold": 0.29168,
+        "sensitivity": 0.7113,
+        "false_alerts_per_100": 20.366,
+        "alerts_per_100": 42.391,
+        "ppv": 0.5196,
+        "missed": 474,
+        "nurse_load": 1.697
+      },
+      "baseline": {
+        "threshold": -75.0,
+        "sensitivity": 0.7235,
+        "false_alerts_per_100": 23.741,
+        "alerts_per_100": 46.144,
+        "ppv": 0.4855,
+        "missed": 454,
+        "nurse_load": 1.847
+      },
+      "false_alert_reduction_pct": 14.22
+    },
+    "0.80": {
+      "model": {
+        "threshold": 0.23723,
+        "sensitivity": 0.8069,
+        "false_alerts_per_100": 25.853,
+        "alerts_per_100": 50.839,
+        "ppv": 0.4915,
+        "missed": 317,
+        "nurse_load": 2.035
+      },
+      "baseline": {
+        "threshold": -78.0,
+        "sensitivity": 0.8161,
+        "false_alerts_per_100": 31.756,
+        "alerts_per_100": 57.024,
+        "ppv": 0.4431,
+        "missed": 302,
+        "nurse_load": 2.282
+      },
+      "false_alert_reduction_pct": 18.59
+    },
+    "0.90": {
+      "model": {
+        "threshold": 0.16117,
+        "sensitivity": 0.9068,
+        "false_alerts_per_100": 36.3,
+        "alerts_per_100": 64.379,
+        "ppv": 0.4361,
+        "missed": 153,
+        "nurse_load": 2.577
+      },
+      "baseline": {
+        "threshold": -84.0,
+        "sensitivity": 0.9105,
+        "false_alerts_per_100": 45.861,
+        "alerts_per_100": 74.052,
+        "ppv": 0.3807,
+        "missed": 147,
+        "nurse_load": 2.964
+      },
+      "false_alert_reduction_pct": 20.85
+    },
+    "0.95": {
+      "model": {
+        "threshold": 0.12139,
+        "sensitivity": 0.9507,
+        "false_alerts_per_100": 45.107,
+        "alerts_per_100": 74.543,
+        "ppv": 0.3949,
+        "missed": 81,
+        "nurse_load": 2.983
+      },
+      "baseline": {
+        "threshold": -90.0,
+        "sensitivity": 0.9525,
+        "false_alerts_per_100": 54.931,
+        "alerts_per_100": 84.424,
+        "ppv": 0.3493,
+        "missed": 78,
+        "nurse_load": 3.379
+      },
+      "false_alert_reduction_pct": 17.89
+    }
+  },
+  "triage": {
+    "capacity": 265,
+    "policies": {
+      "top-k by risk": {
+        "reviewed": 265,
+        "caught": 181,
+        "missed": 1461,
+        "wasted_reviews": 84,
+        "catch_rate": 0.1102,
+        "review_yield": 0.683,
+        "benefit_realised": 191.8563,
+        "benefit_available": 1643.2348,
+        "benefit_capture": 0.1168
+      },
+      "top-k by expected benefit": {
+        "reviewed": 265,
+        "caught": 181,
+        "missed": 1461,
+        "wasted_reviews": 84,
+        "catch_rate": 0.1102,
+        "review_yield": 0.683,
+        "benefit_realised": 274.8955,
+        "benefit_available": 1643.2348,
+        "benefit_capture": 0.1673
+      },
+      "fixed threshold": {
+        "reviewed": 266,
+        "caught": 181,
+        "missed": 1461,
+        "wasted_reviews": 85,
+        "catch_rate": 0.1102,
+        "review_yield": 0.6805,
+        "benefit_realised": 191.8563,
+        "benefit_available": 1643.2348,
+        "benefit_capture": 0.1168
+      }
+    }
+  },
+  "cohort_is_a_demonstration_not_a_study": true,
+  "sample_size_caveat": "the frontier is drawn over operating points of a model trained on about 100 ICU stays. Its shape demonstrates the method; its position is not an estimate of achievable performance.",
+  "provenance": {
+    "database": "PhysioNet mimic-iv-demo (open access)",
+    "n_stays_in_file": 140,
+    "n_stays_built": 134,
+    "skipped": {
+      "too_short": 6,
+      "no_vitals": 0
+    },
+    "grid_step_hours": 0.5,
+    "carry_forward_limit_hours": 2.0,
+    "cohort_is_a_demonstration_not_a_study": true,
+    "files": {
+      "mimic-iv-demo/hosp/admissions.csv.gz": {
+        "sha256": "910b9f160ffdf1e0",
+        "retrieved_utc": "2026-09-06T23:58:27+00:00",
+        "bytes": 11072
+      },
+      "mimic-iv-demo/hosp/patients.csv.gz": {
+        "sha256": "59dcc6cd8450ddf0",
+        "retrieved_utc": "2026-09-06T23:58:27+00:00",
+        "bytes": 1083
+      },
+      "mimic-iv-demo/icu/chartevents.csv.gz": {
+        "sha256": "90f096ad3db847ed",
+        "retrieved_utc": "2026-09-06T23:58:47+00:00",
+        "bytes": 5549389
+      },
+      "mimic-iv-demo/icu/d_items.csv.gz": {
+        "sha256": "1690467a82234522",
+        "retrieved_utc": "2026-09-06T23:58:27+00:00",
+        "bytes": 57073
+      },
+      "mimic-iv-demo/icu/icustays.csv.gz": {
+        "sha256": "e05e81aa52a3022e",
+        "retrieved_utc": "2026-09-06T23:58:27+00:00",
+        "bytes": 5667
+      }
+    },
+    "event_definitions": {
+      "hypoxemia": "SpO2 < 90%",
+      "hypotension": "mean arterial pressure < 65 mmHg"
+    },
+    "n_train_rows": 18945,
+    "n_test_rows": 18945,
+    "n_test_events": 1642,
+    "test_event_rate": 0.30964
+  }
+}
