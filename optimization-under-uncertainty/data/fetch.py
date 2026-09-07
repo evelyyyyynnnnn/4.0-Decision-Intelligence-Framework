@@ -4,11 +4,16 @@
     python -m data.fetch
     python -m data.fetch --verify
 
-Eight liquid ETFs with long histories, spanning equity, credit, duration,
-commodities and real estate. Breadth matters here more than in most places: the
-comparison between deterministic, SAA, CVaR and robust allocation only has
-something to show when the assets differ in their tails, and eight funds all
-tracking the S&P differ in almost nothing.
+The ten Fama-French industry portfolios, daily: consumer non-durables,
+durables, manufacturing, energy, tech, telecom, shops, health, utilities and a
+residual. Breadth matters here more than in most places: the comparison between
+deterministic, SAA, CVaR and robust allocation only has something to show when
+the assets differ in their tails, and ten sectors that behave differently in a
+crash give a risk-aware allocation something to earn.
+
+These are the canonical academic series, published by Kenneth French and
+retrievable by anyone with no account or API key, so the fetch is reproducible
+in a way a bot-walled per-ticker price feed is not.
 
 Only the portfolio problem becomes real. The hospital staffing problem stays
 simulated, and it should: there is no public series of per-unit hospital
@@ -19,31 +24,13 @@ from __future__ import annotations
 
 import pathlib
 import sys
-from datetime import date, timedelta
 
 from .datakit import Fetcher, FetchError, NetworkBlocked
-from .marketdata import stooq_source
+from .marketdata import french_industries_source
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
-END = date.today()
-# Long enough to contain more than one drawdown; a window with no crash makes
-# every risk-aware formulation look like a needless cost.
-START = END - timedelta(days=12 * 365)
-
-UNIVERSE = [
-    ("spy.us", "US large-cap equity"),
-    ("iwm.us", "US small-cap -- a fatter left tail than SPY"),
-    ("efa.us", "developed non-US equity"),
-    ("eem.us", "emerging markets -- the fattest tail in the set"),
-    ("agg.us", "US aggregate bonds"),
-    ("tlt.us", "long duration -- the diversifier that sometimes is not one"),
-    ("gld.us", "gold"),
-    ("vnq.us", "US real estate"),
-]
-
-SOURCES = [stooq_source(s, START.isoformat(), END.isoformat(), why)
-           for s, why in UNIVERSE]
+SOURCES = [french_industries_source()]
 
 
 def main(argv=None) -> int:
@@ -58,7 +45,7 @@ def main(argv=None) -> int:
     if args.list:
         for s in SOURCES:
             print(f"{s.name}\n  {s.url}\n  {s.note}")
-        print(f"\n{len(SOURCES)} series, {START} .. {END}")
+        print(f"\n{len(SOURCES)} file: 10 daily industry return series")
         print("the staffing problem has no public demand series and stays "
               "simulated")
         return 0
@@ -70,7 +57,7 @@ def main(argv=None) -> int:
               f"all {len(f.load_manifest()['files'])} cached file(s) verified")
         return 1 if problems else 0
 
-    print(f"fetching {len(SOURCES)} series, {START} .. {END}")
+    print(f"fetching {len(SOURCES)} file: the 10-industry daily return series")
     try:
         f.get_all(SOURCES, refresh=args.refresh)
     except NetworkBlocked as e:

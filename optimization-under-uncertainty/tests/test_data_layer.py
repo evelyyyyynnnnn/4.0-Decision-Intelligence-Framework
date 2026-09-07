@@ -6,8 +6,10 @@ the stationarity guarantee that makes the simulated comparison easy -- and the
 risk-aware formulations then look better than they have earned.
 """
 import datetime as dt
+import io
 import pathlib
 import sys
+import zipfile
 
 import numpy as np
 import pytest
@@ -16,7 +18,37 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 from data import datakit
 from data.load import load_scenarios
-from data.marketdata import align, parse_stooq
+from data.marketdata import align, parse_french_industries, parse_stooq
+
+
+def _french_zip(csv_text: str) -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("10_Industry_Portfolios_Daily.csv", csv_text)
+    return buf.getvalue()
+
+
+def test_parse_french_industries_reads_only_the_first_daily_block():
+    """The equal-weighted and annual blocks must not leak into the series."""
+    csv = (
+        "It contains value- and equal-weighted returns.\n"
+        "Missing data are indicated by -99.99 or -999.\n"
+        "\n"
+        "  Average Value Weighted Returns -- Daily\n"
+        ",NoDur,Manuf,Hlth\n"
+        "20200302,  1.00, -2.00,  0.50\n"
+        "20200303, -99.99, 1.00,  0.50\n"      # a missing day, dropped whole
+        "20200304,  0.25,  0.75, -1.00\n"
+        "\n"
+        "  Average Equal Weighted Returns -- Daily\n"
+        ",NoDur,Manuf,Hlth\n"
+        "20200302, 99.00, 99.00, 99.00\n"      # must NOT appear in the output
+    )
+    dates, data = parse_french_industries(_french_zip(csv))
+    assert list(data) == ["NoDur", "Manuf", "Hlth"]
+    assert dates == [dt.date(2020, 3, 2), dt.date(2020, 3, 4)]   # missing dropped
+    assert data["NoDur"] == [0.01, 0.0025]                       # percent -> fraction
+    assert 0.99 not in data["NoDur"]                             # no EW-block leak
 
 
 def test_parse_stooq_rejects_the_no_data_body():
@@ -34,7 +66,7 @@ def test_align_intersects_calendars():
 
 
 def test_refuses_when_nothing_is_cached(tmp_path):
-    with pytest.raises(datakit.FetchError, match="no real price data cached"):
+    with pytest.raises(datakit.FetchError, match="no real return data cached"):
         load_scenarios(root=tmp_path)
 
 
