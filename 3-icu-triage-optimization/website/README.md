@@ -1,6 +1,6 @@
-# Optimization Under Uncertainty — website
+# ICU Triage Optimization — website
 
-Static site for `optimization-under-uncertainty`. No build step: Vercel serves this folder as-is.
+Static site for `3-icu-triage-optimization`. No build step: Vercel serves this folder as-is.
 
 ## Deploy on its own
 

@@ -22,14 +22,14 @@ are financial stability, healthcare safety and secure digital infrastructure.
 
 | Folder | Project | Pillar | Evidence value |
 |---|---|---|---|
-| [`optimization-under-uncertainty/`](optimization-under-uncertainty/) | Optimization-Under-Uncertainty Library | Cross-cutting — the endeavor itself | CORE — the endeavor expressed as code |
-| [`decision-audit-framework/`](decision-audit-framework/) | Decision-Audit Framework | Cross-cutting | CORE — makes interpretability an artifact |
-| [`icu-triage-optimization/`](icu-triage-optimization/) | Multi-Objective ICU Triage Optimization | Healthcare Safety | CORE — joins the healthcare pillar to the OR framing |
-| [`decision-benchmark-suite/`](decision-benchmark-suite/) | Decision-Framework Benchmark Suite | Cross-cutting | CORE — the most citable form of contribution |
+| [`2-optimization-under-uncertainty/`](2-optimization-under-uncertainty/) | Optimization-Under-Uncertainty Library | Cross-cutting — the endeavor itself | CORE — the endeavor expressed as code |
+| [`1-decision-audit-framework/`](1-decision-audit-framework/) | Decision-Audit Framework | Cross-cutting | CORE — makes interpretability an artifact |
+| [`3-icu-triage-optimization/`](3-icu-triage-optimization/) | Multi-Objective ICU Triage Optimization | Healthcare Safety | CORE — joins the healthcare pillar to the OR framing |
+| [`4-decision-benchmark-suite/`](4-decision-benchmark-suite/) | Decision-Framework Benchmark Suite | Cross-cutting | CORE — the most citable form of contribution |
 
 ## What each one is
 
-### 1. Optimization-Under-Uncertainty Library — [`optimization-under-uncertainty/`](optimization-under-uncertainty/)
+### 1. Optimization-Under-Uncertainty Library — [`2-optimization-under-uncertainty/`](2-optimization-under-uncertainty/)
 
 Stochastic and robust optimization applied to portfolio allocation and hospital resource allocation.
 
@@ -37,7 +37,7 @@ Stochastic and robust optimization applied to portfolio allocation and hospital 
 
 *Target scale:* Portfolio allocation and hospital resource allocation instances
 
-### 2. Decision-Audit Framework — [`decision-audit-framework/`](decision-audit-framework/)
+### 2. Decision-Audit Framework — [`1-decision-audit-framework/`](1-decision-audit-framework/)
 
 Decision logging, counterfactual replay, and attribution for AI-assisted decisions.
 
@@ -45,7 +45,7 @@ Decision logging, counterfactual replay, and attribution for AI-assisted decisio
 
 *Target scale:* Decision traces from the other projects in this repository
 
-### 3. Multi-Objective ICU Triage Optimization — [`icu-triage-optimization/`](icu-triage-optimization/)
+### 3. Multi-Objective ICU Triage Optimization — [`3-icu-triage-optimization/`](3-icu-triage-optimization/)
 
 Multi-objective ICU triage and alert-threshold optimization.
 
@@ -53,7 +53,7 @@ Multi-objective ICU triage and alert-threshold optimization.
 
 *Target scale:* MIMIC-IV / eICU cohorts, shared with repo 2.0
 
-### 4. Decision-Framework Benchmark Suite — [`decision-benchmark-suite/`](decision-benchmark-suite/)
+### 4. Decision-Framework Benchmark Suite — [`4-decision-benchmark-suite/`](4-decision-benchmark-suite/)
 
 Regret, calibration and robustness benchmarks across the frameworks in this repository.
 
@@ -65,10 +65,10 @@ Regret, calibration and robustness benchmarks across the frameworks in this repo
 
 ```
 4.0-Decision-Intelligence-Framework/
-├── optimization-under-uncertainty/
-├── decision-audit-framework/
-├── icu-triage-optimization/
-└── decision-benchmark-suite/
+├── 2-optimization-under-uncertainty/
+├── 1-decision-audit-framework/
+├── 3-icu-triage-optimization/
+└── 4-decision-benchmark-suite/
 ```
 
 Every rebuilt project carries the same skeleton: `README.md`, `src/`, `data/`, `results/`, `tests/`, `website/`.

@@ -1,17 +1,17 @@
-# Decision Audit Framework
+# ICU Triage Optimization
 
-> A hash-chained decision ledger with exact replay, versioned counterfactuals, and Shapley attribution — so "why did the system do that" has an answer that survives being checked.
+> Pareto frontiers over alert thresholds and review-capacity triage — the join between the healthcare models and the operations-research framing, demonstrated rather than asserted.
 
-**Repository:** `4.0-Decision-Intelligence-Framework` &middot; **Pillar:** Cross-cutting
+**Repository:** `4.0-Decision-Intelligence-Framework` &middot; **Pillar:** Healthcare Safety
 
 ## Status
 
 This is working code with a runnable demo and 0 tests. It is **not** a
 finished result.
 
-Decisions here are made on synthetic credit applications by a policy written for this demo. The machinery is real; the lending policy is not, and no conclusion about credit risk follows from it.
+Risk scores come from the ICU early-warning model in repo 2.0, trained on its synthetic cohort. No real patients, and no clinical conclusion follows. What is real is the optimisation: the frontiers, the domination analysis and the triage comparison are computed from those scores.
 
-Last run: `2026-08-31T19:00:04+00:00`
+Last run: `2026-08-31T19:06:07+00:00`
 
 ## Quick start
 
@@ -40,14 +40,14 @@ results/
 src/
   |-- .gitkeep
   |-- __init__.py
-  |-- attribution.py
   |-- demo.py
-  |-- ledger.py
+  |-- frontier.py
   |-- site.py
   |-- sitekit.py
+  |-- triage.py
 tests/
   |-- .gitkeep
-  |-- test_audit.py
+  |-- test_triage.py
 website/
   |-- README.md
   |-- index.html
@@ -67,7 +67,7 @@ website/
 `website/` has no build step. To deploy it independently:
 
 ```bash
-cp -r website/ ../my-decision-audit-framework-site && cd ../my-decision-audit-framework-site
+cp -r website/ ../my-3-icu-triage-optimization-site && cd ../my-3-icu-triage-optimization-site
 git init && git add -A && git commit -m "site"
 vercel deploy --prod
 ```

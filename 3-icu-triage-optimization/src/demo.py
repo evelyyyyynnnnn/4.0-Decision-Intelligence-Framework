@@ -9,7 +9,7 @@ from .triage import (evaluate_policy, expected_benefit_policy, threshold_policy,
                      top_k_policy)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ICU = ROOT.parent.parent / "2.0-Healthcare-Ai-Systems" / "icu-early-warning"
+ICU = ROOT.parent.parent / "2.0-Healthcare-Ai-Systems" / "2-icu-early-warning"
 
 
 def _load_icu():

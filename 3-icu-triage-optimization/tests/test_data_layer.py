@@ -88,7 +88,7 @@ def test_this_project_keeps_its_own_cache(tmp_path):
     """
     from data.load import ROOT as DATA_ROOT
     assert DATA_ROOT.name == "data"
-    assert DATA_ROOT.parent.name == "icu-triage-optimization"
+    assert DATA_ROOT.parent.name == "3-icu-triage-optimization"
 
 
 def test_builds_patients_the_sibling_model_can_consume(tmp_path):
