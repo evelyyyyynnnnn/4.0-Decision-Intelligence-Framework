@@ -1,6 +1,6 @@
-# Decision Benchmark Suite — website
+# Decision Audit Framework — website
 
-Static site for `decision-benchmark-suite`. No build step: Vercel serves this folder as-is.
+Static site for `1-decision-audit-framework`. No build step: Vercel serves this folder as-is.
 
 ## Deploy on its own
 

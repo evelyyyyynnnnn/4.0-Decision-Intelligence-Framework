@@ -1,17 +1,17 @@
-# ICU Triage Optimization
+# Decision Benchmark Suite
 
-> Pareto frontiers over alert thresholds and review-capacity triage — the join between the healthcare models and the operations-research framing, demonstrated rather than asserted.
+> Regret against an exact oracle, calibration of stated confidence, and degradation under named distribution shifts — three axes on which a decision policy can be wrong in different ways.
 
-**Repository:** `4.0-Decision-Intelligence-Framework` &middot; **Pillar:** Healthcare Safety
+**Repository:** `4.0-Decision-Intelligence-Framework` &middot; **Pillar:** Cross-cutting
 
 ## Status
 
 This is working code with a runnable demo and 0 tests. It is **not** a
 finished result.
 
-Risk scores come from the ICU early-warning model in repo 2.0, trained on its synthetic cohort. No real patients, and no clinical conclusion follows. What is real is the optimisation: the frontiers, the domination analysis and the triage comparison are computed from those scores.
+Tasks are closed-form so the oracle is exact rather than searched. That is what makes regret computable instead of estimated — but it also means these are constructed problems, and a policy's score here says nothing about a messy real one.
 
-Last run: `2026-08-31T19:06:07+00:00`
+Last run: `2026-08-31T19:09:17+00:00`
 
 ## Quick start
 
@@ -41,13 +41,14 @@ src/
   |-- .gitkeep
   |-- __init__.py
   |-- demo.py
-  |-- frontier.py
+  |-- metrics.py
+  |-- policies.py
   |-- site.py
   |-- sitekit.py
-  |-- triage.py
+  |-- tasks.py
 tests/
   |-- .gitkeep
-  |-- test_triage.py
+  |-- test_benchmark.py
 website/
   |-- README.md
   |-- index.html
@@ -67,7 +68,7 @@ website/
 `website/` has no build step. To deploy it independently:
 
 ```bash
-cp -r website/ ../my-icu-triage-optimization-site && cd ../my-icu-triage-optimization-site
+cp -r website/ ../my-4-decision-benchmark-suite-site && cd ../my-4-decision-benchmark-suite-site
 git init && git add -A && git commit -m "site"
 vercel deploy --prod
 ```
