@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# Real MIMIC-IV demo is open-access but NON-redistributable: never commit it.
+data/raw/
+data/**/*.csv.gz

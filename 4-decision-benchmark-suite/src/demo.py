@@ -3,6 +3,7 @@ from __future__ import annotations
 import json, pathlib, sys
 from datetime import datetime, timezone
 import numpy as np
+from . import real_tasks as rt
 from .metrics import calibration, regret, robustness
 from .policies import (AlwaysAction, BayesTriage, EmpiricalNewsvendor,
                        MeanDemandNewsvendor, ThresholdTriage)
@@ -11,6 +12,92 @@ from .tasks import NewsvendorTask, TriageTask
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SHIFTS = (-16.0, -8.0, 0.0, 8.0, 16.0)
 TRIAGE_SHIFTS = (-1.2, -0.6, 0.0, 0.6, 1.2)
+
+
+def run_real_triage() -> dict:
+    """Score the real MIMIC-IV triage track. No oracle -> realised cost,
+    calibration, and degradation under a named age shift.
+
+    Returns an honest status dict if the real cache is absent, rather than
+    reporting anything from data that was not loaded.
+    """
+    if not rt.available():
+        return {"status": "data not fetched in this environment",
+                "detail": "the PhysioNet MIMIC-IV demo cache was not found; set "
+                          "MIMIC_DATA_ROOT or fetch it in 2-icu-early-warning. No "
+                          "real-triage numbers are reported.",
+                "is_synthetic": False}
+
+    sample, cohort = rt.build_sample()
+    tr_mask, te_mask = rt.subject_split(sample, frac=0.5, seed=0)
+    train, test = rt._sub(sample, tr_mask), rt._sub(sample, te_mask)
+
+    proba_fn, log_decide = rt.fit_calibrated_logistic(train)
+    thr_decide, tau = rt.fit_threshold_on_map(train)
+
+    p_test = proba_fn(test.X)
+    floor = rt.best_hindsight_threshold_cost(p_test, test.y)
+    policies = {
+        "calibrated logistic (Bayes cost rule)": log_decide(test.X),
+        "single threshold on MAP": thr_decide(test.X),
+        "always treat": np.ones(len(test), int),
+        "never treat": np.zeros(len(test), int),
+    }
+    pol_rows = {}
+    for name, a in policies.items():
+        c = rt.realised_cost(a, test.y)
+        pol_rows[name] = {"realised_cost": round(c, 5),
+                          "excess_over_hindsight_floor": round(c - floor["cost"], 5),
+                          "treat_rate": round(float(np.mean(a)), 4)}
+
+    cal = calibration(p_test, test.y.astype(float))
+
+    # Named covariate shift: median-age split (whole subjects, so no leakage).
+    med = float(np.median(sample.age))
+    shift = {"shift": "patient age, median split; train on one age group, "
+                      "evaluate realised cost on the other",
+             "median_age": round(med, 1)}
+    for label, keep in (("train_younger", sample.age < med),
+                        ("train_older", sample.age >= med)):
+        grp = rt._sub(sample, keep)
+        other = rt._sub(sample, ~keep)
+        g_tr, g_te = rt.subject_split(grp, frac=0.6, seed=1)
+        gtr, gte = rt._sub(grp, g_tr), rt._sub(grp, g_te)
+        if gtr.y.sum() < 5 or len(gte) == 0:
+            continue
+        _, dec = rt.fit_calibrated_logistic(gtr)
+        c_in = rt.realised_cost(dec(gte.X), gte.y)
+        c_shift = rt.realised_cost(dec(other.X), other.y)
+        shift[label] = {"in_distribution_cost": round(c_in, 5),
+                        "shifted_cost": round(c_shift, 5),
+                        "degradation": round(c_shift - c_in, 5)}
+
+    n_sub_tr = len(set(train.subject.tolist()))
+    n_sub_te = len(set(test.subject.tolist()))
+    return {
+        "is_synthetic": False,
+        "data_source": "PhysioNet MIMIC-IV demo (open access); file hashes, URLs "
+                       "and retrieval times in 2-icu-early-warning/data/MANIFEST.json",
+        "cohort_is_a_demonstration_not_a_study": True,
+        "no_oracle": True,
+        "scoring_note": "no oracle on real data; policies scored by realised cost "
+                        "and against the best hindsight threshold on the test split",
+        "label_caveat": "the label is a future threshold on MAP, which is also a "
+                        "feature: this measures short-horizon persistence of an "
+                        "observed vital, not an independent clinical outcome",
+        "event": "hypotension (MAP < 65 mmHg) within a 2-hour horizon",
+        "cost_model": {"treat_cost": rt.TREAT_COST, "miss_cost": rt.MISS_COST,
+                       "decision": "treat when p * miss_cost >= treat_cost"},
+        "cohort": cohort,
+        "split": {"by": "subject", "subject_overlap": 0,
+                  "n_subjects_train": n_sub_tr, "n_subjects_test": n_sub_te,
+                  "n_decisions_train": len(train), "n_decisions_test": len(test)},
+        "fitted_map_threshold_mmhg": round(tau, 2),
+        "hindsight_floor": floor,
+        "policies": pol_rows,
+        "calibrated_logistic_calibration": cal,
+        "robustness_named_shift": shift,
+    }
 
 
 def _oracle_gap(nv) -> dict:
@@ -87,6 +174,11 @@ def run() -> dict:
             "triage_treat_threshold_prob": round(tr.treat_cost / tr.miss_cost, 4),
         },
         "oracle_gap": _oracle_gap(nv),
+        "has_real_track": True,
+        "tracks_note": "the newsvendor and triage tasks are synthetic BY DESIGN "
+                       "(closed-form, so the oracle is exact); real_triage uses the "
+                       "real PhysioNet MIMIC-IV demo and is scored without an oracle",
+        "real_triage": run_real_triage(),
     }
     (ROOT / "results").mkdir(exist_ok=True)
     (ROOT / "results" / "latest.json").write_text(
@@ -119,6 +211,30 @@ def main() -> int:
                   f"{v['regret']['frac_optimal']:>8.1%}{v['calibration']['ece']:>8.4f}"
                   f"{(rel if rel else 0):>12.2f}"
                   f"{rb['degradation_per_unit_shift']:>9.4f}")
+    rtr = r.get("real_triage", {})
+    print("\n=== real_triage (MIMIC-IV demo -- no oracle) ===")
+    if rtr.get("policies"):
+        sp = rtr["split"]
+        print(f"real cohort: {sp['n_subjects_train']}+{sp['n_subjects_test']} "
+              f"subjects, {sp['n_decisions_train']}+{sp['n_decisions_test']} "
+              f"decisions; event rate {rtr['cohort']['event_rate_in_horizon']:.1%}")
+        print(f"hindsight-best fixed threshold cost: {rtr['hindsight_floor']['cost']}")
+        print(f"{'policy':<40}{'cost':>9}{'excess':>9}{'treat%':>9}")
+        for name, v in rtr["policies"].items():
+            print(f"{name:<40}{v['realised_cost']:>9.4f}"
+                  f"{v['excess_over_hindsight_floor']:>9.4f}"
+                  f"{v['treat_rate']:>9.1%}")
+        print(f"calibrated-logistic ECE: "
+              f"{rtr['calibrated_logistic_calibration']['ece']}")
+        sh = rtr["robustness_named_shift"]
+        for k in ("train_younger", "train_older"):
+            if k in sh:
+                print(f"  {k}: in-dist {sh[k]['in_distribution_cost']:.4f} -> "
+                      f"shifted {sh[k]['shifted_cost']:.4f} "
+                      f"(degradation {sh[k]['degradation']:+.4f})")
+    else:
+        print(f"  {rtr.get('status', 'unavailable')}: {rtr.get('detail', '')}")
+
     try:
         from .site import build_site
         build_site(r); print("\nwebsite/ rebuilt from this run")
