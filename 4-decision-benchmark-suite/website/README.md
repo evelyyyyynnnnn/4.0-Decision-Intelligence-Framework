@@ -1,6 +1,6 @@
 # Decision Benchmark Suite — website
 
-Static site for `4-decision-benchmark-suite`. No build step: Vercel serves this folder as-is.
+Static site for `decision-benchmark-suite`. No build step: Vercel serves this folder as-is.
 
 ## Deploy on its own
 
