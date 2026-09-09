@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T21:57:57+00:00",
+  "generated_at": "2026-09-09T18:36:24+00:00",
   "is_synthetic": true,
   "data_source": "closed-form benchmark tasks with exact oracles (src/tasks.py)",
   "newsvendor": {
@@ -330,5 +330,173 @@
     "distributional_optimum_cost": 48.7778,
     "irreducible_regret": 44.8138,
     "note": "regret in the table is against the clairvoyant oracle; the achievable floor is the best fixed action"
+  },
+  "has_real_track": true,
+  "tracks_note": "the newsvendor and triage tasks are synthetic BY DESIGN (closed-form, so the oracle is exact); real_triage uses the real PhysioNet MIMIC-IV demo and is scored without an oracle",
+  "real_triage": {
+    "is_synthetic": false,
+    "data_source": "PhysioNet MIMIC-IV demo (open access); file hashes, URLs and retrieval times in 2-icu-early-warning/data/MANIFEST.json",
+    "cohort_is_a_demonstration_not_a_study": true,
+    "no_oracle": true,
+    "scoring_note": "no oracle on real data; policies scored by realised cost and against the best hindsight threshold on the test split",
+    "label_caveat": "the label is a future threshold on MAP, which is also a feature: this measures short-horizon persistence of an observed vital, not an independent clinical outcome",
+    "event": "hypotension (MAP < 65 mmHg) within a 2-hour horizon",
+    "cost_model": {
+      "treat_cost": 1.0,
+      "miss_cost": 8.0,
+      "decision": "treat when p * miss_cost >= treat_cost"
+    },
+    "cohort": {
+      "database": "PhysioNet mimic-iv-demo (open access)",
+      "n_stays_in_file": 140,
+      "n_stays_built": 134,
+      "skipped": {
+        "too_short": 6,
+        "no_vitals": 0
+      },
+      "grid_step_hours": 0.5,
+      "carry_forward_limit_hours": 2.0,
+      "cohort_is_a_demonstration_not_a_study": true,
+      "files": {
+        "mimic-iv-demo/hosp/admissions.csv.gz": {
+          "sha256": "910b9f160ffdf1e0",
+          "retrieved_utc": "2026-09-06T23:54:24+00:00",
+          "bytes": 11072
+        },
+        "mimic-iv-demo/hosp/patients.csv.gz": {
+          "sha256": "59dcc6cd8450ddf0",
+          "retrieved_utc": "2026-09-06T23:54:23+00:00",
+          "bytes": 1083
+        },
+        "mimic-iv-demo/icu/chartevents.csv.gz": {
+          "sha256": "90f096ad3db847ed",
+          "retrieved_utc": "2026-09-06T23:54:44+00:00",
+          "bytes": 5549389
+        },
+        "mimic-iv-demo/icu/d_items.csv.gz": {
+          "sha256": "1690467a82234522",
+          "retrieved_utc": "2026-09-06T23:54:24+00:00",
+          "bytes": 57073
+        },
+        "mimic-iv-demo/icu/icustays.csv.gz": {
+          "sha256": "e05e81aa52a3022e",
+          "retrieved_utc": "2026-09-06T23:54:23+00:00",
+          "bytes": 5667
+        }
+      },
+      "decision_points": 4962,
+      "event_rate_in_horizon": 0.159,
+      "dropped_points_already_in_event": 959,
+      "horizon_hours": 2.0,
+      "decision_stride_hours": 2.0
+    },
+    "split": {
+      "by": "subject",
+      "subject_overlap": 0,
+      "n_subjects_train": 48,
+      "n_subjects_test": 49,
+      "n_decisions_train": 2354,
+      "n_decisions_test": 2608
+    },
+    "fitted_map_threshold_mmhg": 80.0,
+    "hindsight_floor": {
+      "cost": 0.75153,
+      "threshold": 0.11063
+    },
+    "policies": {
+      "calibrated logistic (Bayes cost rule)": {
+        "realised_cost": 0.76227,
+        "excess_over_hindsight_floor": 0.01074,
+        "treat_rate": 0.4248
+      },
+      "single threshold on MAP": {
+        "realised_cost": 0.8194,
+        "excess_over_hindsight_floor": 0.06787,
+        "treat_rate": 0.5709
+      },
+      "always treat": {
+        "realised_cost": 1.0,
+        "excess_over_hindsight_floor": 0.24847,
+        "treat_rate": 1.0
+      },
+      "never treat": {
+        "realised_cost": 1.23313,
+        "excess_over_hindsight_floor": 0.4816,
+        "treat_rate": 0.0
+      }
+    },
+    "calibrated_logistic_calibration": {
+      "ece": 0.01356,
+      "bins": [
+        {
+          "bin": 0.05,
+          "n": 1343,
+          "predicted": 0.0547,
+          "observed": 0.0648
+        },
+        {
+          "bin": 0.15,
+          "n": 475,
+          "predicted": 0.1559,
+          "observed": 0.1558
+        },
+        {
+          "bin": 0.25,
+          "n": 425,
+          "predicted": 0.25,
+          "observed": 0.2353
+        },
+        {
+          "bin": 0.35,
+          "n": 228,
+          "predicted": 0.3556,
+          "observed": 0.364
+        },
+        {
+          "bin": 0.45,
+          "n": 80,
+          "predicted": 0.4484,
+          "observed": 0.3375
+        },
+        {
+          "bin": 0.55,
+          "n": 25,
+          "predicted": 0.5495,
+          "observed": 0.56
+        },
+        {
+          "bin": 0.65,
+          "n": 25,
+          "predicted": 0.6385,
+          "observed": 0.56
+        },
+        {
+          "bin": 0.75,
+          "n": 4,
+          "predicted": 0.7497,
+          "observed": 0.5
+        },
+        {
+          "bin": 0.85,
+          "n": 3,
+          "predicted": 0.8279,
+          "observed": 0.3333
+        }
+      ]
+    },
+    "robustness_named_shift": {
+      "shift": "patient age, median split; train on one age group, evaluate realised cost on the other",
+      "median_age": 63.0,
+      "train_younger": {
+        "in_distribution_cost": 0.5492,
+        "shifted_cost": 1.43156,
+        "degradation": 0.88236
+      },
+      "train_older": {
+        "in_distribution_cost": 0.87252,
+        "shifted_cost": 0.64442,
+        "degradation": -0.2281
+      }
+    }
   }
 }
