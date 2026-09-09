@@ -19,6 +19,15 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from data import datakit
 from data.mimicvitals import PROJECT, resample
 
+# Some tests exercise the integration with the sibling 2.0 ICU project (loaded
+# by src.demo). When that repository is not checked out alongside this one --
+# e.g. in single-repo CI -- those tests are skipped rather than failing on a
+# missing path; they still run locally and wherever both repos are present.
+from src.demo import ICU as _ICU_REPO
+requires_sibling_icu = pytest.mark.skipif(
+    not (_ICU_REPO / "src" / "cohort.py").exists(),
+    reason="sibling 2.0-Healthcare icu-early-warning repo not checked out")
+
 
 def _gz(rows, header):
     buf = io.StringIO()
@@ -73,6 +82,7 @@ def _seed(tmp_path, n_stays=14, hours=36, hypotensive=(1, 3, 5, 7, 9)):
     return f
 
 
+@requires_sibling_icu
 def test_refuses_when_mimic_is_not_cached(tmp_path):
     from data.load import load_patients
     from src.demo import _load_icu
@@ -91,6 +101,7 @@ def test_this_project_keeps_its_own_cache(tmp_path):
     assert DATA_ROOT.parent.name == "3-icu-triage-optimization"
 
 
+@requires_sibling_icu
 def test_builds_patients_the_sibling_model_can_consume(tmp_path):
     _seed(tmp_path)
     from data.load import load_patients
@@ -108,6 +119,7 @@ def test_builds_patients_the_sibling_model_can_consume(tmp_path):
     assert y.sum() > 0, "the seeded hypotensive drift should produce events"
 
 
+@requires_sibling_icu
 def test_the_split_is_by_patient(tmp_path):
     _seed(tmp_path)
     from data.load import load_patients
@@ -120,6 +132,7 @@ def test_the_split_is_by_patient(tmp_path):
     assert not (set(groups[tr]) & set(groups[te]))
 
 
+@requires_sibling_icu
 def test_a_cohort_with_too_few_events_is_refused(tmp_path, monkeypatch):
     """A frontier over five positives moves sensitivity in steps of 20%.
 
