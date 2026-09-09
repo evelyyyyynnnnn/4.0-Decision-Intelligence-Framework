@@ -1,5 +1,7 @@
 # 4.0 — Decision Intelligence Framework
 
+[![tests](https://github.com/evelyyyyynnnnn/4.0-Decision-Intelligence-Framework/actions/workflows/tests.yml/badge.svg)](https://github.com/evelyyyyynnnnn/4.0-Decision-Intelligence-Framework/actions/workflows/tests.yml)
+
 The repository whose name matches the endeavor phrase most closely is the one least aligned with it. This rebuild makes the name true: optimization-driven, system-level decision frameworks.
 
 Part of a five-repository portfolio supporting the endeavor described in the
