@@ -1,6 +1,6 @@
 # ICU Triage Optimization — website
 
-Static site for `3-icu-triage-optimization`. No build step: Vercel serves this folder as-is.
+Static site for `icu-triage-optimization`. No build step: Vercel serves this folder as-is.
 
 ## Deploy on its own
 
