@@ -116,128 +116,68 @@ svg.chart{display:block;width:100%;height:auto}
   <div class="eyebrow">4.0-Decision-Intelligence-Framework &middot; Cross-cutting</div>
   <h1>Decision Audit Framework</h1>
   <p class="lede">A hash-chained decision ledger with exact replay, versioned counterfactuals, and Shapley attribution — so &quot;why did the system do that&quot; has an answer that survives being checked.</p>
-  <div class="tags"><span class="tag ">hash-chained ledger</span><span class="tag ">exact replay</span><span class="tag ">counterfactuals</span><span class="tag ">exact Shapley</span><span class="tag demo">synthetic decisions</span></div>
+  <div class="tags"><span class="tag real">real UCI German Credit</span><span class="tag ">hash-chained ledger</span><span class="tag ">exact Shapley</span><span class="tag ">policy authored, not fitted</span></div>
 </header>
 <div class="banner">
   <span class="bi">Data</span>
-  <p>Decisions here are made on synthetic credit applications by a policy written for this demo. The machinery is real; the lending policy is not, and no conclusion about credit risk follows from it.</p>
+  <p>Run on the Statlog German Credit Data from the UCI Machine Learning Repository: 1,000 real credit applications, retrieved with URL, hash and retrieval time recorded in data/MANIFEST.json. The approval rule is authored rather than fitted, because the machinery is the object of study and the lending policy is not.</p>
 </div>
-
-<section>
-  <h2>The question this answers</h2>
-  <div class="stack">
-    <p>The one asked after a decision goes wrong: <em>why did the system do that, and
-    what would it have done if the inputs had been different?</em> Answering it needs
-    three things ordinary logging does not provide — the inputs exactly as they were,
-    the policy version that actually ran, and a guarantee that neither has been edited
-    since.</p>
-    <p>Replay is exact, not approximate. A policy is a pure function of its recorded
-    inputs, so re-running it reproduces the decision bit for bit. That is a real
-    restriction on how policies may be written, and it is what makes the rest possible.</p>
-  </div>
-</section>
 
 <section>
   <h2>This run</h2>
   <div class="stack-lg">
-    <div class="metrics"><div class="metric"><span class="mk">Decisions logged</span><span class="mv">120</span><span class="mn">chain intact: True</span></div><div class="metric"><span class="mk">Replayed exactly</span><span class="mv">120/120</span><span class="mn">bit for bit</span></div><div class="metric"><span class="mk">Version flips</span><span class="mv">6</span><span class="mn">of 40 cases, v1 → v2</span></div><div class="metric"><span class="mk">Attribution gap</span><span class="mv">0.1587</span><span class="mn">occlusion vs Shapley</span></div></div>
+    <div class="metrics"><div class="metric"><span class="mk">Decisions replayed</span><span class="mv">1,000 / 1,000</span><span class="mn">to the same action, bit for bit</span></div><div class="metric"><span class="mk">Tamper detected at</span><span class="mv">index 3</span><span class="mn">one edit to installment_rate</span></div><div class="metric"><span class="mk">Changed by policy v1.0 → v2.0</span><span class="mv">15</span><span class="mn">1.5% of the ledger</span></div><div class="metric"><span class="mk">Largest attribution gap</span><span class="mv">2.710</span><span class="mn">occlusion against exact Shapley</span></div></div>
     <p class="mono" style="color:var(--muted);font-size:12.5px">
-      generated 2026-08-31T21:57:56+00:00 &middot;
-      actions: {&#x27;decline&#x27;: 47, &#x27;approve&#x27;: 73} &middot;
-      policies: credit-approval@1.0
+      generated 2026-09-06T23:58:26+00:00 &middot;
+      1,000 real applications &middot;
+      300 labelled bad risk
     </p>
-    <div class="tw"><table><thead><tr><th>Check</th><th>Result</th></tr></thead><tbody><tr><td>Chain intact before tampering</td><td class="n">True</td></tr><tr><td>Edited input detected</td><td class="n">True</td></tr><tr><td>Detected at record</td><td class="n">3</td></tr><tr><td>Chain intact after restore</td><td class="n">True</td></tr><tr><td>Decisions reproduced on replay</td><td class="n">120/120</td></tr></tbody></table></div>
-    <p>Editing one recorded input — lowering a declined applicant's debt-to-income to
-    make the decline look unjustified — breaks the hash chain at exactly that record.
-    The chain proves the log has not been altered since it was written. It does not
-    prove who wrote it; there is no signing here, and tamper-<em>evident</em> is the
-    accurate word.</p>
   </div>
 </section>
 
 <section>
-  <h2>Counterfactuals run the policy that actually ran</h2>
+  <h2>Ledger properties, measured</h2>
   <div class="stack-lg">
-    <div class="tw"><table><thead><tr><th>Case</th><th>v1</th><th>v2</th><th>Delinquencies</th><th>v1 score</th><th>v2 score</th></tr></thead><tbody><tr><td>APP-0001</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.614</td><td class="n">-0.136</td></tr><tr><td>APP-0003</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.472</td><td class="n">-0.278</td></tr><tr><td>APP-0009</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.077</td><td class="n">-0.673</td></tr><tr><td>APP-0019</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.324</td><td class="n">-0.426</td></tr><tr><td>APP-0020</td><td>approve</td><td>decline</td><td class="n">1.0</td><td class="n">+0.008</td><td class="n">-0.742</td></tr></tbody></table></div>
-    <div class="note">
-      <h3>Why the version matters</h3>
-      <p>Policy v2 weights delinquencies more heavily than v1, and
-      6 of 40 decisions change as a result. A counterfactual
-      that re-scored an old decision with today's policy would answer <em>"what would we
-      do now"</em> — a different and usually less useful question than <em>"what would we
-      have done then"</em>.</p>
-      <p>Conflating the two is how a review concludes the system behaved reasonably when
-      it did not: the current policy would have declined the case, so the decline looks
-      justified, even though the policy in force at the time approved it.</p>
-    </div>
+    <div class="tw"><table><thead><tr><th>Property</th><th>Result</th><th>How it was shown</th></tr></thead><tbody><tr><td>Replay</td><td>1,000 of 1,000, 0 failures</td><td>every decision re-executed from the ledger reproduces the same action</td></tr><tr><td>Tamper evidence</td><td>detected at index 3</td><td>chain intact; one field (installment_rate) edited; break detected; intact again after restore</td></tr><tr><td>Versioning</td><td>15 of 1,000</td><td>re-run under credit-approval-de@2.0; each flip recorded with both scores</td></tr><tr><td>Action split</td><td>889 decline / 111 approve</td><td>under credit-approval-de@1.0</td></tr></tbody></table></div>
   </div>
 </section>
 
 <section>
-  <h2>Attribution — APP-0023</h2>
+  <h2>What the policy itself achieves</h2>
   <div class="stack-lg">
-    <p>Declined with a score of -3.1917. Inputs:
-    <code>{&#x27;dti&#x27;: 0.5884, &#x27;utilisation&#x27;: 0.8503, &#x27;delinquencies&#x27;: 3.0, &#x27;tenure_years&#x27;: 5.5412, &#x27;income_k&#x27;: 81.5168}</code></p>
-    <figure><svg class="chart" viewBox="0 0 680 184" role="img" aria-label="Bar chart of results"><text x="180" y="26.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">dti</text><rect x="190" y="9" width="289.1" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="488.1" y="26.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">1.130</text><text x="180" y="61.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">utilisation</text><rect x="190" y="44" width="304.2" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="503.2" y="61.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">1.189</text><text x="180" y="96.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">delinquencies</text><rect x="190" y="79" width="422.0" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="621.0" y="96.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">1.650</text><text x="180" y="131.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">tenure_years</text><rect x="190" y="114" width="8.3" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="207.3" y="131.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.032</text><text x="180" y="166.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">income_k</text><rect x="190" y="149" width="32.4" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="231.4" y="166.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.127</text></svg></figure>
-    <div class="tw"><table><thead><tr><th>Feature</th><th>Occlusion</th><th>Shapley</th><th>Difference</th></tr></thead><tbody><tr><td>dti</td><td class="n">-1.2892</td><td class="n">-1.1305</td><td class="n">-0.1587</td></tr><tr><td>utilisation</td><td class="n">-1.3481</td><td class="n">-1.1894</td><td class="n">-0.1587</td></tr><tr><td>delinquencies</td><td class="n">-1.6500</td><td class="n">-1.6500</td><td class="n">+0.0000</td></tr><tr><td>tenure_years</td><td class="n">+0.0325</td><td class="n">+0.0325</td><td class="n">+0.0000</td></tr><tr><td>income_k</td><td class="n">+0.1267</td><td class="n">+0.1267</td><td class="n">+0.0000</td></tr></tbody></table></div>
-    <div class="note">
-      <h3>Where the two methods disagree, and why</h3>
-      <p>They agree exactly on <code>delinquencies</code>, <code>tenure_years</code> and
-      <code>income_k</code>, and differ by 0.1587 on
-      <code>dti</code> and <code>utilisation</code> — the two features the policy
-      combines in an interaction term.</p>
-      <p>Occlusion removes one feature at a time, so each of the interacting pair
-      receives <em>full</em> credit for their shared effect and the interaction is
-      counted twice. Shapley averages over every ordering, which splits it. On a purely
-      additive policy the two methods return identical values, and an earlier version of
-      this demo used exactly such a policy — producing a table where the columns matched
-      perfectly and demonstrated nothing about why anyone would pay for Shapley.</p>
-      <p>Efficiency check: the Shapley values sum to -3.8107 against
-      a score difference of -3.8107, residual
-      -9.52e-07. That identity is what makes them an allocation rather than
-      a set of importances, and it is asserted in the test suite.</p>
-    </div>
+    <figure><svg class="chart" viewBox="0 0 680 114" role="img" aria-label="Bar chart of results"><text x="180" y="26.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">declined</text><rect x="190" y="9" width="422.0" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="621.0" y="26.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.310</text><text x="180" y="61.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">base rate</text><rect x="190" y="44" width="407.7" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="606.7" y="61.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.300</text><text x="180" y="96.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">approved</text><rect x="190" y="79" width="293.8" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="492.8" y="96.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.216</text></svg></figure>
+    <div class="tw"><table><thead><tr><th></th><th>Bad-risk rate</th></tr></thead><tbody><tr><td>Overall</td><td class="n">30.0%</td></tr><tr><td>Among the 889 declined</td><td class="n">31.1%</td></tr><tr><td>Among the 111 approved</td><td class="n">21.6%</td></tr><tr><td>Outcome lift</td><td class="n">1.035</td></tr></tbody></table></div>
+    <p>A lift of 1.035 means the rule separates very little. That is the
+    intended state, and it is reported rather than hidden: the policy is authored, not fitted to this data, so a lift near 1.0 would mean it separates nothing -- which is a finding about the policy, not a failure of the audit trail</p>
+    <p>Two fields the earlier synthetic demo used were dropped, and the reason recorded:
+    this dataset records no income figure, and a debt-to-income ratio cannot be derived from an installment rate alone. Renaming the installment rate to dti would put a different quantity under a name readers already understand.</p>
   </div>
 </section>
 
 <section>
-  <h2>What would have changed the answer</h2>
+  <h2>Two attribution methods on one real decision &mdash; GC-0378</h2>
   <div class="stack-lg">
-    <div class="tw"><table><thead><tr><th>Feature</th><th>Changed to</th><th>Original score</th><th>Counterfactual score</th><th>Decision flips</th></tr></thead><tbody><tr><td>dti</td><td class="n">0.2</td><td class="n">-3.1917</td><td class="n">-1.4555</td><td>no</td></tr><tr><td>utilisation</td><td class="n">0.15</td><td class="n">-3.1917</td><td class="n">-1.3047</td><td>no</td></tr><tr><td>delinquencies</td><td class="n">0.0</td><td class="n">-3.1917</td><td class="n">-1.5417</td><td>no</td></tr><tr><td>income_k</td><td class="n">150.0</td><td class="n">-3.1917</td><td class="n">-2.4384</td><td>no</td></tr><tr><td>tenure_years</td><td class="n">20.0</td><td class="n">-3.1917</td><td class="n">-2.3242</td><td>no</td></tr></tbody></table></div>
-    <p>0 single-feature changes would have flipped this
-    decision. That is the form of explanation an applicant can act on, and a regulator
-    can check, in a way that a ranked importance list is not.</p>
+    <figure><svg class="chart" viewBox="0 0 680 289" role="img" aria-label="Bar chart of results"><text x="180" y="26.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">credit_amount_k (occlusion)</text><rect x="190" y="9" width="422.0" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="621.0" y="26.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">14.535</text><text x="180" y="61.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">installment_rate (occlusion)</text><rect x="190" y="44" width="207.3" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="406.3" y="61.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">7.140</text><text x="180" y="96.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">employment_years (occlusion)</text><rect x="190" y="79" width="7.8" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="206.8" y="96.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.270</text><text x="180" y="131.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">age (occlusion)</text><rect x="190" y="114" width="5.9" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="204.9" y="131.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.204</text><text x="180" y="166.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">credit_amount_k (Shapley)</text><rect x="190" y="149" width="343.3" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="542.3" y="166.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">11.825</text><text x="180" y="201.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">installment_rate (Shapley)</text><rect x="190" y="184" width="128.6" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="327.6" y="201.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">4.430</text><text x="180" y="236.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">employment_years (Shapley)</text><rect x="190" y="219" width="7.8" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="206.8" y="236.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.270</text><text x="180" y="271.68" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".72">age (Shapley)</text><rect x="190" y="254" width="5.9" height="26" rx="3" fill="var(--accent)" opacity=".85"/><text x="204.9" y="271.68" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="currentColor" opacity=".62">0.204</text></svg></figure>
+    <div class="tw"><table><thead><tr><th>Feature</th><th>Occlusion</th><th>Exact Shapley</th><th>Gap</th></tr></thead><tbody><tr><td>credit_amount_k</td><td class="n">-14.535</td><td class="n">-11.825</td><td class="n">2.710</td></tr><tr><td>installment_rate</td><td class="n">-7.140</td><td class="n">-4.430</td><td class="n">2.710</td></tr><tr><td>employment_years</td><td class="n">+0.270</td><td class="n">+0.270</td><td class="n">0.000</td></tr><tr><td>age</td><td class="n">+0.204</td><td class="n">+0.204</td><td class="n">0.000</td></tr><tr><td>delinquencies</td><td class="n">+0.000</td><td class="n">+0.000</td><td class="n">0.000</td></tr></tbody></table></div>
+    <p>Declined at score -15.741. Shapley is
+    exact over 5 features &mdash; all 120 orderings, not a
+    sample &mdash; and efficiency holds: the values sum to -15.781,
+    which equals the score difference, with residual 0.0.</p>
+    <p>So the 2.710 gap is not an arithmetic error in either
+    method. It is the genuine distance between two defensible definitions of a feature's
+    contribution, measured on a real record. An adverse-action notice built on one would
+    quote a different magnitude from one built on the other.</p>
+    <p>No single-feature change within the tested ranges flips this decision:
+    <code>n_flipping_features: 0</code>.</p>
   </div>
 </section>
 
 <section>
-  <h2>Reproduce it</h2>
+  <h2>Reproduce</h2>
   <div class="stack">
-    <pre>cd decision-audit-framework
-pip install -r requirements.txt
-python -m pytest tests/ -q
-python -m src.demo</pre>
-  </div>
-</section>
-
-<section>
-  <h2>What this does not establish</h2>
-  <div class="stack">
-    <ul class="tight">
-      <li>The credit policy is invented for this demo. Nothing here is a statement
-      about lending, fairness, or credit risk.</li>
-      <li>Exact replay requires policies to be pure functions of recorded inputs. A
-      policy that reads a database, calls a model server, or depends on wall-clock
-      time cannot be replayed this way, and most production policies do at least one
-      of those.</li>
-      <li>The hash chain is tamper-evident, not tamper-proof, and it is not signed.
-      It shows the log has changed; it cannot say who changed it.</li>
-      <li>Exact Shapley enumerates all orderings and is used here for five features.
-      Beyond eight it falls back to sampling, and the sampled values carry error
-      that this demo does not quantify.</li>
-      <li>No fairness or disparate-impact analysis. Attribution says what drove a
-      decision, not whether the decision was right.</li>
-    </ul>
+    <pre>python -m src.demo --real
+# -&gt; results/latest-real.json
+pytest -q</pre>
   </div>
 </section>
 
@@ -245,7 +185,7 @@ python -m src.demo</pre>
   <p>4.0-Decision-Intelligence-Framework &middot; decision-audit-framework &middot; part of a five-repository portfolio on optimization-driven,
      system-level decision frameworks.</p>
   <p>Every figure on this page was produced by running <code>python -m src.demo</code> in this
-     project and reading <code>results.json</code>. Nothing here is hand-entered. The run used clearly-labelled synthetic data; swap in the real source and the same pipeline reports real numbers.</p>
+     project and reading <code>results.json</code>. Nothing here is hand-entered. Built from results/latest-real.json. Replay fidelity, tamper detection and attribution are properties of the ledger, shown here on one dataset and one policy. Nothing on this page is a claim about credit risk.</p>
 </div>
 </div>
 </body>

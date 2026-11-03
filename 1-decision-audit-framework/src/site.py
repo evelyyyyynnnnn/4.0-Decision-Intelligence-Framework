@@ -22,6 +22,11 @@ META = {
 
 
 def build_site(results: dict) -> pathlib.Path:
+    # The real run and the authored run have different shapes; dispatch on the
+    # flag the results file carries rather than on which keys happen to exist.
+    if not results.get("is_synthetic", True):
+        return build_site_real(results)
+
     L, rp, t = results["ledger"], results["replay"], results["tamper"]
     v, c, sh, eff = (results["versioning"], results["case"], results["shapley"],
                      results["efficiency"])
@@ -187,3 +192,145 @@ python -m src.demo</pre>
 </section>
 """
     return sk.build(ROOT, META, body, results)
+
+
+# --------------------------------------------------------------------------
+# Real-data page: the ledger exercised on real UCI credit applications.
+# --------------------------------------------------------------------------
+
+REAL_META = dict(META)
+REAL_META.update({
+    "tags": [("real UCI German Credit", "real"), ("hash-chained ledger", ""),
+             ("exact Shapley", ""), ("policy authored, not fitted", "")],
+    "banner": "Run on the Statlog German Credit Data from the UCI Machine Learning "
+              "Repository: 1,000 real credit applications, retrieved with URL, hash and "
+              "retrieval time recorded in data/MANIFEST.json. The approval rule is "
+              "authored rather than fitted, because the machinery is the object of "
+              "study and the lending policy is not.",
+    "datanote": "Built from results/latest-real.json. Replay fidelity, tamper detection "
+                "and attribution are properties of the ledger, shown here on one "
+                "dataset and one policy. Nothing on this page is a claim about credit "
+                "risk.",
+})
+
+
+def build_site_real(results: dict) -> pathlib.Path:
+    led, rep = results["ledger"], results["replay"]
+    tam, ver = results["tamper"], results["versioning"]
+    oc, case = results["outcome_check"], results["case"]
+    occ, shp = results["occlusion"], results["shapley"]
+    dis, eff = results["attribution_disagreement"], results["efficiency"]
+    prov = results.get("provenance", {})
+
+    metrics = sk.metric_grid([
+        ("Decisions replayed", f"{rep['reproduced']:,} / {rep['n']:,}",
+         "to the same action, bit for bit"),
+        ("Tamper detected at", f"index {tam['detected_at']}",
+         f"one edit to {tam['field_edited']}"),
+        ("Changed by policy v{} → v{}".format(ver["from"], ver["to"]),
+         f"{ver['decisions_changed']:,}",
+         f"{ver['share_changed'] * 100:.1f}% of the ledger"),
+        ("Largest attribution gap", f"{results['max_disagreement']:.3f}",
+         "occlusion against exact Shapley"),
+    ])
+
+    prop_tbl = sk.table(
+        ["Property", "Result", "How it was shown"],
+        [["Replay", f"{rep['reproduced']:,} of {rep['n']:,}, {len(rep['failures'])} failures",
+          "every decision re-executed from the ledger reproduces the same action"],
+         ["Tamper evidence", f"detected at index {tam['detected_at']}",
+          f"chain intact; one field ({tam['field_edited']}) edited; break detected; "
+          f"intact again after restore" if tam["intact_after_restore"] else "detected"],
+         ["Versioning", f"{ver['decisions_changed']:,} of {rep['n']:,}",
+          f"re-run under {ver['policy']}@{ver['to']}; each flip recorded with both scores"],
+         ["Action split",
+          f"{led['action_counts'].get('decline', 0):,} decline / "
+          f"{led['action_counts'].get('approve', 0):,} approve",
+          f"under {', '.join(led['policies'])}"]])
+
+    outcome_tbl = sk.table(
+        ["", "Bad-risk rate"],
+        [["Overall", f"{oc['bad_rate_overall'] * 100:.1f}%"],
+         [f"Among the {oc['declined']:,} declined",
+          f"{oc['bad_rate_among_declined'] * 100:.1f}%"],
+         [f"Among the {oc['approved']:,} approved",
+          f"{oc['bad_rate_among_approved'] * 100:.1f}%"],
+         ["Outcome lift", f"{oc['lift']:.3f}"]],
+        numeric_cols=(1,))
+    outcome_chart = sk.bar_chart(
+        [("declined", oc["bad_rate_among_declined"]),
+         ("base rate", oc["bad_rate_overall"]),
+         ("approved", oc["bad_rate_among_approved"])], fmt="{:.3f}")
+
+    feats = sorted(occ, key=lambda f: -abs(occ[f]))
+    attr_tbl = sk.table(
+        ["Feature", "Occlusion", "Exact Shapley", "Gap"],
+        [[f, f"{occ[f]:+.3f}", f"{shp['values'][f]:+.3f}", f"{abs(dis.get(f, 0)):.3f}"]
+         for f in feats],
+        numeric_cols=(1, 2, 3))
+    attr_chart = sk.bar_chart(
+        [(f + " (occlusion)", abs(occ[f])) for f in feats if abs(occ[f]) > 0]
+        + [(f + " (Shapley)", abs(shp["values"][f]))
+           for f in feats if abs(shp["values"][f]) > 0],
+        fmt="{:.3f}")
+
+    body = f"""
+<section>
+  <h2>This run</h2>
+  <div class="stack-lg">
+    {metrics}
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      generated {sk.esc(results['generated_at'])} &middot;
+      {prov.get('n_cases', 0):,} real applications &middot;
+      {prov.get('n_bad_risk', 0):,} labelled bad risk
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Ledger properties, measured</h2>
+  <div class="stack-lg">
+    {prop_tbl}
+  </div>
+</section>
+
+<section>
+  <h2>What the policy itself achieves</h2>
+  <div class="stack-lg">
+    {outcome_chart}
+    {outcome_tbl}
+    <p>A lift of {oc['lift']:.3f} means the rule separates very little. That is the
+    intended state, and it is reported rather than hidden: {sk.esc(oc.get('note', ''))}</p>
+    <p>Two fields the earlier synthetic demo used were dropped, and the reason recorded:
+    {sk.esc(results.get('dropped_because', ''))}</p>
+  </div>
+</section>
+
+<section>
+  <h2>Two attribution methods on one real decision &mdash; {sk.esc(case['case_id'])}</h2>
+  <div class="stack-lg">
+    {attr_chart}
+    {attr_tbl}
+    <p>{sk.esc(case['action'].capitalize())}d at score {case['score']:.3f}. Shapley is
+    exact over {len(feats)} features &mdash; all {shp['n_orderings']} orderings, not a
+    sample &mdash; and efficiency holds: the values sum to {eff['sum_of_values']:.3f},
+    which equals the score difference, with residual {eff['residual']:.1f}.</p>
+    <p>So the {results['max_disagreement']:.3f} gap is not an arithmetic error in either
+    method. It is the genuine distance between two defensible definitions of a feature's
+    contribution, measured on a real record. An adverse-action notice built on one would
+    quote a different magnitude from one built on the other.</p>
+    <p>No single-feature change within the tested ranges flips this decision:
+    <code>n_flipping_features: {results.get('n_flipping_features', 0)}</code>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <div class="stack">
+    <pre>python -m src.demo --real
+# -&gt; results/latest-real.json
+pytest -q</pre>
+  </div>
+</section>
+"""
+    return sk.build(ROOT, REAL_META, body, results)
