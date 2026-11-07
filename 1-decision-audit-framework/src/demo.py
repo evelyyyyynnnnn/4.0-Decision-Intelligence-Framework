@@ -354,6 +354,12 @@ def main_real() -> int:
         if cf["changed"]:
             print(f"  {cf['feature']} -> {cf['to']}")
     print("\nwrote results/latest-real.json")
+    try:
+        from .site import build_site
+        build_site(r)
+        print("website/ rebuilt from this run")
+    except Exception as exc:                      # noqa: BLE001
+        print(f"(site not rebuilt: {exc})", file=sys.stderr)
     return 0
 
 

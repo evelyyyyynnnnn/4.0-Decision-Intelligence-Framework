@@ -22,6 +22,11 @@ META = {
 
 
 def build_site(results: dict) -> pathlib.Path:
+    # The real run and the authored run have different shapes; dispatch on the
+    # flag the results file carries rather than on which keys happen to exist.
+    if not results.get("is_synthetic", True):
+        return build_site_real(results)
+
     p, s = results["portfolio"], results["staffing"]
     sw = results["scenario_sweep"]
     best = min(p["out_of_sample"], key=lambda k: p["out_of_sample"][k]["cvar"])
@@ -200,3 +205,124 @@ python -m src.demo</pre>
 </section>
 """
     return sk.build(ROOT, META, body, results)
+
+
+# --------------------------------------------------------------------------
+# Real-data page: optimism measured on a chronological split of real returns.
+# --------------------------------------------------------------------------
+
+REAL_META = dict(META)
+REAL_META.update({
+    "tags": [("real Fama-French", "real"), ("chronological split", ""),
+             ("CVaR and robust", ""), ("optimism measured", "")],
+    "banner": "Run on daily returns of the 10 Fama-French industry portfolios, "
+              "retrieved with URL, hash and retrieval time recorded in "
+              "data/MANIFEST.json, and split in time rather than at random.",
+    "datanote": "Built from results/latest-real.json. The quantity measured is "
+                "optimism: the tail loss a plan promised in sample minus the tail loss "
+                "it delivered out of sample.",
+})
+
+
+def build_site_real(results: dict) -> pathlib.Path:
+    p = results["portfolio"]
+    opt = results.get("optimism", [])
+    conc = p.get("concentration", {})
+    oos = p.get("out_of_sample", {})
+    reg = p.get("regret", {})
+    worst = max(opt, key=lambda o: o["optimism"]) if opt else None
+    best = min(opt, key=lambda o: abs(o["optimism"])) if opt else None
+
+    metrics = sk.metric_grid([
+        ("Assets", p["n_assets"], "real industry portfolios"),
+        ("Train / test days", f"{p['n_train']:,} / {p['n_test']:,}",
+         f"split {p.get('split', 'chronological')}"),
+        ("Most optimistic plan",
+         f"{worst['optimism']:+.4f}" if worst else "-",
+         worst["method"] if worst else ""),
+        ("Least optimistic", f"{best['optimism']:+.4f}" if best else "-",
+         best["method"] if best else ""),
+    ])
+
+    opt_tbl = sk.table(
+        ["Method", "In-sample CVaR", "Out-of-sample CVaR", "Optimism"],
+        [[o["method"], f"{o['in_sample_cvar']:.4f}",
+          f"{o['out_of_sample_cvar']:.4f}", f"{o['optimism']:+.4f}"] for o in opt],
+        numeric_cols=(1, 2, 3))
+    opt_chart = sk.bar_chart(
+        [(o["method"], abs(o["optimism"])) for o in opt], fmt="{:.4f}")
+
+    conc_tbl = sk.table(
+        ["Method", "Concentration", "Out-of-sample std", "Out-of-sample CVaR",
+         "Worst day", "Fraction of days best"],
+        [[m, f"{conc[m]:.4f}", f"{oos.get(m, {}).get('std', 0):.4f}",
+          f"{oos.get(m, {}).get('cvar', 0):.4f}",
+          f"{oos.get(m, {}).get('worst', 0) * 100:.1f}%",
+          f"{reg.get(m, {}).get('frac_best', 0) * 100:.1f}%"]
+         for m in conc],
+        numeric_cols=(1, 2, 3, 4, 5))
+    conc_chart = sk.bar_chart(
+        [(m, conc[m]) for m in sorted(conc, key=lambda m: -conc[m])], fmt="{:.3f}")
+
+    tw, ew = p.get("train_window", {}), p.get("test_window", {})
+
+    body = f"""
+<section>
+  <h2>This run</h2>
+  <div class="stack-lg">
+    {metrics}
+    <p class="mono" style="color:var(--muted);font-size:12.5px">
+      generated {sk.esc(results['generated_at'])} &middot;
+      train {sk.esc(tw.get('first', ''))} to {sk.esc(tw.get('last', ''))} &middot;
+      test {sk.esc(ew.get('first', ''))} to {sk.esc(ew.get('last', ''))}
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Optimism &mdash; the promise minus the delivery</h2>
+  <div class="stack-lg">
+    {opt_chart}
+    {opt_tbl}
+    <p>Positive means the plan was optimistic about its own worst case. This is the
+    measurement robust optimisation exists to produce, computed on real returns rather
+    than argued for.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What each method concentrates into</h2>
+  <div class="stack-lg">
+    {conc_chart}
+    {conc_tbl}
+  </div>
+</section>
+
+<section>
+  <h2>Why the split is chronological</h2>
+  <div class="stack-lg">
+    <div class="note">
+      <h3>Real markets give one history</h3>
+      <p>{sk.esc(p.get('split_rationale', ''))}</p>
+      <p>The cost of being honest about it is visible in the table: the worst training
+      day is {abs(p.get('worst_day_train', 0)) * 100:.1f}% against
+      {abs(p.get('worst_day_test', 0)) * 100:.1f}% in the test window. Those are the real
+      returns that fell in those windows.</p>
+    </div>
+    <div class="note">
+      <h3>The staffing scenario stays simulated</h3>
+      <p>{sk.esc(results.get('staffing_withheld_because', ''))}</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <div class="stack">
+    <pre>python -m src.demo --real
+# -&gt; results/latest-real.json
+pytest -q</pre>
+  </div>
+</section>
+"""
+    return sk.build(ROOT, REAL_META, body, results)

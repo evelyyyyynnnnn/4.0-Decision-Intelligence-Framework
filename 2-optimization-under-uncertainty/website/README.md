@@ -1,6 +1,6 @@
 # Optimization Under Uncertainty — website
 
-Static site for `2-optimization-under-uncertainty`. No build step: Vercel serves this folder as-is.
+Static site for `optimization-under-uncertainty`. No build step: Vercel serves this folder as-is.
 
 ## Deploy on its own
 

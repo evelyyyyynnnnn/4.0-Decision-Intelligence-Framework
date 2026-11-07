@@ -9,7 +9,7 @@ Stochastic and robust optimization applied to portfolio allocation and hospital 
 
 ## Why the approach is non-obvious
 
-This is your Cornell ORIE training expressed as code, and the petition's Version 3 rests entirely on that framing with nothing to point at.
+The usual comparison reports each formulation's objective value under its own distribution, which flatters whichever one generated the scenarios. The informative test is cross-evaluation: score the stochastic solution under the robust uncertainty set and the robust solution under the sampled distribution, and report both.
 
 ## Method
 
