@@ -9,7 +9,7 @@ Multi-objective ICU triage and alert-threshold optimization.
 
 ## Why the approach is non-obvious
 
-Connects the healthcare pillar to the operations-research framing, which is currently the weakest join in the petition.
+Triage policy and alert threshold are normally optimised separately, but the threshold determines the arrival process the triage policy then faces. Optimising either one alone yields a policy that degrades as soon as the other moves, so the two have to be solved together to mean anything.
 
 ## Method
 
