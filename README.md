@@ -4,18 +4,18 @@
 
 The repository whose name matches the endeavor phrase most closely is the one least aligned with it. This rebuild makes the name true: optimization-driven, system-level decision frameworks.
 
-Part of a five-repository portfolio supporting the endeavor described in the
-[redacted] [redacted]: **optimization-driven, system-level decision frameworks** —
+Part of a five-repository portfolio on one theme: **optimization-driven,
+system-level decision frameworks** —
 integrating operations research, mathematical optimization and applied AI — for
 domains where a wrong decision carries systemic consequences. The three pillars
 are financial stability, healthcare safety and secure digital infrastructure.
 
 | | |
 |---|---|
-| [redacted] projects today | 0 original, [redacted]-relevant projects |
+| Projects with measured results | 0 |
 | Verdict | **Rebuild around its own name** |
 
-> "[redacted]" means: original work, a stated method, real data at a stated
+> "Measured" means: original work, a stated method, real data at a stated
 > scale, a measured result, and a README a reviewer can follow. Counts exclude
 > duplicates, forks of third-party work, retired projects, and asset-only
 > folders.
@@ -35,7 +35,7 @@ are financial stability, healthcare safety and secure digital infrastructure.
 
 Stochastic and robust optimization applied to portfolio allocation and hospital resource allocation.
 
-*Why it earns its place:* This is your Cornell ORIE training expressed as code, and the [redacted]'s Version 3 rests entirely on that framing with nothing to point at.
+*Why it earns its place:* The usual comparison reports each formulation's objective value under its own distribution, which flatters whichever one generated the scenarios. The informative test is cross-evaluation: score the stochastic solution under the robust uncertainty set and the robust solution under the sampled distribution, and report both.
 
 *Target scale:* Portfolio allocation and hospital resource allocation instances
 
@@ -51,7 +51,7 @@ Decision logging, counterfactual replay, and attribution for AI-assisted decisio
 
 Multi-objective ICU triage and alert-threshold optimization.
 
-*Why it earns its place:* Connects the healthcare pillar to the operations-research framing, which is currently the weakest join in the [redacted].
+*Why it earns its place:* Triage policy and alert threshold are normally optimised separately, but the threshold determines the arrival process the triage policy then faces. Optimising either one alone yields a policy that degrades as soon as the other moves, so the two have to be solved together to mean anything.
 
 *Target scale:* MIMIC-IV / eICU cohorts, shared with repo 2.0
 
@@ -79,8 +79,9 @@ Every rebuilt project carries the same skeleton: `README.md`, `src/`, `data/`, `
 
 ## Ground rules
 
-1. **No number without a run log.** Anything cited in the [redacted] must appear
-   in that project's `results/README.md` with a run date behind it.
+1. **No number without a run log.** Any figure quoted anywhere in this
+   repository must appear in that project's `results/README.md` with a run
+   date behind it.
 2. **No simulated data under a real claim.** Sample data lives in
    `data/sample/`, labelled, and is never the source of a cited figure.
 3. **Adoption must be documentable** — named institutions, dated
@@ -88,4 +89,13 @@ Every rebuilt project carries the same skeleton: `README.md`, `src/`, `data/`, `
 4. **Third-party and forked code stays labelled** and is never counted.
 
 ---
-Scaffold generated from `[redacted].xlsx` (sheets: Repo Build-Out Plan, Core Ideas at a Glance, [redacted] Claim vs Repo Evidence, Notion 创业 Alignment). Structure only — no results are claimed here yet.
+Structure only — no results are claimed here unless a project's `results/README.md` records a dated run.
+
+## Licence
+
+[Apache License 2.0](LICENSE). The code, benchmarks and documentation in this
+repository may be reused, modified and redistributed under its terms, including
+by projects that need a patent grant to incorporate them.
+
+Third-party data and vendored code kept under `*/data/` and
+`historical-archive/` carry their own terms and are labelled where they appear.
