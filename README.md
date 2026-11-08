@@ -12,8 +12,11 @@ are financial stability, healthcare safety and secure digital infrastructure.
 
 | | |
 |---|---|
-| Projects with measured results | 0 |
-| Verdict | **Rebuild around its own name** |
+| Projects with measured results | **3 of 4** |
+| Tests across the suites | **107** |
+| Running on real third-party data | **3 of 4** |
+| Most recent reportable run | 2026-09-07 |
+| Verdict | **Built around its own name — three projects measured** |
 
 > "Measured" means: original work, a stated method, real data at a stated
 > scale, a measured result, and a README a reviewer can follow. Counts exclude
