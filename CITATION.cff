@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+type: software
+title: Decision Intelligence Framework
+abstract: 'Optimization-driven, system-level decision frameworks: a decision audit framework, optimization
+  under uncertainty, ICU triage optimization, and a decision benchmark suite. Front-page counters are
+  generated from the test suite and the recorded runs rather than written by hand.'
+authors:
+- given-names: Wenke
+  family-names: Du
+  orcid: https://orcid.org/0009-0007-5579-234X
+version: 1.0.0
+date-released: '2026-11-09'
+license: Apache-2.0
+repository-code: https://github.com/evelyyyyynnnnn/4.0-decision-intelligence-framework
+url: https://github.com/evelyyyyynnnnn/4.0-decision-intelligence-framework
+keywords:
+- operations research
+- decision analysis
+- optimization under uncertainty
+- stochastic optimization
+- benchmarking
+- reproducibility

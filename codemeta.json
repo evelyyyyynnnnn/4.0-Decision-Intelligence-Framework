@@ -1,0 +1,30 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "@type": "SoftwareSourceCode",
+  "name": "Decision Intelligence Framework",
+  "description": "Optimization-driven, system-level decision frameworks: a decision audit framework, optimization under uncertainty, ICU triage optimization, and a decision benchmark suite. Front-page counters are generated from the test suite and the recorded runs rather than written by hand.",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Wenke",
+      "familyName": "Du",
+      "@id": "https://orcid.org/0009-0007-5579-234X"
+    }
+  ],
+  "version": "1.0.0",
+  "dateModified": "2026-11-09",
+  "datePublished": "2026-11-09",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "codeRepository": "https://github.com/evelyyyyynnnnn/4.0-decision-intelligence-framework",
+  "programmingLanguage": "Python",
+  "keywords": [
+    "operations research",
+    "decision analysis",
+    "optimization under uncertainty",
+    "stochastic optimization",
+    "benchmarking",
+    "reproducibility"
+  ],
+  "developmentStatus": "active",
+  "applicationCategory": "Research software"
+}
