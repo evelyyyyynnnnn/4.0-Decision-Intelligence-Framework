@@ -1,6 +1,7 @@
 # 4.0 — Decision Intelligence Framework
 
 [![tests](https://github.com/evelyyyyynnnnn/4.0-Decision-Intelligence-Framework/actions/workflows/tests.yml/badge.svg)](https://github.com/evelyyyyynnnnn/4.0-Decision-Intelligence-Framework/actions/workflows/tests.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24094771.svg)](https://doi.org/10.5281/zenodo.24094771)
 
 The repository whose name matches the endeavor phrase most closely is the one least aligned with it. This rebuild makes the name true: optimization-driven, system-level decision frameworks.
 
