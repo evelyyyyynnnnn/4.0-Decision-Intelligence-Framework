@@ -1,0 +1,27 @@
+{
+  "upload_type": "software",
+  "title": "Decision Intelligence Framework",
+  "description": "Optimization-driven, system-level decision frameworks: a decision audit framework, optimization under uncertainty, ICU triage optimization, and a decision benchmark suite. Front-page counters are generated from the test suite and the recorded runs rather than written by hand.",
+  "creators": [
+    {
+      "name": "Du, Wenke"
+    }
+  ],
+  "license": "apache-2.0",
+  "access_right": "open",
+  "keywords": [
+    "operations research",
+    "decision analysis",
+    "optimization under uncertainty",
+    "stochastic optimization",
+    "benchmarking",
+    "reproducibility"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/evelyyyyynnnnn/4.0-decision-intelligence-framework",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
