@@ -4,7 +4,8 @@
   "description": "Optimization-driven, system-level decision frameworks: a decision audit framework, optimization under uncertainty, ICU triage optimization, and a decision benchmark suite. Front-page counters are generated from the test suite and the recorded runs rather than written by hand.",
   "creators": [
     {
-      "name": "Du, Wenke"
+      "name": "Du, Wenke",
+      "orcid": "0009-0007-5579-234X"
     }
   ],
   "license": "apache-2.0",
